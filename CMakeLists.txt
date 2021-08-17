@@ -22,7 +22,14 @@ endif ()
 
 add_subdirectory(3rdparty/glm)
 
+option(BUILD_SHARED_LIBS OFF)
+option(ASSIMP_BUILD_ASSIMP_TOOLS OFF)
+option(ASSIMP_BUILD_SAMPLES OFF)
+option(ASSIMP_BUILD_TESTS OFF)
+add_subdirectory(3rdparty/assimp)
+
 include_directories(
+        3rdparty/assimp/include/
         3rdparty/easyloggingpp/src
         3rdparty/glad/include/
         src)
@@ -70,6 +77,8 @@ if (EMSCRIPTEN)
   set(TARGET_LINK_PROPERTIES "${TARGET_LINK_PROPERTIES} --preload-file ${ASSETS_BUILD_PATH}/assets@assets")
   set_target_properties(mountains PROPERTIES LINK_FLAGS ${TARGET_LINK_PROPERTIES})
 
+  target_link_libraries(mountains assimp)
+
   add_custom_command(
           TARGET mountains PRE_BUILD
           COMMAND ${CMAKE_COMMAND} -E copy_directory
@@ -115,6 +124,7 @@ else (EMSCRIPTEN)
   target_link_libraries(mountains ${OPENGL_LIBRARIES})
   target_link_libraries(mountains ${SDL2_IMAGE_LIBRARY})
   target_link_libraries(mountains ${SDL2_LIBRARY})
+  target_link_libraries(mountains assimp)
 
   # use ASan to find memory errors. See https://github.com/google/sanitizers/wiki/AddressSanitizer
   #  set(TARGET_LINK_PROPERTIES "-std=c++17 -O2 -fsanitize=address -fno-omit-frame-pointer")

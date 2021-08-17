@@ -111,19 +111,6 @@ bool Mountains::onUserCreate() {
 }
 
 bool Mountains::onUserUpdate(Uint32 elapsedTime) {
-    static const std::array<glm::vec3, 10> cubePositions = {
-        glm::vec3(0.f, 0.f, 0.f),
-        glm::vec3(2.f, 5.0f, -15.0f),
-        glm::vec3(-1.5f, -2.2f, -2.5f),
-        glm::vec3(-3.8f, -2.f, -12.3f),
-        glm::vec3(2.4f, -0.4f, -3.5f),
-        glm::vec3(-1.7f, 3.0f, -7.5f),
-        glm::vec3(1.3f, -2.f, -2.5f),
-        glm::vec3(1.5f, 2.f, -2.5f),
-        glm::vec3(1.5f, 0.2f, -1.5f),
-        glm::vec3(-1.3f, 1.f, -1.5f)
-    };
-
     UNUSED(elapsedTime);
 
     if (input.wasKeyPressed(SDL_SCANCODE_ESCAPE)) {
@@ -149,18 +136,12 @@ bool Mountains::onUserUpdate(Uint32 elapsedTime) {
     OpenGLResourceManager::getTexture("crate")->bind();
     vertexArray[0]->bind();
 
-    for (unsigned int i = 0; i < 10; i++) {
-        auto model = glm::mat4(1.f);
-        model = glm::translate(model, cubePositions[i]);
-        float angle = 20.0f * static_cast<float>(i);
-        if (i > 0) {
-            angle = static_cast<float>(time) / static_cast<float>(i) * 1.f;
-        }
-        model = glm::rotate(model, glm::radians(angle), glm::vec3(1.f, 0.3f, 0.5f));
-        shader->setMat4("model", model);
+    auto model = glm::mat4(1.f);
+    float angle = 20.0f;
+    model = glm::rotate(model, glm::radians(angle), glm::vec3(1.f, 0.3f, 0.5f));
+    shader->setMat4("model", model);
 
-        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);
-    }
+    glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);
 
     drawSprite(glm::vec2(10.f, 10.f), glm::vec2(64.f, 64.f));
 

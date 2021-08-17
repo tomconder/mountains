@@ -12,8 +12,44 @@
 #include "easylogging++.h"
 
 std::map<std::string, std::shared_ptr<OpenGLFont>, std::less<>> OpenGLResourceManager::fonts;
+std::map<std::string, std::shared_ptr<OpenGLMesh>, std::less<>> OpenGLResourceManager::meshes;
 std::map<std::string, std::shared_ptr<OpenGLShader>, std::less<>> OpenGLResourceManager::shaders;
 std::map<std::string, std::shared_ptr<OpenGLTexture>, std::less<>> OpenGLResourceManager::textures;
+
+std::shared_ptr<OpenGLFont> OpenGLResourceManager::getFont(const std::string &name) {
+    assert(!name.empty());
+    return fonts.at(name);
+}
+
+std::shared_ptr<OpenGLFont> OpenGLResourceManager::loadFont(const std::string &path, const std::string &name) {
+    assert(!path.empty());
+    assert(!name.empty());
+
+    std::shared_ptr<OpenGLFont> font = loadFontFromFile(path);
+    fonts.try_emplace(name, font);
+
+    return font;
+}
+
+std::shared_ptr<OpenGLMesh> OpenGLResourceManager::getMesh(const std::string &name) {
+    assert(!name.empty());
+    return meshes.at(name);
+}
+
+std::shared_ptr<OpenGLMesh> OpenGLResourceManager::loadMesh(const std::string &path, const std::string &name) {
+    assert(!path.empty());
+    assert(!name.empty());
+
+    std::shared_ptr<OpenGLMesh> mesh = loadMeshFromFile(path);
+    meshes.try_emplace(name, mesh);
+
+    return mesh;
+}
+
+std::shared_ptr<OpenGLShader> OpenGLResourceManager::getShader(const std::string &name) {
+    assert(!name.empty());
+    return shaders.at(name);
+}
 
 std::shared_ptr<OpenGLShader> OpenGLResourceManager::loadShader(const std::string &vertexShader,
                                                                 const std::string &fragmentShader,
@@ -32,9 +68,9 @@ std::shared_ptr<OpenGLShader> OpenGLResourceManager::loadShader(const std::strin
     return shader;
 }
 
-std::shared_ptr<OpenGLShader> OpenGLResourceManager::getShader(const std::string &name) {
+std::shared_ptr<OpenGLTexture> OpenGLResourceManager::getTexture(const std::string &name) {
     assert(!name.empty());
-    return shaders.at(name);
+    return textures.at(name);
 }
 
 std::shared_ptr<OpenGLTexture> OpenGLResourceManager::loadTexture(const std::string &path, const std::string &name) {
@@ -47,24 +83,44 @@ std::shared_ptr<OpenGLTexture> OpenGLResourceManager::loadTexture(const std::str
     return texture;
 }
 
-std::shared_ptr<OpenGLTexture> OpenGLResourceManager::getTexture(const std::string &name) {
-    assert(!name.empty());
-    return textures.at(name);
-}
-
-std::shared_ptr<OpenGLFont> OpenGLResourceManager::loadFont(const std::string &path, const std::string &name) {
+std::shared_ptr<OpenGLFont> OpenGLResourceManager::loadFontFromFile(const std::string &path) {
     assert(!path.empty());
-    assert(!name.empty());
 
-    std::shared_ptr<OpenGLFont> font = loadFontFromFile(path);
-    fonts.try_emplace(name, font);
+    LOG(INFO) << "Loading font: " << path.c_str();
+
+    auto font = std::make_shared<OpenGLFont>();
+    font->load(path, 24);
 
     return font;
 }
 
-std::shared_ptr<OpenGLFont> OpenGLResourceManager::getFont(const std::string &name) {
-    assert(!name.empty());
-    return fonts.at(name);
+std::shared_ptr<OpenGLMesh> OpenGLResourceManager::loadMeshFromFile(const std::string &path) {
+    assert(!path.empty());
+
+    LOG(INFO) << "Loading mesh: " << path.c_str();
+
+    auto mesh = std::make_shared<OpenGLMesh>();
+    mesh->load(path);
+
+    return mesh;
+}
+
+std::string OpenGLResourceManager::loadSourceFromFile(const std::string &path) {
+    assert(!path.empty());
+
+    LOG(INFO) << "Loading shader: " << path.c_str();
+
+    std::string code;
+    if (std::ifstream stream(path, std::ios::in); stream.is_open()) {
+        std::stringstream sstr;
+        sstr << stream.rdbuf();
+        code = sstr.str();
+        stream.close();
+    } else {
+        LOG(ERROR) << "Unable to open " << path.c_str() << ". Are you in the right directory?";
+    }
+
+    return code;
 }
 
 std::shared_ptr<OpenGLTexture> OpenGLResourceManager::loadTextureFromFile(const std::string &path) {
@@ -87,33 +143,4 @@ std::shared_ptr<OpenGLTexture> OpenGLResourceManager::loadTextureFromFile(const 
     SDL_FreeSurface(surface);
 
     return texture;
-}
-
-std::string OpenGLResourceManager::loadSourceFromFile(const std::string &path) {
-    assert(!path.empty());
-
-    LOG(INFO) << "Loading shader: " << path.c_str();
-
-    std::string code;
-    if (std::ifstream stream(path, std::ios::in); stream.is_open()) {
-        std::stringstream sstr;
-        sstr << stream.rdbuf();
-        code = sstr.str();
-        stream.close();
-    } else {
-        LOG(ERROR) << "Unable to open " << path.c_str() << ". Are you in the right directory?";
-    }
-
-    return code;
-}
-
-std::shared_ptr<OpenGLFont> OpenGLResourceManager::loadFontFromFile(const std::string &path) {
-    assert(!path.empty());
-
-    LOG(INFO) << "Loading font: " << path.c_str();
-
-    auto font = std::make_shared<OpenGLFont>();
-    font->load(path, 24);
-
-    return font;
 }
