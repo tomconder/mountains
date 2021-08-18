@@ -13,9 +13,9 @@
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 
-#include "platform/opengl/openglvertexarray.h"
 #include "platform/opengl/openglbuffer.h"
 #include "platform/opengl/opengltexture.h"
+#include "platform/opengl/openglvertexarray.h"
 
 struct Character {
     unsigned int id;

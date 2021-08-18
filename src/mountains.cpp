@@ -61,6 +61,8 @@ bool Mountains::onUserCreate() {
     OpenGLResourceManager::loadShader("assets/shaders/sprite.vert", "assets/shaders/sprite.frag", "sprite");
     OpenGLResourceManager::loadShader("assets/shaders/text.vert", "assets/shaders/text.frag", "text");
 
+    OpenGLResourceManager::loadMesh("assets/models/mountains.obj", "mountains");
+
     OpenGLResourceManager::loadTexture("assets/images/crate.jpg", "crate");
     OpenGLResourceManager::loadTexture("assets/images/coffee.png", "coffee");
 
@@ -142,6 +144,8 @@ bool Mountains::onUserUpdate(Uint32 elapsedTime) {
     shader->setMat4("model", model);
 
     glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, nullptr);
+
+    OpenGLResourceManager::getMesh("mountains")->render();
 
     drawSprite(glm::vec2(10.f, 10.f), glm::vec2(64.f, 64.f));
 

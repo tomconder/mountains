@@ -12,7 +12,7 @@
 #include "easylogging++.h"
 
 std::map<std::string, std::shared_ptr<OpenGLFont>, std::less<>> OpenGLResourceManager::fonts;
-std::map<std::string, std::shared_ptr<OpenGLMesh>, std::less<>> OpenGLResourceManager::meshes;
+std::map<std::string, std::shared_ptr<OpenGLModel>, std::less<>> OpenGLResourceManager::meshes;
 std::map<std::string, std::shared_ptr<OpenGLShader>, std::less<>> OpenGLResourceManager::shaders;
 std::map<std::string, std::shared_ptr<OpenGLTexture>, std::less<>> OpenGLResourceManager::textures;
 
@@ -31,16 +31,16 @@ std::shared_ptr<OpenGLFont> OpenGLResourceManager::loadFont(const std::string &p
     return font;
 }
 
-std::shared_ptr<OpenGLMesh> OpenGLResourceManager::getMesh(const std::string &name) {
+std::shared_ptr<OpenGLModel> OpenGLResourceManager::getMesh(const std::string &name) {
     assert(!name.empty());
     return meshes.at(name);
 }
 
-std::shared_ptr<OpenGLMesh> OpenGLResourceManager::loadMesh(const std::string &path, const std::string &name) {
+std::shared_ptr<OpenGLModel> OpenGLResourceManager::loadMesh(const std::string &path, const std::string &name) {
     assert(!path.empty());
     assert(!name.empty());
 
-    std::shared_ptr<OpenGLMesh> mesh = loadMeshFromFile(path);
+    std::shared_ptr<OpenGLModel> mesh = loadMeshFromFile(path);
     meshes.try_emplace(name, mesh);
 
     return mesh;
@@ -94,12 +94,12 @@ std::shared_ptr<OpenGLFont> OpenGLResourceManager::loadFontFromFile(const std::s
     return font;
 }
 
-std::shared_ptr<OpenGLMesh> OpenGLResourceManager::loadMeshFromFile(const std::string &path) {
+std::shared_ptr<OpenGLModel> OpenGLResourceManager::loadMeshFromFile(const std::string &path) {
     assert(!path.empty());
 
     LOG(INFO) << "Loading mesh: " << path.c_str();
 
-    auto mesh = std::make_shared<OpenGLMesh>();
+    auto mesh = std::make_shared<OpenGLModel>();
     mesh->load(path);
 
     return mesh;

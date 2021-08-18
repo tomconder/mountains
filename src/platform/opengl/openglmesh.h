@@ -1,23 +1,21 @@
 #ifndef INCLUDE_OPENGLMESH_H
 #define INCLUDE_OPENGLMESH_H
 
-#include <string>
+#include <memory>
 
-#include <assimp/scene.h>
-
+#include "platform/opengl/openglbuffer.h"
+#include "platform/opengl/openglelementbuffer.h"
+#include "platform/opengl/openglvertexarray.h"
 #include "renderer/mesh.h"
 
-class OpenGLMesh {
+class OpenGLMesh : public Mesh {
 public:
-    OpenGLMesh();
-    void load(const std::string &path);
+    OpenGLMesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices);
     void render();
 
-    std::vector<Mesh>    meshes;
-
-private:
-    void processNode(aiNode *node, const aiScene *scene);
-    Mesh processMesh(aiMesh *mesh, const aiScene *scene);
+    std::unique_ptr<OpenGLBuffer> vbo;
+    std::unique_ptr<OpenGLElementBuffer> ebo;
+    std::unique_ptr<OpenGLVertexArray> vao;
 };
 
 #endif //INCLUDE_OPENGLMESH_H
