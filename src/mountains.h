@@ -6,6 +6,7 @@
 #include "core/gamecamera.h"
 #include "platform/opengl/openglbuffer.h"
 #include "platform/opengl/openglshader.h"
+#include "platform/opengl/openglsprite.h"
 #include "platform/opengl/opengltexture.h"
 #include "platform/opengl/openglvertexarray.h"
 
@@ -25,11 +26,7 @@ private:
     uint32_t startTime = 0;
 
     std::unique_ptr<GameCamera> camera;
-    std::unique_ptr<OpenGLBuffer> vbo;
-    std::unique_ptr<OpenGLVertexArray> vao;
-
-    void init2D();
-    void drawSprite(glm::vec2 position, glm::vec2 size);
+    std::unique_ptr<OpenGLSprite> sprite;
 };
 
 #endif //INCLUDE_MOUNTAINS_H

@@ -39,7 +39,7 @@ bool Mountains::onUserCreate() {
     glm::mat4 proj = camera->getProjection();
     shader->setMat4("proj", proj);
 
-    init2D();
+    sprite = std::make_unique<OpenGLSprite>();
 
     startTime = SDL_GetTicks();
 
@@ -74,7 +74,7 @@ bool Mountains::onUserUpdate(Uint32 elapsedTime) {
 
     OpenGLResourceManager::getMesh("mountains")->render();
 
-    drawSprite(glm::vec2(10.f, 10.f), glm::vec2(64.f, 64.f));
+    sprite->render("coffee", glm::vec2(10.f, 10.f), glm::vec2(64.f, 64.f));
 
     OpenGLResourceManager::getFont("gothic")->
         renderText("Mountains", 25.0, 25.0, glm::vec3(0.5, 0.9f, 1.0f));
@@ -99,54 +99,4 @@ bool Mountains::onUserResize(int width, int height) {
 
 bool Mountains::onUserDestroy() {
     return true;
-}
-
-void Mountains::init2D() {
-    std::array<float, 24> vertices = {
-        // pos      // tex
-        0.f, 1.f, 0.f, 1.f,
-        1.f, 0.f, 1.f, 0.f,
-        0.f, 0.f, 0.f, 0.f,
-
-        0.f, 1.f, 0.f, 1.f,
-        1.f, 1.f, 1.f, 1.f,
-        1.f, 0.f, 1.f, 0.f
-    };
-
-    OpenGLResourceManager::getShader("sprite")->bind();
-
-    glm::mat4 proj = glm::ortho(0.f, globals::SCREEN_WIDTH * 1.f, globals::SCREEN_HEIGHT * 1.f, 0.f, -1.f, 1.f);
-    OpenGLResourceManager::getShader("sprite")->setMat4("proj", proj);
-
-    vao = std::make_unique<OpenGLVertexArray>();
-    vao->bind();
-
-    vbo = std::make_unique<OpenGLBuffer>(vertices.data(), sizeof(vertices));
-    vbo->bind();
-
-    GLuint program = OpenGLResourceManager::getShader("sprite")->getId();
-    auto position = static_cast<GLuint>(glGetAttribLocation(program, "vertex"));
-    glVertexAttribPointer(position, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (GLvoid *)nullptr);
-    glEnableVertexAttribArray(position);
-}
-
-void Mountains::drawSprite(glm::vec2 position, glm::vec2 size) {
-    glDisable(GL_DEPTH_TEST);
-
-    auto model = glm::mat4(1.f);
-    model = glm::translate(model, glm::vec3(position, 0.f));
-
-    model = glm::scale(model, glm::vec3(size, 1.f));
-
-    std::shared_ptr<OpenGLShader> shader = OpenGLResourceManager::getShader("sprite");
-    shader->bind();
-    shader->setMat4("model", model);
-
-    glActiveTexture(GL_TEXTURE0);
-    OpenGLResourceManager::getTexture("coffee")->bind();
-
-    vao->bind();
-    glDrawArrays(GL_TRIANGLES, 0, 6);
-
-    glEnable(GL_DEPTH_TEST);
 }
