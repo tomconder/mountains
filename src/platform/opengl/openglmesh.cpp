@@ -8,8 +8,10 @@
 
 #include <cstddef>
 
-OpenGLMesh::OpenGLMesh(const std::vector<Vertex> &vertices, const std::vector<unsigned int> &indices) : Mesh(vertices,
-                                                                                                             indices) {
+OpenGLMesh::OpenGLMesh(const std::vector<Vertex> &vertices, const std::vector<unsigned int> &indices)  {
+    this->vertices = vertices;
+    this->indices = indices;
+
     vao = std::make_unique<OpenGLVertexArray>();
     vao->bind();
 
