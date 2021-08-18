@@ -119,7 +119,6 @@ void OpenGLFont::renderText(const std::string &text, float x, float y, glm::vec3
         float w = static_cast<float>(ch.size.x) * scale;
         float h = static_cast<float>(ch.size.y) * scale;
 
-        // TODO use std::array or std::vector
         float vertices[6][4] = {
             {xpos, ypos + h, 0.0f, 0.0f},
             {xpos, ypos, 0.0f, 1.0f},

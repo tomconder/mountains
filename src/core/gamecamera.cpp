@@ -20,7 +20,7 @@ void GameCamera::updateView() {
 }
 
 glm::quat GameCamera::getOrientation() const {
-    return {glm::vec3(-pitch, -yaw, 0.0f) };
+    return {glm::vec3(-pitch, -yaw, 0.0f)};
 }
 
 void GameCamera::setViewportSize(int viewportWidth, int viewportHeight) {

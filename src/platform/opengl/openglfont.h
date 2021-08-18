@@ -19,8 +19,8 @@
 
 struct Character {
     unsigned int id;
-    glm::ivec2   size;
-    glm::ivec2   bearing;
+    glm::ivec2 size;
+    glm::ivec2 bearing;
     unsigned int advance;
 };
 
