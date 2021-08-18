@@ -11,7 +11,6 @@
 
 #include <memory>
 #include <string>
-#include <array>
 
 class Mountains : public Engine {
 public:
@@ -26,8 +25,8 @@ private:
     uint32_t startTime = 0;
 
     std::unique_ptr<GameCamera> camera;
-    std::array<std::unique_ptr<OpenGLBuffer>, 2> buffer;
-    std::array<std::unique_ptr<OpenGLVertexArray>, 2> vertexArray;
+    std::unique_ptr<OpenGLBuffer> vbo;
+    std::unique_ptr<OpenGLVertexArray> vao;
 
     void init2D();
     void drawSprite(glm::vec2 position, glm::vec2 size);
