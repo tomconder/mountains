@@ -35,7 +35,7 @@ OpenGLSprite::OpenGLSprite() {
     glEnableVertexAttribArray(position);
 }
 
-void OpenGLSprite::render(const std::string &name, glm::vec2 position, glm::vec2 size) {
+void OpenGLSprite::render(const std::string &name, glm::vec2 position, glm::vec2 size) const {
     glDisable(GL_DEPTH_TEST);
 
     auto model = glm::mat4(1.f);

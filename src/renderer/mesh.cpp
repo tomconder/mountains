@@ -1,5 +1,6 @@
 #include "mesh.h"
 
-Mesh::Mesh(std::vector<Vertex> inVertices, std::vector<unsigned int> inIndices) : vertices(inVertices), indices(inIndices){
+Mesh::Mesh(const std::vector<Vertex> &inVertices, const std::vector<unsigned int> &inIndices)
+    : vertices(inVertices), indices(inIndices) {
 // empty
 }

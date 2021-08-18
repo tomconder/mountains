@@ -10,8 +10,8 @@
 
 class OpenGLMesh : public Mesh {
 public:
-    OpenGLMesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices);
-    void render();
+    OpenGLMesh(const std::vector<Vertex> &vertices, const std::vector<unsigned int> &indices);
+    void render() const;
 
     std::unique_ptr<OpenGLBuffer> vbo;
     std::unique_ptr<OpenGLElementBuffer> ebo;

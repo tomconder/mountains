@@ -25,9 +25,9 @@ void OpenGLModel::load(const std::string &path) {
     processNode(scene->mRootNode, scene);
 }
 
-void OpenGLModel::processNode(aiNode *node, const aiScene *scene) {
+void OpenGLModel::processNode(const aiNode *node, const aiScene *scene) {
     for (unsigned int i = 0; i < node->mNumMeshes; i++) {
-        aiMesh *mesh = scene->mMeshes[node->mMeshes[i]];
+        const aiMesh *mesh = scene->mMeshes[node->mMeshes[i]];
         meshes.push_back(processMesh(mesh, scene));
     }
 
@@ -36,7 +36,7 @@ void OpenGLModel::processNode(aiNode *node, const aiScene *scene) {
     }
 }
 
-OpenGLMesh OpenGLModel::processMesh(aiMesh *mesh, const aiScene *scene) {
+OpenGLMesh OpenGLModel::processMesh(const aiMesh *mesh, const aiScene *scene) const {
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
 
@@ -88,7 +88,7 @@ OpenGLMesh OpenGLModel::processMesh(aiMesh *mesh, const aiScene *scene) {
     }
 
     // process materials
-    aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
+//    aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
     // we assume a convention for sampler names in the shaders. Each diffuse texture should be named
     // as 'texture_diffuseN' where N is a sequential number ranging from 1 to MAX_SAMPLER_NUMBER.
     // Same applies to other texture as the following list summarizes:
@@ -113,7 +113,7 @@ OpenGLMesh OpenGLModel::processMesh(aiMesh *mesh, const aiScene *scene) {
 }
 
 void OpenGLModel::render() {
-    for(auto it = std::begin(meshes); it != std::end(meshes); ++it) {
+    for (auto it = std::begin(meshes); it != std::end(meshes); ++it) {
         it->render();
     }
 }

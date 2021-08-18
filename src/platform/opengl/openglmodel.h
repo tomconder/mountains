@@ -17,8 +17,8 @@ public:
     std::vector<OpenGLMesh> meshes;
 
 private:
-    void processNode(aiNode *node, const aiScene *scene);
-    OpenGLMesh processMesh(aiMesh *mesh, const aiScene *scene);
+    void processNode(const aiNode *node, const aiScene *scene);
+    OpenGLMesh processMesh(const aiMesh *mesh, const aiScene *scene) const;
 };
 
 #endif //INCLUDE_OPENGLMODEL_H

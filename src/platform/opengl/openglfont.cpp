@@ -96,8 +96,8 @@ void OpenGLFont::load(const std::string &path, unsigned int fontSize) {
 
     glBindTexture(GL_TEXTURE_2D, 0);
 
-     FT_Done_Face(face);
-     FT_Done_FreeType(ft);
+    FT_Done_Face(face);
+    FT_Done_FreeType(ft);
 }
 
 void OpenGLFont::renderText(const std::string &text, float x, float y, glm::vec3 color) {
@@ -110,8 +110,7 @@ void OpenGLFont::renderText(const std::string &text, float x, float y, glm::vec3
 
     float scale = 1.f;
 
-    for (const char &c : text)
-    {
+    for (const char &c : text) {
         Character ch = Characters[c];
 
         float xpos = x + static_cast<float>(ch.bearing.x) * scale;
@@ -120,14 +119,15 @@ void OpenGLFont::renderText(const std::string &text, float x, float y, glm::vec3
         float w = static_cast<float>(ch.size.x) * scale;
         float h = static_cast<float>(ch.size.y) * scale;
 
+        // TODO use std::array or std::vector
         float vertices[6][4] = {
-            {xpos,     ypos + h,    0.0f, 0.0f},
-            {xpos,     ypos,        0.0f, 1.0f},
-            {xpos + w, ypos,        1.0f, 1.0f},
+            {xpos, ypos + h, 0.0f, 0.0f},
+            {xpos, ypos, 0.0f, 1.0f},
+            {xpos + w, ypos, 1.0f, 1.0f},
 
-            {xpos,     ypos + h,    0.0f, 0.0f},
-            {xpos + w, ypos,        1.0f, 1.0f},
-            {xpos + w, ypos + h,    1.0f, 0.0f}
+            {xpos, ypos + h, 0.0f, 0.0f},
+            {xpos + w, ypos, 1.0f, 1.0f},
+            {xpos + w, ypos + h, 1.0f, 0.0f}
         };
 
         glBindTexture(GL_TEXTURE_2D, ch.id);

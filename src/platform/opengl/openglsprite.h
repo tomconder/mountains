@@ -12,7 +12,7 @@ class OpenGLSprite {
 public:
     OpenGLSprite();
 
-    void render(const std::string &name, glm::vec2 position, glm::vec2 size);
+    void render(const std::string &name, glm::vec2 position, glm::vec2 size) const;
 
     std::unique_ptr<OpenGLBuffer> vbo;
     std::unique_ptr<OpenGLVertexArray> vao;
