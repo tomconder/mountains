@@ -23,9 +23,17 @@ endif ()
 add_subdirectory(3rdparty/glm)
 
 option(BUILD_SHARED_LIBS OFF)
-option(ASSIMP_BUILD_ASSIMP_TOOLS OFF)
-option(ASSIMP_BUILD_SAMPLES OFF)
 option(ASSIMP_BUILD_TESTS OFF)
+option(ASSIMP_NO_EXPORT ON)
+option(ASSIMP_BUILD_ASSIMP_TOOLS OFF)
+
+option(ASSIMP_IGNORE_GIT_HASH ON)
+option(ASSIMP_INSTALL OFF)
+
+#option(ASSIMP_BUILD_ALL_EXPORTERS_BY_DEFAULT FALSE)
+#option(ASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT FALSE)
+#option(ASSIMP_BUILD_OBJ_IMPORTER FALSE)
+
 add_subdirectory(3rdparty/assimp)
 
 include_directories(

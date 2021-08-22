@@ -1,5 +1,7 @@
 #include "platform/opengl/openglsprite.h"
 
+#include <array>
+
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/ext/matrix_clip_space.hpp>
 
