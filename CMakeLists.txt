@@ -36,12 +36,6 @@ option(ASSIMP_INSTALL OFF)
 
 add_subdirectory(3rdparty/assimp)
 
-include_directories(
-        3rdparty/assimp/include/
-        3rdparty/easyloggingpp/src
-        3rdparty/glad/include/
-        src)
-
 file(GLOB HEADER_FILES LIST_DIRECTORIES false
         3rdparty/easyloggingpp/src/easylogging++.h
         src/*.h
@@ -66,8 +60,6 @@ if (EMSCRIPTEN)
           src/platform/opengl/*.cpp
           src/renderer/*.cpp)
 
-  include_directories(3rdparty/glm)
-
   set(CMAKE_EXECUTABLE_SUFFIX ".html")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -O2")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s USE_SDL=2 -s USE_SDL_IMAGE=2")
@@ -77,6 +69,11 @@ if (EMSCRIPTEN)
 
   set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/build/html)
   set(ASSETS_BUILD_PATH ${PROJECT_SOURCE_DIR}/build)
+
+  target_include_directories(mountains PUBLIC src)
+  target_include_directories(mountains PRIVATE 3rdparty/easyloggingpp/src)
+  target_include_directories(mountains PRIVATE 3rdparty/glad/include/)
+  target_include_directories(mountains PRIVATE 3rdparty/glm)
 
   set(TARGET_LINK_PROPERTIES "-std=c++17 -O2 -s ALLOW_MEMORY_GROWTH=1")
   set(TARGET_LINK_PROPERTIES "${TARGET_LINK_PROPERTIES} -s USE_SDL=2 -s MIN_WEBGL_VERSION=2 -s MAX_WEBGL_VERSION=2")
@@ -122,11 +119,14 @@ else (EMSCRIPTEN)
 
   add_executable(mountains ${SOURCE_FILES} ${HEADER_FILES})
 
-  target_include_directories(mountains PUBLIC 3rdparty/glm)
-  target_include_directories(mountains PUBLIC ${FREETYPE_INCLUDE_DIRS})
-  target_include_directories(mountains PUBLIC ${OPENGL_INCLUDE_DIR})
-  target_include_directories(mountains PUBLIC ${SDL2_IMAGE_INCLUDE_DIR})
-  target_include_directories(mountains PUBLIC ${SDL2_INCLUDE_DIR})
+  target_include_directories(mountains PUBLIC src)
+  target_include_directories(mountains PRIVATE 3rdparty/easyloggingpp/src)
+  target_include_directories(mountains PRIVATE 3rdparty/glad/include/)
+  target_include_directories(mountains PRIVATE 3rdparty/glm)
+  target_include_directories(mountains PRIVATE ${FREETYPE_INCLUDE_DIRS})
+  target_include_directories(mountains PRIVATE ${OPENGL_INCLUDE_DIR})
+  target_include_directories(mountains PRIVATE ${SDL2_IMAGE_INCLUDE_DIR})
+  target_include_directories(mountains PRIVATE ${SDL2_INCLUDE_DIR})
 
   target_link_libraries(mountains ${FREETYPE_LIBRARIES})
   target_link_libraries(mountains ${OPENGL_LIBRARIES})
