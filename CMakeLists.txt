@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
 
 project(mountains CXX C)
 
@@ -124,15 +124,14 @@ else (EMSCRIPTEN)
   target_include_directories(mountains PRIVATE 3rdparty/glad/include/)
   target_include_directories(mountains PRIVATE 3rdparty/glm)
   target_include_directories(mountains PRIVATE ${FREETYPE_INCLUDE_DIRS})
-  target_include_directories(mountains PRIVATE ${OPENGL_INCLUDE_DIR})
   target_include_directories(mountains PRIVATE ${SDL2_IMAGE_INCLUDE_DIR})
   target_include_directories(mountains PRIVATE ${SDL2_INCLUDE_DIR})
 
-  target_link_libraries(mountains ${FREETYPE_LIBRARIES})
-  target_link_libraries(mountains ${OPENGL_LIBRARIES})
-  target_link_libraries(mountains ${SDL2_IMAGE_LIBRARY})
-  target_link_libraries(mountains ${SDL2_LIBRARY})
-  target_link_libraries(mountains assimp)
+  target_link_libraries(mountains PRIVATE ${FREETYPE_LIBRARIES})
+  target_link_libraries(mountains PRIVATE OpenGL::GL)
+  target_link_libraries(mountains PRIVATE ${SDL2_IMAGE_LIBRARY})
+  target_link_libraries(mountains PRIVATE ${SDL2_LIBRARY})
+  target_link_libraries(mountains PRIVATE assimp)
 
   # use ASan to find memory errors. See https://github.com/google/sanitizers/wiki/AddressSanitizer
   #  set(TARGET_LINK_PROPERTIES "-std=c++17 -O2 -fsanitize=address -fno-omit-frame-pointer")
