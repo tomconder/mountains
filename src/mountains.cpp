@@ -31,7 +31,7 @@ bool Mountains::onUserCreate() {
     camera = std::make_unique<GameCamera>(80.0f,
                                           globals::SCREEN_WIDTH * 1.f / globals::SCREEN_HEIGHT,
                                           1.f,
-                                          100.0f);
+                                          400.0f);
 
     glm::mat4 view = camera->getViewMatrix();
     shader->setMat4("view", view);
