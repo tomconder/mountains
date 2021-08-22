@@ -60,7 +60,7 @@ bool Mountains::onUserUpdate(Uint32 elapsedTime) {
     float camZ = std::cos(static_cast<float>(time) / 1000.0f) * radius;
 
     glm::mat4 view = glm::lookAt(
-        glm::vec3(camX, 10.f, camZ),
+        glm::vec3(camX, 40.f, camZ),
         glm::vec3(0.f, 0.f, 0.f),
         glm::vec3(0.f, 1.f, 0.f)
     );
