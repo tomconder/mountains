@@ -37,7 +37,6 @@ option(ASSIMP_INSTALL OFF)
 add_subdirectory(3rdparty/assimp)
 
 file(GLOB HEADER_FILES LIST_DIRECTORIES false
-        3rdparty/easyloggingpp/src/easylogging++.h
         src/*.h
         src/core/*.h
         src/platform/opengl/*.h
@@ -52,9 +51,15 @@ file(GLOB ASSETS LIST_DIRECTORIES false assets/*)
 if (EMSCRIPTEN)
   message(STATUS "Emscripten: Building for Emscripten")
 
-  file(GLOB SOURCE_FILES LIST_DIRECTORIES false
+  add_library(easyloggingpp STATIC EXCLUDE_FROM_ALL
           3rdparty/easyloggingpp/src/easylogging++.cc
-          3rdparty/glad/src/gles2.c
+          3rdparty/easyloggingpp/src/easylogging++.h)
+  target_include_directories(easyloggingpp PUBLIC 3rdparty/easyloggingpp/src)
+
+  add_library(glad STATIC EXCLUDE_FROM_ALL 3rdparty/glad/src/gles2.c)
+  target_include_directories(glad PUBLIC 3rdparty/glad/include)
+
+  file(GLOB SOURCE_FILES LIST_DIRECTORIES false
           src/*.cpp
           src/core/*.cpp
           src/platform/opengl/*.cpp
@@ -71,9 +76,6 @@ if (EMSCRIPTEN)
   set(ASSETS_BUILD_PATH ${PROJECT_SOURCE_DIR}/build)
 
   target_include_directories(mountains PUBLIC src)
-  target_include_directories(mountains PRIVATE 3rdparty/easyloggingpp/src)
-  target_include_directories(mountains PRIVATE 3rdparty/glad/include/)
-  target_include_directories(mountains PRIVATE 3rdparty/glm)
 
   set(TARGET_LINK_PROPERTIES "-std=c++17 -O2 -s ALLOW_MEMORY_GROWTH=1")
   set(TARGET_LINK_PROPERTIES "${TARGET_LINK_PROPERTIES} -s USE_SDL=2 -s MIN_WEBGL_VERSION=2 -s MAX_WEBGL_VERSION=2")
@@ -82,7 +84,10 @@ if (EMSCRIPTEN)
   set(TARGET_LINK_PROPERTIES "${TARGET_LINK_PROPERTIES} --preload-file ${ASSETS_BUILD_PATH}/assets@assets")
   set_target_properties(mountains PROPERTIES LINK_FLAGS ${TARGET_LINK_PROPERTIES})
 
-  target_link_libraries(mountains assimp)
+  target_link_libraries(mountains PRIVATE assimp::assimp)
+  target_link_libraries(mountains PRIVATE easyloggingpp)
+  target_link_libraries(mountains PRIVATE glad)
+  target_link_libraries(mountains PRIVATE glm::glm)
 
   add_custom_command(
           TARGET mountains PRE_BUILD
@@ -98,9 +103,15 @@ if (EMSCRIPTEN)
           COMMENT "Copying shaders" VERBATIM
           DEPENDS ${SHADERS})
 else (EMSCRIPTEN)
-  file(GLOB SOURCE_FILES LIST_DIRECTORIES false
+  add_library(easyloggingpp EXCLUDE_FROM_ALL
           3rdparty/easyloggingpp/src/easylogging++.cc
-          3rdparty/glad/src/gl.c
+          3rdparty/easyloggingpp/src/easylogging++.h)
+  target_include_directories(easyloggingpp PUBLIC 3rdparty/easyloggingpp/src)
+
+  add_library(glad EXCLUDE_FROM_ALL 3rdparty/glad/src/gl.c)
+  target_include_directories(glad PUBLIC 3rdparty/glad/include)
+
+  file(GLOB SOURCE_FILES LIST_DIRECTORIES false
           src/*.cpp
           src/core/*.cpp
           src/platform/opengl/*.cpp
@@ -120,21 +131,17 @@ else (EMSCRIPTEN)
   add_executable(mountains ${SOURCE_FILES} ${HEADER_FILES})
 
   target_include_directories(mountains PUBLIC src)
-  target_include_directories(mountains PRIVATE 3rdparty/easyloggingpp/src)
-  target_include_directories(mountains PRIVATE 3rdparty/glad/include/)
-  target_include_directories(mountains PRIVATE 3rdparty/glm)
   target_include_directories(mountains PRIVATE ${SDL2_IMAGE_INCLUDE_DIR})
   target_include_directories(mountains PRIVATE ${SDL2_INCLUDE_DIR})
 
-  target_link_libraries(mountains PRIVATE Freetype::Freetype)
-  target_link_libraries(mountains PRIVATE OpenGL::GL)
   target_link_libraries(mountains PRIVATE ${SDL2_IMAGE_LIBRARY})
   target_link_libraries(mountains PRIVATE ${SDL2_LIBRARY})
-  target_link_libraries(mountains PRIVATE assimp)
-
-  # use ASan to find memory errors. See https://github.com/google/sanitizers/wiki/AddressSanitizer
-  #  set(TARGET_LINK_PROPERTIES "-std=c++17 -O2 -fsanitize=address -fno-omit-frame-pointer")
-  #  set_target_properties(mountains PROPERTIES LINK_FLAGS ${TARGET_LINK_PROPERTIES})
+  target_link_libraries(mountains PRIVATE Freetype::Freetype)
+  target_link_libraries(mountains PRIVATE OpenGL::GL)
+  target_link_libraries(mountains PRIVATE assimp::assimp)
+  target_link_libraries(mountains PRIVATE easyloggingpp)
+  target_link_libraries(mountains PRIVATE glad)
+  target_link_libraries(mountains PRIVATE glm::glm)
 
   set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/build)
   set(MAKE_DIRECTORY ${EXECUTABLE_OUTPUT_PATH})
