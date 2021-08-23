@@ -31,14 +31,15 @@ add_subdirectory(3rdparty/glm)
 
 # assimp
 # turn off assimp options to improve build time and reduce size
-set(BUILD_SHARED_LIBS FALSE CACHE INTERNAL "override ASSIMP flags" FORCE)
-set(ASSIMP_BUILD_ASSIMP_TOOLS OFF CACHE INTERNAL "override ASSIMP flags" FORCE)
-set(ASSIMP_BUILD_TESTS OFF CACHE INTERNAL "override ASSIMP flags" FORCE)
-set(ASSIMP_INSTALL_PDB FALSE CACHE INTERNAL "override ASSIMP flags" FORCE )
-set(ASSIMP_IGNORE_GIT_HASH ON CACHE INTERNAL "override ASSIMP flags" FORCE)
-set(ASSIMP_NO_EXPORT ON CACHE INTERNAL "override ASSIMP flags" FORCE)
-set(ASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT FALSE CACHE INTERNAL "override ASSIMP flags" FORCE)
-set(ASSIMP_BUILD_OBJ_IMPORTER TRUE CACHE INTERNAL "override ASSIMP flags" FORCE)
+set(BUILD_SHARED_LIBS FALSE CACHE INTERNAL "override Assimp flags" FORCE)
+set(ASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT FALSE CACHE INTERNAL "override Assimp flags" FORCE)
+set(ASSIMP_BUILD_ASSIMP_TOOLS OFF CACHE INTERNAL "override Assimp flags" FORCE)
+set(ASSIMP_BUILD_OBJ_IMPORTER TRUE CACHE INTERNAL "override Assimp flags" FORCE)
+set(ASSIMP_BUILD_TESTS OFF CACHE INTERNAL "override Assimp flags" FORCE)
+set(ASSIMP_DOUBLE_PRECISION ON CACHE INTERNAL "override Assimp flags" FORCE)
+set(ASSIMP_IGNORE_GIT_HASH ON CACHE INTERNAL "override Assimp flags" FORCE)
+set(ASSIMP_INSTALL_PDB FALSE CACHE INTERNAL "override Assimp flags" FORCE )
+set(ASSIMP_NO_EXPORT ON CACHE INTERNAL "override Assimp flags" FORCE)
 
 add_subdirectory(3rdparty/assimp)
 
@@ -76,14 +77,14 @@ if (EMSCRIPTEN)
   set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/build/html)
   set(ASSETS_BUILD_PATH ${PROJECT_SOURCE_DIR}/build)
 
-  target_include_directories(mountains PUBLIC src)
-
   set(TARGET_LINK_PROPERTIES "-std=c++17 -O2 -s ALLOW_MEMORY_GROWTH=1")
   set(TARGET_LINK_PROPERTIES "${TARGET_LINK_PROPERTIES} -s USE_SDL=2 -s MIN_WEBGL_VERSION=2 -s MAX_WEBGL_VERSION=2")
   set(TARGET_LINK_PROPERTIES "${TARGET_LINK_PROPERTIES} -s USE_SDL_IMAGE=2 -s \"SDL2_IMAGE_FORMATS=['jpg','png']\"")
   set(TARGET_LINK_PROPERTIES "${TARGET_LINK_PROPERTIES} -s USE_FREETYPE=1")
   set(TARGET_LINK_PROPERTIES "${TARGET_LINK_PROPERTIES} --preload-file ${ASSETS_BUILD_PATH}/assets@assets")
   set_target_properties(mountains PROPERTIES LINK_FLAGS ${TARGET_LINK_PROPERTIES})
+
+  target_include_directories(mountains PUBLIC src)
 
   target_link_libraries(mountains PRIVATE assimp)
   target_link_libraries(mountains PRIVATE easyloggingpp)
@@ -120,9 +121,9 @@ else ()
 
   add_executable(mountains ${SOURCE_FILES} ${HEADER_FILES})
 
-  target_include_directories(mountains PUBLIC src)
   target_include_directories(mountains PRIVATE ${SDL2_IMAGE_INCLUDE_DIR})
   target_include_directories(mountains PRIVATE ${SDL2_INCLUDE_DIRS})
+  target_include_directories(mountains PUBLIC src)
 
   target_link_libraries(mountains PRIVATE ${SDL2_IMAGE_LIBRARY})
   target_link_libraries(mountains PRIVATE ${SDL2_LIBRARIES})
