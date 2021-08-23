@@ -42,6 +42,12 @@ set(ASSIMP_BUILD_OBJ_IMPORTER TRUE CACHE INTERNAL "override ASSIMP flags" FORCE)
 
 add_subdirectory(3rdparty/assimp)
 
+file(GLOB SOURCE_FILES LIST_DIRECTORIES false
+        src/*.cpp
+        src/core/*.cpp
+        src/platform/opengl/*.cpp
+        src/renderer/*.cpp)
+
 file(GLOB HEADER_FILES LIST_DIRECTORIES false
         src/*.h
         src/core/*.h
@@ -59,12 +65,6 @@ if (EMSCRIPTEN)
 
   add_library(glad STATIC EXCLUDE_FROM_ALL 3rdparty/glad/src/gles2.c)
   target_include_directories(glad PUBLIC 3rdparty/glad/include)
-
-  file(GLOB SOURCE_FILES LIST_DIRECTORIES false
-          src/*.cpp
-          src/core/*.cpp
-          src/platform/opengl/*.cpp
-          src/renderer/*.cpp)
 
   set(CMAKE_EXECUTABLE_SUFFIX ".html")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -O2")
@@ -106,12 +106,6 @@ if (EMSCRIPTEN)
 else ()
   add_library(glad EXCLUDE_FROM_ALL 3rdparty/glad/src/gl.c)
   target_include_directories(glad PUBLIC 3rdparty/glad/include)
-
-  file(GLOB SOURCE_FILES LIST_DIRECTORIES false
-          src/*.cpp
-          src/core/*.cpp
-          src/platform/opengl/*.cpp
-          src/renderer/*.cpp)
 
   set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
   find_package(SDL2 REQUIRED)
