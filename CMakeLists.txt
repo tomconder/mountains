@@ -103,7 +103,7 @@ if (EMSCRIPTEN)
           ${CMAKE_SOURCE_DIR}/src/shaders ${ASSETS_BUILD_PATH}/assets/shaders
           COMMENT "Copying shaders" VERBATIM
           DEPENDS ${SHADERS})
-else (EMSCRIPTEN)
+else ()
   add_library(glad EXCLUDE_FROM_ALL 3rdparty/glad/src/gl.c)
   target_include_directories(glad PUBLIC 3rdparty/glad/include)
 
@@ -155,4 +155,4 @@ else (EMSCRIPTEN)
           ${CMAKE_SOURCE_DIR}/src/shaders $<TARGET_FILE_DIR:mountains>/assets/shaders
           COMMENT "Copying shaders" VERBATIM
           DEPENDS ${SHADERS})
-endif (EMSCRIPTEN)
+endif ()
