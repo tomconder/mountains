@@ -115,17 +115,17 @@ else ()
 
   # for debugging
   # include(CMakePrintHelpers)
-  # cmake_print_variables(SDL2_INCLUDE_DIR)
-  # cmake_print_variables(SDL2_LIBRARY)
+  # cmake_print_variables(SDL2_INCLUDE_DIRS)
+  # cmake_print_variables(SDL2_LIBRARIES)
 
   add_executable(mountains ${SOURCE_FILES} ${HEADER_FILES})
 
   target_include_directories(mountains PUBLIC src)
   target_include_directories(mountains PRIVATE ${SDL2_IMAGE_INCLUDE_DIR})
-  target_include_directories(mountains PRIVATE ${SDL2_INCLUDE_DIR})
+  target_include_directories(mountains PRIVATE ${SDL2_INCLUDE_DIRS})
 
   target_link_libraries(mountains PRIVATE ${SDL2_IMAGE_LIBRARY})
-  target_link_libraries(mountains PRIVATE ${SDL2_LIBRARY})
+  target_link_libraries(mountains PRIVATE ${SDL2_LIBRARIES})
   target_link_libraries(mountains PRIVATE Freetype::Freetype)
   target_link_libraries(mountains PRIVATE OpenGL::GL)
   target_link_libraries(mountains PRIVATE assimp)
