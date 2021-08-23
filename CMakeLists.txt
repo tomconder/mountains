@@ -20,9 +20,17 @@ if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
 endif ()
 
+# easyloggingpp
+add_library(easyloggingpp EXCLUDE_FROM_ALL
+        3rdparty/easyloggingpp/src/easylogging++.cc
+        3rdparty/easyloggingpp/src/easylogging++.h)
+target_include_directories(easyloggingpp PUBLIC 3rdparty/easyloggingpp/src)
+
+# glm
 add_subdirectory(3rdparty/glm)
 
-# turn off assimp things to improve build time and reduce size
+# assimp
+# turn off assimp options to improve build time and reduce size
 set(BUILD_SHARED_LIBS FALSE CACHE INTERNAL "override ASSIMP flags" FORCE)
 set(ASSIMP_BUILD_ASSIMP_TOOLS OFF CACHE INTERNAL "override ASSIMP flags" FORCE)
 set(ASSIMP_BUILD_TESTS OFF CACHE INTERNAL "override ASSIMP flags" FORCE)
@@ -48,11 +56,6 @@ file(GLOB ASSETS LIST_DIRECTORIES false assets/*)
 
 if (EMSCRIPTEN)
   message(STATUS "Emscripten: Building for Emscripten")
-
-  add_library(easyloggingpp STATIC EXCLUDE_FROM_ALL
-          3rdparty/easyloggingpp/src/easylogging++.cc
-          3rdparty/easyloggingpp/src/easylogging++.h)
-  target_include_directories(easyloggingpp PUBLIC 3rdparty/easyloggingpp/src)
 
   add_library(glad STATIC EXCLUDE_FROM_ALL 3rdparty/glad/src/gles2.c)
   target_include_directories(glad PUBLIC 3rdparty/glad/include)
@@ -101,11 +104,6 @@ if (EMSCRIPTEN)
           COMMENT "Copying shaders" VERBATIM
           DEPENDS ${SHADERS})
 else (EMSCRIPTEN)
-  add_library(easyloggingpp EXCLUDE_FROM_ALL
-          3rdparty/easyloggingpp/src/easylogging++.cc
-          3rdparty/easyloggingpp/src/easylogging++.h)
-  target_include_directories(easyloggingpp PUBLIC 3rdparty/easyloggingpp/src)
-
   add_library(glad EXCLUDE_FROM_ALL 3rdparty/glad/src/gl.c)
   target_include_directories(glad PUBLIC 3rdparty/glad/include)
 
