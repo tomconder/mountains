@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
 
 project(mountains CXX C)
 
@@ -20,30 +20,36 @@ if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
 endif ()
 
+# easyloggingpp
+add_library(easyloggingpp EXCLUDE_FROM_ALL
+        3rdparty/easyloggingpp/src/easylogging++.cc
+        3rdparty/easyloggingpp/src/easylogging++.h)
+target_include_directories(easyloggingpp PUBLIC 3rdparty/easyloggingpp/src)
+
+# glm
 add_subdirectory(3rdparty/glm)
 
-option(BUILD_SHARED_LIBS OFF)
-option(ASSIMP_BUILD_TESTS OFF)
-option(ASSIMP_NO_EXPORT ON)
-option(ASSIMP_BUILD_ASSIMP_TOOLS OFF)
-
-option(ASSIMP_IGNORE_GIT_HASH ON)
-option(ASSIMP_INSTALL OFF)
-
-#option(ASSIMP_BUILD_ALL_EXPORTERS_BY_DEFAULT FALSE)
-#option(ASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT FALSE)
-#option(ASSIMP_BUILD_OBJ_IMPORTER FALSE)
+# assimp
+# turn off assimp options to improve build time and reduce size
+set(BUILD_SHARED_LIBS FALSE CACHE INTERNAL "override Assimp flags" FORCE)
+set(ASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT FALSE CACHE INTERNAL "override Assimp flags" FORCE)
+set(ASSIMP_BUILD_ASSIMP_TOOLS OFF CACHE INTERNAL "override Assimp flags" FORCE)
+set(ASSIMP_BUILD_OBJ_IMPORTER TRUE CACHE INTERNAL "override Assimp flags" FORCE)
+set(ASSIMP_BUILD_TESTS OFF CACHE INTERNAL "override Assimp flags" FORCE)
+set(ASSIMP_DOUBLE_PRECISION ON CACHE INTERNAL "override Assimp flags" FORCE)
+set(ASSIMP_IGNORE_GIT_HASH ON CACHE INTERNAL "override Assimp flags" FORCE)
+set(ASSIMP_INSTALL_PDB FALSE CACHE INTERNAL "override Assimp flags" FORCE )
+set(ASSIMP_NO_EXPORT ON CACHE INTERNAL "override Assimp flags" FORCE)
 
 add_subdirectory(3rdparty/assimp)
 
-include_directories(
-        3rdparty/assimp/include/
-        3rdparty/easyloggingpp/src
-        3rdparty/glad/include/
-        src)
+file(GLOB SOURCE_FILES LIST_DIRECTORIES false
+        src/*.cpp
+        src/core/*.cpp
+        src/platform/opengl/*.cpp
+        src/renderer/*.cpp)
 
 file(GLOB HEADER_FILES LIST_DIRECTORIES false
-        3rdparty/easyloggingpp/src/easylogging++.h
         src/*.h
         src/core/*.h
         src/platform/opengl/*.h
@@ -58,15 +64,8 @@ file(GLOB ASSETS LIST_DIRECTORIES false assets/*)
 if (EMSCRIPTEN)
   message(STATUS "Emscripten: Building for Emscripten")
 
-  file(GLOB SOURCE_FILES LIST_DIRECTORIES false
-          3rdparty/easyloggingpp/src/easylogging++.cc
-          3rdparty/glad/src/gles2.c
-          src/*.cpp
-          src/core/*.cpp
-          src/platform/opengl/*.cpp
-          src/renderer/*.cpp)
-
-  include_directories(3rdparty/glm)
+  add_library(glad STATIC EXCLUDE_FROM_ALL 3rdparty/glad/src/gles2.c)
+  target_include_directories(glad PUBLIC 3rdparty/glad/include)
 
   set(CMAKE_EXECUTABLE_SUFFIX ".html")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -O2")
@@ -85,7 +84,12 @@ if (EMSCRIPTEN)
   set(TARGET_LINK_PROPERTIES "${TARGET_LINK_PROPERTIES} --preload-file ${ASSETS_BUILD_PATH}/assets@assets")
   set_target_properties(mountains PROPERTIES LINK_FLAGS ${TARGET_LINK_PROPERTIES})
 
-  target_link_libraries(mountains assimp)
+  target_include_directories(mountains PUBLIC src)
+
+  target_link_libraries(mountains PRIVATE assimp)
+  target_link_libraries(mountains PRIVATE easyloggingpp)
+  target_link_libraries(mountains PRIVATE glad)
+  target_link_libraries(mountains PRIVATE glm::glm)
 
   add_custom_command(
           TARGET mountains PRE_BUILD
@@ -100,14 +104,9 @@ if (EMSCRIPTEN)
           ${CMAKE_SOURCE_DIR}/src/shaders ${ASSETS_BUILD_PATH}/assets/shaders
           COMMENT "Copying shaders" VERBATIM
           DEPENDS ${SHADERS})
-else (EMSCRIPTEN)
-  file(GLOB SOURCE_FILES LIST_DIRECTORIES false
-          3rdparty/easyloggingpp/src/easylogging++.cc
-          3rdparty/glad/src/gl.c
-          src/*.cpp
-          src/core/*.cpp
-          src/platform/opengl/*.cpp
-          src/renderer/*.cpp)
+else ()
+  add_library(glad EXCLUDE_FROM_ALL 3rdparty/glad/src/gl.c)
+  target_include_directories(glad PUBLIC 3rdparty/glad/include)
 
   set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
   find_package(SDL2 REQUIRED)
@@ -117,26 +116,23 @@ else (EMSCRIPTEN)
 
   # for debugging
   # include(CMakePrintHelpers)
-  # cmake_print_variables(SDL2_INCLUDE_DIR)
-  # cmake_print_variables(SDL2_LIBRARY)
+  # cmake_print_variables(SDL2_INCLUDE_DIRS)
+  # cmake_print_variables(SDL2_LIBRARIES)
 
   add_executable(mountains ${SOURCE_FILES} ${HEADER_FILES})
 
-  target_include_directories(mountains PUBLIC 3rdparty/glm)
-  target_include_directories(mountains PUBLIC ${FREETYPE_INCLUDE_DIRS})
-  target_include_directories(mountains PUBLIC ${OPENGL_INCLUDE_DIR})
-  target_include_directories(mountains PUBLIC ${SDL2_IMAGE_INCLUDE_DIR})
-  target_include_directories(mountains PUBLIC ${SDL2_INCLUDE_DIR})
+  target_include_directories(mountains PRIVATE ${SDL2_IMAGE_INCLUDE_DIR})
+  target_include_directories(mountains PRIVATE ${SDL2_INCLUDE_DIRS})
+  target_include_directories(mountains PUBLIC src)
 
-  target_link_libraries(mountains ${FREETYPE_LIBRARIES})
-  target_link_libraries(mountains ${OPENGL_LIBRARIES})
-  target_link_libraries(mountains ${SDL2_IMAGE_LIBRARY})
-  target_link_libraries(mountains ${SDL2_LIBRARY})
-  target_link_libraries(mountains assimp)
-
-  # use ASan to find memory errors. See https://github.com/google/sanitizers/wiki/AddressSanitizer
-  #  set(TARGET_LINK_PROPERTIES "-std=c++17 -O2 -fsanitize=address -fno-omit-frame-pointer")
-  #  set_target_properties(mountains PROPERTIES LINK_FLAGS ${TARGET_LINK_PROPERTIES})
+  target_link_libraries(mountains PRIVATE ${SDL2_IMAGE_LIBRARY})
+  target_link_libraries(mountains PRIVATE ${SDL2_LIBRARIES})
+  target_link_libraries(mountains PRIVATE Freetype::Freetype)
+  target_link_libraries(mountains PRIVATE OpenGL::GL)
+  target_link_libraries(mountains PRIVATE assimp)
+  target_link_libraries(mountains PRIVATE easyloggingpp)
+  target_link_libraries(mountains PRIVATE glad)
+  target_link_libraries(mountains PRIVATE glm::glm)
 
   set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/build)
   set(MAKE_DIRECTORY ${EXECUTABLE_OUTPUT_PATH})
@@ -154,4 +150,4 @@ else (EMSCRIPTEN)
           ${CMAKE_SOURCE_DIR}/src/shaders $<TARGET_FILE_DIR:mountains>/assets/shaders
           COMMENT "Copying shaders" VERBATIM
           DEPENDS ${SHADERS})
-endif (EMSCRIPTEN)
+endif ()
