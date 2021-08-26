@@ -33,6 +33,9 @@ bool Mountains::onUserCreate() {
                                           1.f,
                                           400.0f);
 
+    camera->setEye(glm::vec3(0., 40.f, 70.f));
+    camera->lookAt();
+
     glm::mat4 view = camera->getViewMatrix();
     shader->setMat4("view", view);
 
@@ -55,19 +58,9 @@ bool Mountains::onUserUpdate(Uint32 elapsedTime) {
 
     auto time = SDL_GetTicks() - startTime;
 
-    const float radius = 70.0f;
-    float camX = std::sin(static_cast<float>(time) / 1000.0f) * radius;
-    float camZ = std::cos(static_cast<float>(time) / 1000.0f) * radius;
-
-    glm::mat4 view = glm::lookAt(
-        glm::vec3(camX, 40.f, camZ),
-        glm::vec3(0.f, 0.f, 0.f),
-        glm::vec3(0.f, 1.f, 0.f)
-    );
-
     std::shared_ptr<OpenGLShader> shader = OpenGLResourceManager::getShader("shader");
     shader->bind();
-    shader->setMat4("view", view);
+    shader->setMat4("view", camera->getViewMatrix());
 
     auto model = glm::mat4(1.f);
     shader->setMat4("model", model);

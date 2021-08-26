@@ -28,3 +28,15 @@ void GameCamera::setViewportSize(int viewportWidth, int viewportHeight) {
     this->height = static_cast<float>(viewportHeight);
     updateProjection();
 }
+
+void GameCamera::setEye(const glm::vec3 &position) {
+    eye = position;
+}
+
+void GameCamera::lookAt() {
+    view = glm::lookAt(
+        glm::vec3(0., 40.f, 70.f),
+        glm::vec3(0.f, 0.f, 0.f),
+        glm::vec3(0.f, 1.f, 0.f)
+    );
+}

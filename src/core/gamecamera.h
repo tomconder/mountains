@@ -20,6 +20,9 @@ public:
     float getPitch() const { return pitch; }
     float getYaw() const { return yaw; }
 
+    void setEye(const glm::vec3 &position);
+    void lookAt();
+
 private:
     void updateProjection();
     void updateView();
