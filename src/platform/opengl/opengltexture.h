@@ -1,7 +1,11 @@
 #ifndef INCLUDE_OPENGLTEXTURE_H
 #define INCLUDE_OPENGLTEXTURE_H
 
+#ifdef EMSCRIPTEN
+#include <glad/gles2.h>
+#else
 #include <glad/gl.h>
+#endif
 
 #include "renderer/texture.h"
 
