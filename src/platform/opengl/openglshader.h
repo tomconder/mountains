@@ -3,7 +3,11 @@
 
 #include <string>
 
+#ifdef EMSCRIPTEN
+#include <glad/gles2.h>
+#else
 #include <glad/gl.h>
+#endif
 
 #include "renderer/shader.h"
 
