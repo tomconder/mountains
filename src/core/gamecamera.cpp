@@ -35,21 +35,21 @@ void GameCamera::setPosition(const glm::vec3 &position) {
 }
 
 void GameCamera::moveBackward(float delta) {
-    cameraPos -= 2.5f * delta * cameraFront / 100000.0f;;
+    cameraPos -= delta * cameraFront / 10000.0f;
     updateView();
 }
 
 void GameCamera::moveForward(float delta) {
-    cameraPos += 2.5f * delta * cameraFront / 100000.0f;
+    cameraPos += delta * cameraFront / 10000.0f;
     updateView();
 }
 
 void GameCamera::strafeLeft(float delta) {
-    cameraPos -= glm::normalize(glm::cross(cameraFront, up)) * 2.5f * delta / 100000.0f;
+    cameraPos -= glm::normalize(glm::cross(cameraFront, up)) * delta / 10000.0f;
     updateView();
 }
 
 void GameCamera::strafeRight(float delta) {
-    cameraPos += glm::normalize(glm::cross(cameraFront, up)) * 2.5f * delta / 100000.0f;
+    cameraPos += glm::normalize(glm::cross(cameraFront, up)) * delta / 10000.0f;
     updateView();
 }
