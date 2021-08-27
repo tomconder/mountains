@@ -16,7 +16,7 @@ void GameCamera::updateProjection() {
 }
 
 void GameCamera::updateView() {
-    view = glm::lookAt(eye, center, up);
+    view = glm::lookAt(cameraPos, cameraPos + cameraFront, up);
 }
 
 glm::quat GameCamera::getOrientation() const {
@@ -29,14 +29,27 @@ void GameCamera::setViewportSize(int viewportWidth, int viewportHeight) {
     updateProjection();
 }
 
-void GameCamera::setEye(const glm::vec3 &position) {
-    eye = position;
+void GameCamera::setPosition(const glm::vec3 &position) {
+    cameraPos = position;
+    updateView();
 }
 
-void GameCamera::lookAt() {
-    view = glm::lookAt(
-        glm::vec3(0., 40.f, 70.f),
-        glm::vec3(0.f, 0.f, 0.f),
-        glm::vec3(0.f, 1.f, 0.f)
-    );
+void GameCamera::moveBackward(float delta) {
+    cameraPos -= 2.5f * delta * cameraFront / 100000.0f;;
+    updateView();
+}
+
+void GameCamera::moveForward(float delta) {
+    cameraPos += 2.5f * delta * cameraFront / 100000.0f;
+    updateView();
+}
+
+void GameCamera::strafeLeft(float delta) {
+    cameraPos -= glm::normalize(glm::cross(cameraFront, up)) * 2.5f * delta / 100000.0f;
+    updateView();
+}
+
+void GameCamera::strafeRight(float delta) {
+    cameraPos += glm::normalize(glm::cross(cameraFront, up)) * 2.5f * delta / 100000.0f;
+    updateView();
 }

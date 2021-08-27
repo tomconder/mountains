@@ -33,8 +33,7 @@ bool Mountains::onUserCreate() {
                                           1.f,
                                           400.0f);
 
-    camera->setEye(glm::vec3(0., 40.f, 70.f));
-    camera->lookAt();
+    camera->setPosition(glm::vec3(0., 40.f, 70.f));
 
     glm::mat4 view = camera->getViewMatrix();
     shader->setMat4("view", view);
@@ -57,6 +56,16 @@ bool Mountains::onUserUpdate(Uint32 elapsedTime) {
     }
 
     auto time = SDL_GetTicks() - startTime;
+
+    if (input.wasKeyPressed(SDL_SCANCODE_W) || input.isKeyHeld(SDL_SCANCODE_W)) {
+        camera->moveForward(time);
+    } else if (input.wasKeyPressed(SDL_SCANCODE_S) || input.isKeyHeld(SDL_SCANCODE_S)) {
+        camera->moveBackward(time);
+    } else if (input.wasKeyPressed(SDL_SCANCODE_A) || input.isKeyHeld(SDL_SCANCODE_A)) {
+        camera->strafeLeft(time);
+    } else if (input.wasKeyPressed(SDL_SCANCODE_D) || input.isKeyHeld(SDL_SCANCODE_D)) {
+        camera->strafeRight(time);
+    }
 
     std::shared_ptr<OpenGLShader> shader = OpenGLResourceManager::getShader("shader");
     shader->bind();
