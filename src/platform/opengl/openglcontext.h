@@ -17,6 +17,9 @@ private:
     SDL_Window *window = nullptr;
     int width;
     int height;
+    int syncInterval = 0;
+
+    void setVSync(int interval);
 };
 
 #endif //INCLUDE_OPENGL_CONTEXT_H
