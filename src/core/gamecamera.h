@@ -22,10 +22,10 @@ public:
 
     void setPosition(const glm::vec3 &position);
 
-    void moveForward(float delta);
-    void moveBackward(float delta);
-    void strafeLeft(float delta);
-    void strafeRight(float delta);
+    void moveForward(unsigned int delta);
+    void moveBackward(unsigned int delta);
+    void strafeLeft(unsigned int delta);
+    void strafeRight(unsigned int delta);
 
 private:
     void updateProjection();

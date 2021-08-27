@@ -4,7 +4,6 @@
 #include <new>
 #endif
 
-#include <glm/ext/matrix_transform.hpp>
 #include <glm/ext/matrix_clip_space.hpp>
 
 #include "easylogging++.h"
@@ -31,7 +30,7 @@ bool Mountains::onUserCreate() {
     camera = std::make_unique<GameCamera>(80.0f,
                                           globals::SCREEN_WIDTH * 1.f / globals::SCREEN_HEIGHT,
                                           1.f,
-                                          400.0f);
+                                          18000.0f);
 
     camera->setPosition(glm::vec3(0., 40.f, 70.f));
 
