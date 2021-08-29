@@ -26,7 +26,8 @@ public:
     void mouseMove(const SDL_MouseMotionEvent &event);
     void mouseScroll(const SDL_MouseWheelEvent &event);
 
-    glm::vec2 getDelta() { return delta; };
+    glm::vec2 getMoveDelta() { return moveDelta; }
+    glm::vec2 getScrollDelta();
 
 private:
     std::map<SDL_Scancode, bool> heldKeys;
@@ -34,7 +35,9 @@ private:
     std::map<SDL_Scancode, bool> releasedKeys;
 
     bool buttonPressed = false;
-    glm::vec2 delta = {0.f, 0.f};
+    glm::vec2 moveDelta = {0.f, 0.f};
+    glm::vec2 scrollDelta = {0.f, 0.f};
+    float lastScrollTimestamp = 0.f;
 };
 
 #endif //INCLUDE_INPUT_H

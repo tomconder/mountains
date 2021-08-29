@@ -67,12 +67,15 @@ bool Mountains::onUserUpdate(Uint32 elapsedTime) {
     }
 
     if (input.isButtonPressed()) {
-        camera->mouseMove(input.getDelta());
+        camera->mouseMove(input.getMoveDelta());
     }
+
+    camera->mouseScroll(input.getScrollDelta());
 
     std::shared_ptr<OpenGLShader> shader = OpenGLResourceManager::getShader("shader");
     shader->bind();
     shader->setMat4("view", camera->getViewMatrix());
+    shader->setMat4("proj", camera->getProjection());
 
     auto model = glm::mat4(1.f);
     shader->setMat4("model", model);

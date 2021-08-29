@@ -2,19 +2,21 @@
 
 #include <cmath>
 
+#include "easylogging++.h"
+
 #include <glm/ext/matrix_clip_space.hpp>
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/gtx/quaternion.hpp>
 
-GameCamera::GameCamera(float fov, float aspect, float zNear, float zFar) :
-    fov(glm::radians(fov)), aspect(aspect), zNear(zNear), zFar(zFar) {
+GameCamera::GameCamera(float fov, float aspect, float zNear, float zFar)
+    : fov(fov), aspect(aspect), zNear(zNear), zFar(zFar) {
     updateProjection();
     updateView();
 }
 
 void GameCamera::updateProjection() {
     aspect = width / height;
-    projection = glm::perspective(fov, aspect, zNear, zFar);
+    projection = glm::perspective(glm::radians(fov), aspect, zNear, zFar);
 }
 
 void GameCamera::updateView() {
@@ -75,4 +77,21 @@ void GameCamera::mouseMove(const glm::vec2 &offset) {
 
     cameraFront = glm::normalize(front);
     updateView();
+}
+
+void GameCamera::mouseScroll(const glm::vec2 &offset) {
+    if (offset.y == 0) {
+        return;
+    }
+
+    fov -= static_cast<float>(offset.y) * 5.f;
+
+    if (fov < 5.f) {
+        fov = 5.f;
+    }
+    if (fov > 120.f) {
+        fov = 120.f;
+    }
+
+    updateProjection();
 }
