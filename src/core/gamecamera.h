@@ -27,6 +27,8 @@ public:
     void strafeLeft(unsigned int delta);
     void strafeRight(unsigned int delta);
 
+    void mouseMove(const glm::vec2 &offset);
+
 private:
     void updateProjection();
     void updateView();
@@ -37,7 +39,7 @@ private:
     float zFar = 1000.0f;
 
     float pitch = 0.0f;
-    float yaw = 0.0f;
+    float yaw = -90.0f;
 
     float width = globals::SCREEN_WIDTH * 1.0f;
     float height = globals::SCREEN_HEIGHT * 1.0f;

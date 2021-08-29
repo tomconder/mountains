@@ -66,6 +66,10 @@ bool Mountains::onUserUpdate(Uint32 elapsedTime) {
         camera->strafeRight(time);
     }
 
+    if (input.isButtonPressed()) {
+        camera->mouseMove(input.getDelta());
+    }
+
     std::shared_ptr<OpenGLShader> shader = OpenGLResourceManager::getShader("shader");
     shader->bind();
     shader->setMat4("view", camera->getViewMatrix());
