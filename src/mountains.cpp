@@ -4,7 +4,6 @@
 #include <new>
 #endif
 
-#include <glm/ext/matrix_transform.hpp>
 #include <glm/ext/matrix_clip_space.hpp>
 
 #include "easylogging++.h"
@@ -31,7 +30,9 @@ bool Mountains::onUserCreate() {
     camera = std::make_unique<GameCamera>(80.0f,
                                           globals::SCREEN_WIDTH * 1.f / globals::SCREEN_HEIGHT,
                                           1.f,
-                                          400.0f);
+                                          18000.0f);
+
+    camera->setPosition(glm::vec3(0.f, 40.f, 70.f));
 
     glm::mat4 view = camera->getViewMatrix();
     shader->setMat4("view", view);
@@ -55,19 +56,26 @@ bool Mountains::onUserUpdate(Uint32 elapsedTime) {
 
     auto time = SDL_GetTicks() - startTime;
 
-    const float radius = 70.0f;
-    float camX = std::sin(static_cast<float>(time) / 1000.0f) * radius;
-    float camZ = std::cos(static_cast<float>(time) / 1000.0f) * radius;
+    if (input.wasKeyPressed(SDL_SCANCODE_W) || input.isKeyHeld(SDL_SCANCODE_W)) {
+        camera->moveForward(time);
+    } else if (input.wasKeyPressed(SDL_SCANCODE_S) || input.isKeyHeld(SDL_SCANCODE_S)) {
+        camera->moveBackward(time);
+    } else if (input.wasKeyPressed(SDL_SCANCODE_A) || input.isKeyHeld(SDL_SCANCODE_A)) {
+        camera->strafeLeft(time);
+    } else if (input.wasKeyPressed(SDL_SCANCODE_D) || input.isKeyHeld(SDL_SCANCODE_D)) {
+        camera->strafeRight(time);
+    }
 
-    glm::mat4 view = glm::lookAt(
-        glm::vec3(camX, 40.f, camZ),
-        glm::vec3(0.f, 0.f, 0.f),
-        glm::vec3(0.f, 1.f, 0.f)
-    );
+    if (input.isButtonPressed()) {
+        camera->mouseMove(input.getMoveDelta());
+    }
+
+    camera->mouseScroll(input.getScrollDelta());
 
     std::shared_ptr<OpenGLShader> shader = OpenGLResourceManager::getShader("shader");
     shader->bind();
-    shader->setMat4("view", view);
+    shader->setMat4("view", camera->getViewMatrix());
+    shader->setMat4("proj", camera->getProjection());
 
     auto model = glm::mat4(1.f);
     shader->setMat4("model", model);

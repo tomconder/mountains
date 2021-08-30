@@ -45,10 +45,11 @@ OpenGLContext::OpenGLContext(SDL_Window *window) {
         return;
     }
 
-    if (SDL_GL_SetSwapInterval(1) < 0) {
-        LOG(ERROR) << "Unable to set vsync: " << SDL_GetError();
-        return;
-    }
+#ifdef EMSCRIPTEN
+    setVSync(0);
+#else
+    setVSync(-1);
+#endif
 
     this->window = window;
 
@@ -71,4 +72,25 @@ void OpenGLContext::flip() {
         return;
     }
     SDL_GL_SwapWindow(window);
+}
+
+void OpenGLContext::setVSync(int interval) {
+    // 0 for immediate updates
+    // 1 for updates synchronized with the vertical retrace
+    // -1 for adaptive vsync
+
+    if (SDL_GL_SetSwapInterval(interval) == 0) {
+        syncInterval = interval;
+        return;
+    }
+
+    if (interval == -1) {
+        //  the system does not support adaptive vsync, so try with vsync
+        if (SDL_GL_SetSwapInterval(1) == 0) {
+            syncInterval = 1;
+            return;
+        }
+    }
+
+    LOG(ERROR) << "Unable to set vsync: " << SDL_GetError();
 }

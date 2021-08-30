@@ -85,10 +85,20 @@ bool Engine::iterateLoop() {
             onUserResize(w, h);
         } else if (event.type == SDL_KEYDOWN) {
             if (event.key.repeat == 0) {
-                input.keyDown(event);
+                input.keyDown(event.key);
             }
         } else if (event.type == SDL_KEYUP) {
-            input.keyUp(event);
+            input.keyUp(event.key);
+        }
+
+        if (event.type == SDL_MOUSEBUTTONDOWN) {
+            input.mouseButtonDown(event.button);
+        } else if (event.type == SDL_MOUSEBUTTONUP) {
+            input.mouseButtonUp(event.button);
+        } else if (event.type == SDL_MOUSEMOTION) {
+            input.mouseMove(event.motion);
+        } else if (event.type == SDL_MOUSEWHEEL) {
+            input.mouseScroll(event.wheel);
         }
     }
 
