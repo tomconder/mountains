@@ -26,19 +26,21 @@ add_library(easyloggingpp EXCLUDE_FROM_ALL
         3rdparty/easyloggingpp/src/easylogging++.h)
 target_include_directories(easyloggingpp PUBLIC 3rdparty/easyloggingpp/src)
 
-# glm
-add_subdirectory(3rdparty/glm)
-
-# assimp
 include(FetchContent)
 
-set(FETCHCONTENT_QUIET OFF CACHE INTERNAL "ovveride default" FORCE)
-set(FETCHCONTENT_UPDATES_DISCONNECTED ON CACHE INTERNAL "ovveride default" FORCE)
-
+# glm
 FetchContent_Declare(
-        assimp
-        GIT_REPOSITORY  https://github.com/assimp/assimp.git
-        GIT_TAG         6841397798051919a23a3fbe1405fd934fb5f39c
+  glm
+  GIT_REPOSITORY  https://github.com/g-truc/glm.git
+  GIT_TAG         06ed280db4e274fa5e1f36d5ea4f7dfd654ff9b0
+)
+FetchContent_MakeAvailable(glm)
+
+# assimp
+FetchContent_Declare(
+  assimp
+  GIT_REPOSITORY  https://github.com/assimp/assimp.git
+  GIT_TAG         6841397798051919a23a3fbe1405fd934fb5f39c
 )
 
 FetchContent_GetProperties(assimp)
