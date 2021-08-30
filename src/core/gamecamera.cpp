@@ -84,7 +84,7 @@ void GameCamera::mouseScroll(const glm::vec2 &offset) {
         return;
     }
 
-    fov -= static_cast<float>(offset.y) * 5.f;
+    fov -= offset.y * 5.f;
 
     if (fov < 5.f) {
         fov = 5.f;

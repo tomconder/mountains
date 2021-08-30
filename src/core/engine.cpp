@@ -92,13 +92,9 @@ bool Engine::iterateLoop() {
         }
 
         if (event.type == SDL_MOUSEBUTTONDOWN) {
-            if (event.button.button == SDL_BUTTON_LEFT) {
-                input.mouseButtonDown(event.button);
-            }
+            input.mouseButtonDown(event.button);
         } else if (event.type == SDL_MOUSEBUTTONUP) {
-            if (event.button.button == SDL_BUTTON_LEFT) {
-                input.mouseButtonUp(event.button);
-            }
+            input.mouseButtonUp(event.button);
         } else if (event.type == SDL_MOUSEMOTION) {
             input.mouseMove(event.motion);
         } else if (event.type == SDL_MOUSEWHEEL) {

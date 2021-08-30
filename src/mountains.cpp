@@ -32,7 +32,7 @@ bool Mountains::onUserCreate() {
                                           1.f,
                                           18000.0f);
 
-    camera->setPosition(glm::vec3(0., 40.f, 70.f));
+    camera->setPosition(glm::vec3(0.f, 40.f, 70.f));
 
     glm::mat4 view = camera->getViewMatrix();
     shader->setMat4("view", view);

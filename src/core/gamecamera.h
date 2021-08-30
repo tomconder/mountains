@@ -35,7 +35,7 @@ private:
     void updateView();
 
     float fov = 45.0f;
-    float aspect = 1.333f;
+    float aspect = 1.3333333333f;
     float zNear = 1.0f;
     float zFar = 1000.0f;
 

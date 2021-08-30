@@ -30,11 +30,15 @@ bool Input::wasKeyReleased(SDL_Scancode key) {
 }
 
 void Input::mouseButtonDown(const SDL_MouseButtonEvent &event) {
-    buttonPressed = true;
+    if (event.button == SDL_BUTTON_LEFT) {
+        buttonPressed = true;
+    }
 }
 
 void Input::mouseButtonUp(const SDL_MouseButtonEvent &event) {
-    buttonPressed = false;
+    if (event.button == SDL_BUTTON_LEFT) {
+        buttonPressed = false;
+    }
 }
 
 bool Input::isButtonPressed() const {
