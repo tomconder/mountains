@@ -20,13 +20,18 @@ if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
 endif ()
 
-# easyloggingpp
-add_library(easyloggingpp EXCLUDE_FROM_ALL
-        3rdparty/easyloggingpp/src/easylogging++.cc
-        3rdparty/easyloggingpp/src/easylogging++.h)
-target_include_directories(easyloggingpp PUBLIC 3rdparty/easyloggingpp/src)
-
 include(FetchContent)
+
+# easyloggingpp
+FetchContent_Declare(
+        easyloggingpp
+        GIT_REPOSITORY  https://github.com/amrayn/easyloggingpp.git
+        GIT_TAG         49da71da884d1e756a51df617437b87071c2b1a7
+)
+FetchContent_MakeAvailable(easyloggingpp)
+if(NOT easyloggingpp_POPULATED)
+  FetchContent_Populate(easyloggingpp)
+endif()
 
 # glm
 FetchContent_Declare(
@@ -35,6 +40,9 @@ FetchContent_Declare(
   GIT_TAG         06ed280db4e274fa5e1f36d5ea4f7dfd654ff9b0
 )
 FetchContent_MakeAvailable(glm)
+if(NOT glm_POPULATED)
+  FetchContent_Populate(glm)
+endif()
 
 # assimp
 FetchContent_Declare(
@@ -105,9 +113,10 @@ if (EMSCRIPTEN)
   set_target_properties(mountains PROPERTIES LINK_FLAGS ${TARGET_LINK_PROPERTIES})
 
   target_include_directories(mountains PUBLIC src)
+  target_include_directories(mountains PRIVATE ${easyloggingpp_SOURCE_DIR}/src/)
 
   target_link_libraries(mountains PRIVATE assimp)
-  target_link_libraries(mountains PRIVATE easyloggingpp)
+  target_link_libraries(mountains PRIVATE ${easyloggingpp_SOURCE_DIR}/src/easylogging++.cc)
   target_link_libraries(mountains PRIVATE glad)
   target_link_libraries(mountains PRIVATE glm::glm)
 
@@ -143,6 +152,7 @@ else ()
 
   target_include_directories(mountains PRIVATE ${SDL2_IMAGE_INCLUDE_DIR})
   target_include_directories(mountains PRIVATE ${SDL2_INCLUDE_DIR})
+  target_include_directories(mountains PRIVATE ${easyloggingpp_SOURCE_DIR}/src/)
   target_include_directories(mountains PUBLIC src)
 
   target_link_libraries(mountains PRIVATE ${SDL2_IMAGE_LIBRARY})
@@ -150,7 +160,7 @@ else ()
   target_link_libraries(mountains PRIVATE Freetype::Freetype)
   target_link_libraries(mountains PRIVATE OpenGL::GL)
   target_link_libraries(mountains PRIVATE assimp)
-  target_link_libraries(mountains PRIVATE easyloggingpp)
+  target_link_libraries(mountains PRIVATE ${easyloggingpp_SOURCE_DIR}/src/easylogging++.cc)
   target_link_libraries(mountains PRIVATE glad)
   target_link_libraries(mountains PRIVATE glm::glm)
 
