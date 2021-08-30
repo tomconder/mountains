@@ -26,22 +26,42 @@ add_library(easyloggingpp EXCLUDE_FROM_ALL
         3rdparty/easyloggingpp/src/easylogging++.h)
 target_include_directories(easyloggingpp PUBLIC 3rdparty/easyloggingpp/src)
 
+include(FetchContent)
+
 # glm
-add_subdirectory(3rdparty/glm)
+FetchContent_Declare(
+  glm
+  GIT_REPOSITORY  https://github.com/g-truc/glm.git
+  GIT_TAG         06ed280db4e274fa5e1f36d5ea4f7dfd654ff9b0
+)
+FetchContent_MakeAvailable(glm)
 
 # assimp
-# turn off assimp options to improve build time and reduce size
-set(BUILD_SHARED_LIBS FALSE CACHE INTERNAL "override Assimp flags" FORCE)
-set(ASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT FALSE CACHE INTERNAL "override Assimp flags" FORCE)
-set(ASSIMP_BUILD_ASSIMP_TOOLS OFF CACHE INTERNAL "override Assimp flags" FORCE)
-set(ASSIMP_BUILD_OBJ_IMPORTER TRUE CACHE INTERNAL "override Assimp flags" FORCE)
-set(ASSIMP_BUILD_TESTS OFF CACHE INTERNAL "override Assimp flags" FORCE)
-set(ASSIMP_DOUBLE_PRECISION ON CACHE INTERNAL "override Assimp flags" FORCE)
-set(ASSIMP_IGNORE_GIT_HASH ON CACHE INTERNAL "override Assimp flags" FORCE)
-set(ASSIMP_INSTALL_PDB FALSE CACHE INTERNAL "override Assimp flags" FORCE )
-set(ASSIMP_NO_EXPORT ON CACHE INTERNAL "override Assimp flags" FORCE)
+FetchContent_Declare(
+  assimp
+  GIT_REPOSITORY  https://github.com/assimp/assimp.git
+  GIT_TAG         6841397798051919a23a3fbe1405fd934fb5f39c
+)
 
-add_subdirectory(3rdparty/assimp)
+FetchContent_GetProperties(assimp)
+string(TOLOWER "assimp" lcName)
+if(NOT ${lcName}_POPULATED)
+  FetchContent_Populate(assimp)
+
+  set(BUILD_SHARED_LIBS FALSE CACHE INTERNAL "override Assimp flags" FORCE)
+
+  # turn off assimp options to improve build time and reduce size
+  set(ASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT FALSE CACHE INTERNAL "override Assimp flags" FORCE)
+  set(ASSIMP_BUILD_ASSIMP_TOOLS OFF CACHE INTERNAL "override Assimp flags" FORCE)
+  set(ASSIMP_BUILD_OBJ_IMPORTER TRUE CACHE INTERNAL "override Assimp flags" FORCE)
+  set(ASSIMP_BUILD_TESTS OFF CACHE INTERNAL "override Assimp flags" FORCE)
+  set(ASSIMP_DOUBLE_PRECISION ON CACHE INTERNAL "override Assimp flags" FORCE)
+  set(ASSIMP_IGNORE_GIT_HASH ON CACHE INTERNAL "override Assimp flags" FORCE)
+  set(ASSIMP_INSTALL_PDB FALSE CACHE INTERNAL "override Assimp flags" FORCE )
+  set(ASSIMP_NO_EXPORT ON CACHE INTERNAL "override Assimp flags" FORCE)
+
+  add_subdirectory(${${lcName}_SOURCE_DIR} ${${lcName}_BINARY_DIR})
+endif()
 
 file(GLOB SOURCE_FILES LIST_DIRECTORIES false
         src/*.cpp
