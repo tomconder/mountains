@@ -1,10 +1,12 @@
 # Mountains
 Load a mountains mesh and display it
 
+![vino map gif](docs/demonstration.gif)
+
 ## Installing
-This repository uses submodules. Use `recurse-submodules` when you clone it. 
+Clone this repository. 
 ```
-git clone --recurse-submodule https://github.com/tomconder/mountains.git
+git clone https://github.com/tomconder/mountains.git
 ```
 
 ## Building on Windows using VSCode
