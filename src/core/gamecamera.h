@@ -42,6 +42,8 @@ private:
     float pitch = 0.0f;
     float yaw = -90.0f;
 
+    float cameraSpeed = 0.1f;
+
     float width = globals::SCREEN_WIDTH * 1.0f;
     float height = globals::SCREEN_HEIGHT * 1.0f;
 

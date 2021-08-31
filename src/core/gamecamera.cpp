@@ -39,28 +39,28 @@ void GameCamera::setPosition(const glm::vec3 &position) {
 }
 
 void GameCamera::moveBackward(unsigned int delta) {
-    cameraPos -= static_cast<float>(delta) * cameraFront / 18000.0f;
+    cameraPos -= static_cast<float>(delta) * cameraFront * cameraSpeed;
     updateView();
 }
 
 void GameCamera::moveForward(unsigned int delta) {
-    cameraPos += static_cast<float>(delta) * cameraFront / 18000.0f;
+    cameraPos += static_cast<float>(delta) * cameraFront * cameraSpeed;
     updateView();
 }
 
 void GameCamera::strafeLeft(unsigned int delta) {
-    cameraPos -= glm::normalize(glm::cross(cameraFront, up)) * static_cast<float>(delta) / 18000.0f;
+    cameraPos -= glm::normalize(glm::cross(cameraFront, up)) * static_cast<float>(delta) * cameraSpeed;
     updateView();
 }
 
 void GameCamera::strafeRight(unsigned int delta) {
-    cameraPos += glm::normalize(glm::cross(cameraFront, up)) * static_cast<float>(delta) / 18000.0f;
+    cameraPos += glm::normalize(glm::cross(cameraFront, up)) * static_cast<float>(delta) * cameraSpeed;
     updateView();
 }
 
 void GameCamera::mouseMove(const glm::vec2 &offset) {
-    yaw += offset.x * 0.1f;
-    pitch += offset.y * 0.1f;
+    yaw += offset.x * cameraSpeed;
+    pitch += offset.y * cameraSpeed;
 
     if (pitch > 89.f) {
         pitch = 89.f;

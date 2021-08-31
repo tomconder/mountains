@@ -48,22 +48,18 @@ bool Mountains::onUserCreate() {
 }
 
 bool Mountains::onUserUpdate(Uint32 elapsedTime) {
-    UNUSED(elapsedTime);
-
-    if (input.wasKeyPressed(SDL_SCANCODE_ESCAPE)) {
+w    if (input.wasKeyPressed(SDL_SCANCODE_ESCAPE)) {
         return false;
     }
 
-    auto time = SDL_GetTicks() - startTime;
-
     if (input.wasKeyPressed(SDL_SCANCODE_W) || input.isKeyHeld(SDL_SCANCODE_W)) {
-        camera->moveForward(time);
+        camera->moveForward(elapsedTime);
     } else if (input.wasKeyPressed(SDL_SCANCODE_S) || input.isKeyHeld(SDL_SCANCODE_S)) {
-        camera->moveBackward(time);
+        camera->moveBackward(elapsedTime);
     } else if (input.wasKeyPressed(SDL_SCANCODE_A) || input.isKeyHeld(SDL_SCANCODE_A)) {
-        camera->strafeLeft(time);
+        camera->strafeLeft(elapsedTime);
     } else if (input.wasKeyPressed(SDL_SCANCODE_D) || input.isKeyHeld(SDL_SCANCODE_D)) {
-        camera->strafeRight(time);
+        camera->strafeRight(elapsedTime);
     }
 
     if (input.isButtonPressed()) {
