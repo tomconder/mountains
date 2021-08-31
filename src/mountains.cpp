@@ -48,7 +48,7 @@ bool Mountains::onUserCreate() {
 }
 
 bool Mountains::onUserUpdate(Uint32 elapsedTime) {
-w    if (input.wasKeyPressed(SDL_SCANCODE_ESCAPE)) {
+    if (input.wasKeyPressed(SDL_SCANCODE_ESCAPE)) {
         return false;
     }
 
