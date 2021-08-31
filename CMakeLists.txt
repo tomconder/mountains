@@ -28,9 +28,14 @@ FetchContent_Declare(
         GIT_REPOSITORY  https://github.com/amrayn/easyloggingpp.git
         GIT_TAG         49da71da884d1e756a51df617437b87071c2b1a7
 )
-FetchContent_MakeAvailable(easyloggingpp)
-if(NOT easyloggingpp_POPULATED)
+FetchContent_GetProperties(easyloggingpp)
+string(TOLOWER "easyloggingpp" lcName)
+if(NOT ${lcName}_POPULATED)
   FetchContent_Populate(easyloggingpp)
+
+  set(CMAKE_CXX_FLAGS "-std=c++11")
+
+  add_subdirectory(${${lcName}_SOURCE_DIR} ${${lcName}_BINARY_DIR})
 endif()
 
 # glm
