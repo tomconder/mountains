@@ -1,5 +1,5 @@
 # Mountains
-Load a mountains mesh and display it
+Load a mountains mesh and display it. It can compile to Windows or Mac native apps. Or, you can compile using Emscripten and run it in any modern browser that supports WebGL 2.
 
 ![vino map gif](docs/demonstration.gif)
 
