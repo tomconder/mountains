@@ -37,8 +37,6 @@ OpenGLSprite::OpenGLSprite() {
 }
 
 void OpenGLSprite::render(const std::string &name, glm::vec2 position, glm::vec2 size) const {
-    glDisable(GL_DEPTH_TEST);
-
     auto model = glm::mat4(1.f);
     model = glm::translate(model, glm::vec3(position, 0.f));
 
@@ -53,6 +51,4 @@ void OpenGLSprite::render(const std::string &name, glm::vec2 position, glm::vec2
 
     vao->bind();
     glDrawArrays(GL_TRIANGLES, 0, 6);
-
-    glEnable(GL_DEPTH_TEST);
 }
