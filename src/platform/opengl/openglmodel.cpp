@@ -4,8 +4,9 @@
 #include <cassert>
 
 #include "assimp/Importer.hpp"
-#include <assimp/postprocess.h>
+#include "assimp/postprocess.h"
 
+#include "platform/opengl/openglresourcemanager.h"
 #include "easylogging++.h"
 
 void OpenGLModel::load(const std::string &path) {
@@ -22,6 +23,8 @@ void OpenGLModel::load(const std::string &path) {
         return;
     }
 
+    name = std::string(path);
+
     processNode(scene->mRootNode, scene);
 }
 
@@ -36,7 +39,7 @@ void OpenGLModel::processNode(const aiNode *node, const aiScene *scene) {
     }
 }
 
-OpenGLMesh OpenGLModel::processMesh(const aiMesh *mesh, const aiScene *scene) const {
+OpenGLMesh OpenGLModel::processMesh(const aiMesh *mesh, const aiScene *scene) {
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
 
@@ -88,7 +91,7 @@ OpenGLMesh OpenGLModel::processMesh(const aiMesh *mesh, const aiScene *scene) co
     }
 
     // process materials
-//    aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
+    const aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
     // we assume a convention for sampler names in the shaders. Each diffuse texture should be named
     // as 'texture_diffuseN' where N is a sequential number ranging from 1 to MAX_SAMPLER_NUMBER.
     // Same applies to other texture as the following list summarizes:
@@ -97,19 +100,38 @@ OpenGLMesh OpenGLModel::processMesh(const aiMesh *mesh, const aiScene *scene) co
     // normal: texture_normalN
 
     // 1. diffuse maps
-//    vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
-//    textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+    auto diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
+    textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
     // 2. specular maps
-//    vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
-//    textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+    auto specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
+    textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
     // 3. normal maps
-//    std::vector<Texture> normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
-//    textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
+    auto normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
+    textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
     // 4. height maps
-//    std::vector<Texture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
-//    textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
+    auto heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
+    textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 
     return OpenGLMesh(vertices, indices);
+}
+
+std::vector<std::shared_ptr<OpenGLTexture>> OpenGLModel::loadMaterialTextures(const aiMaterial *mat,
+                                                                              aiTextureType type,
+                                                                              const std::string &typeName) const {
+    std::vector<std::shared_ptr<OpenGLTexture>> result;
+
+    for (size_t i = 0; i < mat->GetTextureCount(type); i++) {
+        aiString str;
+        mat->GetTexture(type, i, &str);
+
+        std::string filename = std::string("assets/models/") + std::string(str.C_Str());
+        auto texture = OpenGLResourceManager::loadTexture(filename, OpenGLResourceManager::basename(filename));
+
+        texture->setType(typeName);
+        result.push_back(texture);
+    }
+
+    return result;
 }
 
 void OpenGLModel::render() {

@@ -20,7 +20,7 @@ bool Mountains::onUserCreate() {
     OpenGLResourceManager::loadShader("assets/shaders/sprite.vert", "assets/shaders/sprite.frag", "sprite");
     OpenGLResourceManager::loadShader("assets/shaders/text.vert", "assets/shaders/text.frag", "text");
 
-    OpenGLResourceManager::loadMesh("assets/models/mountains.obj", "mountains");
+    OpenGLResourceManager::loadMesh("assets/models/spider.obj", "spider");
 
     OpenGLResourceManager::loadTexture("assets/images/coffee.png", "coffee");
 
@@ -78,12 +78,12 @@ bool Mountains::onUserUpdate(Uint32 elapsedTime) {
     auto model = glm::mat4(1.f);
     shader->setMat4("model", model);
 
-    OpenGLResourceManager::getMesh("mountains")->render();
+    OpenGLResourceManager::getMesh("spider")->render();
 
     sprite->render("coffee", glm::vec2(10.f, 10.f), glm::vec2(64.f, 64.f));
 
     OpenGLResourceManager::getFont("gothic")->
-        renderText("Mountains", 25.0, 25.0, glm::vec3(0.5, 0.9f, 1.0f));
+        renderText("Spider", 25.0, 25.0, glm::vec3(0.5, 0.9f, 1.0f));
 
     return true;
 }

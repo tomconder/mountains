@@ -7,6 +7,7 @@
 #include <assimp/scene.h>
 
 #include "platform/opengl/openglmesh.h"
+#include "platform/opengl/opengltexture.h"
 #include "renderer/mesh.h"
 
 class OpenGLModel {
@@ -15,10 +16,15 @@ public:
     void render();
 
     std::vector<OpenGLMesh> meshes;
+    std::vector<std::shared_ptr<OpenGLTexture>> textures;
+    std::string name;
 
 private:
     void processNode(const aiNode *node, const aiScene *scene);
-    OpenGLMesh processMesh(const aiMesh *mesh, const aiScene *scene) const;
+    OpenGLMesh processMesh(const aiMesh *mesh, const aiScene *scene);
+    std::vector<std::shared_ptr<OpenGLTexture>> loadMaterialTextures(const aiMaterial *mat,
+                                                                     aiTextureType type,
+                                                                     const std::string &typeName) const;
 };
 
 #endif //INCLUDE_OPENGLMODEL_H
