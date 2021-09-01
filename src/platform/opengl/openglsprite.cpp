@@ -20,10 +20,9 @@ OpenGLSprite::OpenGLSprite() {
         1.f, 0.f, 1.f, 0.f
     };
 
-    OpenGLResourceManager::getShader("sprite")->bind();
-
     glm::mat4 proj = glm::ortho(0.f, globals::SCREEN_WIDTH * 1.f, globals::SCREEN_HEIGHT * 1.f, 0.f, -1.f, 1.f);
-    OpenGLResourceManager::getShader("sprite")->setMat4("proj", proj);
+
+    OpenGLResourceManager::getShader("sprite")->bind()->setMat4("proj", proj);
 
     vao = std::make_unique<OpenGLVertexArray>();
     vao->bind();
