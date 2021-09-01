@@ -3,8 +3,8 @@
 #include <vector>
 #include <cassert>
 
-#include "assimp/Importer.hpp"
-#include "assimp/postprocess.h"
+#include <assimp/Importer.hpp>
+#include <assimp/postprocess.h>
 
 #include "platform/opengl/openglresourcemanager.h"
 #include "easylogging++.h"
@@ -16,14 +16,21 @@ void OpenGLModel::load(const std::string &path) {
 
     Assimp::Importer importer;
     const aiScene *scene = importer.ReadFile(path,
-                                             aiProcess_Triangulate | aiProcess_GenNormals | aiProcess_FlipUVs
-                                                 | aiProcess_CalcTangentSpace);
+                                             aiProcess_CalcTangentSpace |
+                                                 aiProcess_FindDegenerates |
+                                                 aiProcess_FindInvalidData |
+                                                 aiProcess_FlipUVs |
+                                                 aiProcess_GenSmoothNormals |
+                                                 aiProcess_ImproveCacheLocality |
+                                                 aiProcess_JoinIdenticalVertices |
+                                                 aiProcess_LimitBoneWeights |
+                                                 aiProcess_RemoveRedundantMaterials |
+                                                 aiProcess_SplitLargeMeshes |
+                                                 aiProcess_Triangulate);
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
         LOG(ERROR) << "Unable to load model: " << path;
         return;
     }
-
-    name = std::string(path);
 
     processNode(scene->mRootNode, scene);
 }

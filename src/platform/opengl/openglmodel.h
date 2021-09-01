@@ -17,7 +17,6 @@ public:
 
     std::vector<OpenGLMesh> meshes;
     std::vector<std::shared_ptr<OpenGLTexture>> textures;
-    std::string name;
 
 private:
     void processNode(const aiNode *node, const aiScene *scene);
