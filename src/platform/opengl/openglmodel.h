@@ -22,9 +22,9 @@ public:
 private:
     void processNode(const aiNode *node, const aiScene *scene);
     OpenGLMesh processMesh(const aiMesh *mesh, const aiScene *scene);
-    std::vector<std::shared_ptr<OpenGLTexture>> loadMaterialTextures(const aiMaterial *mat,
+    static std::vector<std::shared_ptr<OpenGLTexture>> loadMaterialTextures(const aiMaterial *mat,
                                                                      aiTextureType type,
-                                                                     const std::string &typeName) const;
+                                                                     const std::string &typeName) ;
 };
 
 #endif //INCLUDE_OPENGLMODEL_H

@@ -44,7 +44,7 @@ OpenGLMesh OpenGLModel::processMesh(const aiMesh *mesh, const aiScene *scene) {
     std::vector<unsigned int> indices;
 
     for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
-        Vertex vertex;
+        Vertex vertex{};
 
         glm::vec3 glmVec3;
         glmVec3.x = mesh->mVertices[i].x;
@@ -112,15 +112,15 @@ OpenGLMesh OpenGLModel::processMesh(const aiMesh *mesh, const aiScene *scene) {
     auto heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
     textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 
-    return OpenGLMesh(vertices, indices);
+    return { vertices, indices };
 }
 
 std::vector<std::shared_ptr<OpenGLTexture>> OpenGLModel::loadMaterialTextures(const aiMaterial *mat,
                                                                               aiTextureType type,
-                                                                              const std::string &typeName) const {
+                                                                              const std::string &typeName) {
     std::vector<std::shared_ptr<OpenGLTexture>> result;
 
-    for (size_t i = 0; i < mat->GetTextureCount(type); i++) {
+    for (unsigned int i = 0; i < mat->GetTextureCount(type); i++) {
         aiString str;
         mat->GetTexture(type, i, &str);
 
