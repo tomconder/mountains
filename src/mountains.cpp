@@ -9,6 +9,8 @@
 #include "easylogging++.h"
 #include "platform/opengl/openglresourcemanager.h"
 
+#define KEY_PRESSED_OR_HOLD(key) input.wasKeyPressed(key) || input.isKeyHeld(key)
+
 Mountains::Mountains() {
     appName = "Mountains";
 }
@@ -52,13 +54,13 @@ bool Mountains::onUserUpdate(Uint32 elapsedTime) {
         return false;
     }
 
-    if (input.wasKeyPressed(SDL_SCANCODE_W) || input.isKeyHeld(SDL_SCANCODE_W)) {
+    if (KEY_PRESSED_OR_HOLD(SDL_SCANCODE_W) || KEY_PRESSED_OR_HOLD(SDL_SCANCODE_UP)) {
         camera->moveForward(elapsedTime);
-    } else if (input.wasKeyPressed(SDL_SCANCODE_S) || input.isKeyHeld(SDL_SCANCODE_S)) {
+    } else if (KEY_PRESSED_OR_HOLD(SDL_SCANCODE_S) || KEY_PRESSED_OR_HOLD(SDL_SCANCODE_DOWN)) {
         camera->moveBackward(elapsedTime);
-    } else if (input.wasKeyPressed(SDL_SCANCODE_A) || input.isKeyHeld(SDL_SCANCODE_A)) {
+    } else if (KEY_PRESSED_OR_HOLD(SDL_SCANCODE_A) || KEY_PRESSED_OR_HOLD(SDL_SCANCODE_LEFT)) {
         camera->strafeLeft(elapsedTime);
-    } else if (input.wasKeyPressed(SDL_SCANCODE_D) || input.isKeyHeld(SDL_SCANCODE_D)) {
+    } else if (KEY_PRESSED_OR_HOLD(SDL_SCANCODE_D) || KEY_PRESSED_OR_HOLD(SDL_SCANCODE_RIGHT)) {
         camera->strafeRight(elapsedTime);
     }
 
