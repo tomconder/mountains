@@ -110,7 +110,7 @@ void OpenGLFont::renderText(const std::string &text, float x, float y, glm::vec3
 
     float scale = 1.f;
 
-    for (const char &c : text) {
+    for (const char &c: text) {
         Character ch = Characters[c];
 
         float xpos = x + static_cast<float>(ch.bearing.x) * scale;
