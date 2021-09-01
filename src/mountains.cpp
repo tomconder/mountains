@@ -92,13 +92,13 @@ bool Mountains::onUserResize(int width, int height) {
     camera->setViewportSize(width, height);
 
     glm::mat proj = camera->getProjection();
-    OpenGLResourceManager::getShader("shader")->setMat4("proj", proj);
+    OpenGLResourceManager::getShader("shader")->bind()->setMat4("proj", proj);
 
     proj = glm::ortho(0.f, static_cast<float>(width), static_cast<float>(height), 0.f, -1.f, 1.f);
-    OpenGLResourceManager::getShader("sprite")->setMat4("proj", proj);
+    OpenGLResourceManager::getShader("sprite")->bind()->setMat4("proj", proj);
 
     proj = glm::ortho(0.f, static_cast<float>(width), 0.f, static_cast<float>(height));
-    OpenGLResourceManager::getShader("text")->setMat4("proj", proj);
+    OpenGLResourceManager::getShader("text")->bind()->setMat4("proj", proj);
 
     return true;
 }
