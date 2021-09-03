@@ -10,6 +10,7 @@ varying vec2 vTexCoord;
 
 uniform sampler2D texture_diffuse1;
 uniform vec3 lightPos;
+uniform vec3 viewPos;
 uniform float ambientStrength;
 uniform bool hasNoTexture;
 
@@ -29,5 +30,11 @@ void main() {
   float diff = max(dot(lightDir, normal), 0.0);
   vec3 diffuse = diff * color;
 
-  gl_FragColor = vec4(ambient + diffuse, 1.0);
+  // blinn-phong specular
+  vec3 viewDir = normalize(viewPos - vFragPos);
+  vec3 halfwayDir = normalize(lightDir + viewDir);
+  float spec = pow(max(dot(normal, halfwayDir), 0.0), 32.0);
+  vec3 specular = vec3(0.3) * spec;
+
+  gl_FragColor = vec4(ambient + diffuse + specular, 1.0);
 }
