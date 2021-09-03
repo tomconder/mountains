@@ -33,12 +33,6 @@ void OpenGLModel::load(const std::string &path) {
     }
 
     processNode(scene->mRootNode, scene);
-
-    auto textures = OpenGLResourceManager::getTextures();
-    for (auto pair : textures) {
-        auto texture = pair.second;
-        LOG(INFO) << "texture[" << texture->getId() << ", " << texture->getType() << ", " << texture->getWidth() << "x" << texture->getWidth() << "]";
-    }
 }
 
 void OpenGLModel::processNode(const aiNode *node, const aiScene *scene) {
@@ -112,26 +106,38 @@ OpenGLMesh OpenGLModel::processMesh(const aiMesh *mesh, const aiScene *scene) {
     // specular: texture_specularN
     // normal: texture_normalN
 
-    // 1. diffuse maps
-    loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
-    // 2. specular maps
-    loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
-    // 3. normal maps
-    loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
-    // 4. height maps
-    loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
+    std::vector<std::shared_ptr<OpenGLTexture>> textures;
 
-    return { vertices, indices };
+    // 1. diffuse maps
+    auto diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
+    textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+    // 2. specular maps
+    auto specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
+    textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+    // 3. normal maps
+    auto normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
+    textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
+    // 4. height maps
+    auto heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
+    textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
+
+    return { vertices, indices, textures };
 }
 
-void OpenGLModel::loadMaterialTextures(const aiMaterial *mat, aiTextureType textureType, const std::string &typeName) {
+std::vector<std::shared_ptr<OpenGLTexture>> OpenGLModel::loadMaterialTextures(const aiMaterial *mat, aiTextureType textureType, const std::string &typeName) {
+    std::vector<std::shared_ptr<OpenGLTexture>> textures;
+
     for (unsigned int i = 0; i < mat->GetTextureCount(textureType); i++) {
         aiString str;
         mat->GetTexture(textureType, i, &str);
 
         std::string filename = std::string("assets/models/") + std::string(str.C_Str());
-        auto texture = OpenGLResourceManager::loadTexture(filename, OpenGLResourceManager::basename(filename), typeName);
+        auto texture = OpenGLResourceManager::loadTextureWithType(filename, typeName);
+
+        textures.push_back(texture);
     }
+
+    return textures;
 }
 
 void OpenGLModel::render() {

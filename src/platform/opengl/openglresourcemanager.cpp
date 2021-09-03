@@ -73,22 +73,6 @@ std::shared_ptr<OpenGLTexture> OpenGLResourceManager::getTexture(const std::stri
     return textures.at(name);
 }
 
-std::shared_ptr<OpenGLTexture> OpenGLResourceManager::loadTexture(const std::string &path, const std::string &name, const std::string &typeName) {
-    assert(!path.empty());
-    assert(!name.empty());
-
-    if (textures.find(name) != textures.end()) {
-        return textures.at(name);
-    }
-
-    std::shared_ptr<OpenGLTexture> texture = loadTextureFromFile(path);
-    texture->setType(typeName);
-
-    textures.try_emplace(name, texture);
-
-    return texture;
-}
-
 std::shared_ptr<OpenGLTexture> OpenGLResourceManager::loadTexture(const std::string &path, const std::string &name) {
     assert(!path.empty());
     assert(!name.empty());
@@ -99,6 +83,21 @@ std::shared_ptr<OpenGLTexture> OpenGLResourceManager::loadTexture(const std::str
 
     std::shared_ptr<OpenGLTexture> texture = loadTextureFromFile(path);
     textures.try_emplace(name, texture);
+
+    return texture;
+}
+
+std::shared_ptr<OpenGLTexture> OpenGLResourceManager::loadTextureWithType(const std::string &path, const std::string &typeName) {
+    assert(!path.empty());
+    assert(!typeName.empty());
+
+    if (textures.find(path) != textures.end()) {
+        return textures.at(path);
+    }
+
+    std::shared_ptr<OpenGLTexture> texture = loadTextureFromFile(path);
+    texture->setType(typeName);
+    textures.try_emplace(path, texture);
 
     return texture;
 }
@@ -166,12 +165,4 @@ std::shared_ptr<OpenGLTexture> OpenGLResourceManager::loadTextureFromFile(const 
     SDL_FreeSurface(surface);
 
     return texture;
-}
-
-std::string OpenGLResourceManager::basename(const std::string &pathname) {
-    return {
-        std::find_if(pathname.rbegin(), pathname.rend(),
-                     [](char c) { return c == '/'; }).base(),
-        pathname.end()
-    };
 }

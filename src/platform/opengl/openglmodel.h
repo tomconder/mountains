@@ -1,6 +1,7 @@
 #ifndef INCLUDE_OPENGLMODEL_H
 #define INCLUDE_OPENGLMODEL_H
 
+#include <map>
 #include <memory>
 #include <string>
 
@@ -18,10 +19,9 @@ public:
     std::vector<OpenGLMesh> meshes;
 
 private:
-    void processNode(const aiNode *node, const aiScene *scene);
     OpenGLMesh processMesh(const aiMesh *mesh, const aiScene *scene);
-
-    static void loadMaterialTextures(const aiMaterial *mat, aiTextureType textureType, const std::string &typeName);
+    std::vector<std::shared_ptr<OpenGLTexture>> loadMaterialTextures(const aiMaterial *mat, aiTextureType textureType, const std::string &typeName);
+    void processNode(const aiNode *node, const aiScene *scene);
 };
 
 #endif //INCLUDE_OPENGLMODEL_H

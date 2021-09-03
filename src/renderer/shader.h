@@ -13,6 +13,7 @@ public:
     virtual void setInteger(const std::string &name, int value) = 0;
     virtual void setMat4(const std::string &name, glm::mat4 value) = 0;
     virtual void setFloat3(const std::string &name, glm::vec3 value) = 0;
+    virtual void setFloat(const std::string &name, float value) = 0;
 };
 
 #endif //INCLUDE_SHADER_H

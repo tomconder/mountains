@@ -21,9 +21,10 @@ public:
 
     OpenGLShader *bind() override;
 
+    void setFloat(const std::string &name, float value) override;
+    void setFloat3(const std::string &name, glm::vec3 value) override;
     void setInteger(const std::string &name, int value) override;
     void setMat4(const std::string &name, glm::mat4 value) override;
-    void setFloat3(const std::string &name, glm::vec3 value) override;
 
 private:
     static GLuint compileShader(GLenum type, const std::string &file);
