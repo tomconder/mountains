@@ -16,14 +16,12 @@ public:
     void render();
 
     std::vector<OpenGLMesh> meshes;
-    std::vector<std::shared_ptr<OpenGLTexture>> textures;
 
 private:
     void processNode(const aiNode *node, const aiScene *scene);
     OpenGLMesh processMesh(const aiMesh *mesh, const aiScene *scene);
-    static std::vector<std::shared_ptr<OpenGLTexture>> loadMaterialTextures(const aiMaterial *mat,
-                                                                     aiTextureType type,
-                                                                     const std::string &typeName) ;
+
+    static void loadMaterialTextures(const aiMaterial *mat, aiTextureType textureType, const std::string &typeName);
 };
 
 #endif //INCLUDE_OPENGLMODEL_H

@@ -73,6 +73,22 @@ std::shared_ptr<OpenGLTexture> OpenGLResourceManager::getTexture(const std::stri
     return textures.at(name);
 }
 
+std::shared_ptr<OpenGLTexture> OpenGLResourceManager::loadTexture(const std::string &path, const std::string &name, const std::string &typeName) {
+    assert(!path.empty());
+    assert(!name.empty());
+
+    if (textures.find(name) != textures.end()) {
+        return textures.at(name);
+    }
+
+    std::shared_ptr<OpenGLTexture> texture = loadTextureFromFile(path);
+    texture->setType(typeName);
+
+    textures.try_emplace(name, texture);
+
+    return texture;
+}
+
 std::shared_ptr<OpenGLTexture> OpenGLResourceManager::loadTexture(const std::string &path, const std::string &name) {
     assert(!path.empty());
     assert(!name.empty());

@@ -10,6 +10,9 @@ void OpenGLTexture::generate(uint32_t textureWidth,
                              const unsigned char *data) {
     glBindTexture(GL_TEXTURE_2D, id);
 
+    width = textureWidth;
+    height = textureHeight;
+
     format = GL_RGB;
     if (bytesPerPixel == 4) {
         format = GL_RGBA;

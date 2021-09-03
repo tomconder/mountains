@@ -25,8 +25,11 @@ public:
 
     static std::shared_ptr<OpenGLTexture> getTexture(const std::string &name);
     static std::shared_ptr<OpenGLTexture> loadTexture(const std::string &path, const std::string &name);
+    static std::shared_ptr<OpenGLTexture> loadTexture(const std::string &path, const std::string &name, const std::string &typeName);
 
     static std::string basename(const std::string &pathname);
+
+    static std::map<std::string, std::shared_ptr<OpenGLTexture>, std::less<>> getTextures() { return textures; }
 
 private:
     OpenGLResourceManager() = default;
