@@ -11,9 +11,8 @@
 #include "easylogging++.h"
 #include "platform/opengl/openglresourcemanager.h"
 
-OpenGLMesh::OpenGLMesh(const std::vector<Vertex> &vertices, const std::vector<unsigned int> &indices, const std::vector<std::shared_ptr<OpenGLTexture>> &textures) {
+OpenGLMesh::OpenGLMesh(const std::vector<Vertex> &vertices, const std::vector<unsigned int> &indices, const std::vector<std::shared_ptr<OpenGLTexture>> &textures) : textures(textures) {
     this->indices = indices;
-    this->textures = textures;
     this->vertices = vertices;
 
     vao = std::make_unique<OpenGLVertexArray>();
@@ -79,11 +78,11 @@ void OpenGLMesh::render() const {
             number = std::to_string(heightNumber++);
         }
 
-        shader->setInteger(name + number, static_cast<int>(i));
+        shader->setInteger(name + number, i);
         textures[i]->bind();
     }
 
-    if (textures.size() == 0) {
+    if (textures.empty()) {
         shader->setBoolean("hasNoTexture", true);
     }
 
