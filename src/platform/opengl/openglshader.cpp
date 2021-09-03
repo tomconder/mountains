@@ -90,6 +90,10 @@ GLuint OpenGLShader::linkProgram(GLuint vs, GLuint fs) {
     return id;
 }
 
+void OpenGLShader::setBoolean(const std::string &name, bool value) {
+    glUniform1f(glGetUniformLocation(program, name.c_str()), static_cast<int>(value));
+}
+
 void OpenGLShader::setFloat(const std::string &name, float value) {
     glUniform1f(glGetUniformLocation(program, name.c_str()), value);
 }

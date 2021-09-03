@@ -25,6 +25,10 @@ std::shared_ptr<OpenGLFont> OpenGLResourceManager::loadFont(const std::string &p
     assert(!path.empty());
     assert(!name.empty());
 
+    if (fonts.find(name) != fonts.end()) {
+        return fonts.at(name);
+    }
+
     std::shared_ptr<OpenGLFont> font = loadFontFromFile(path);
     fonts.try_emplace(name, font);
 
@@ -39,6 +43,10 @@ std::shared_ptr<OpenGLModel> OpenGLResourceManager::getMesh(const std::string &n
 std::shared_ptr<OpenGLModel> OpenGLResourceManager::loadMesh(const std::string &path, const std::string &name) {
     assert(!path.empty());
     assert(!name.empty());
+
+    if (meshes.find(name) != meshes.end()) {
+        return meshes.at(name);
+    }
 
     std::shared_ptr<OpenGLModel> mesh = loadMeshFromFile(path);
     meshes.try_emplace(name, mesh);
@@ -116,7 +124,7 @@ std::shared_ptr<OpenGLFont> OpenGLResourceManager::loadFontFromFile(const std::s
 std::shared_ptr<OpenGLModel> OpenGLResourceManager::loadMeshFromFile(const std::string &path) {
     assert(!path.empty());
 
-    LOG(INFO) << "Loading mesh: " << path.c_str();
+    LOG(INFO) << "Loading mesh: " << path;
 
     auto mesh = std::make_shared<OpenGLModel>();
     mesh->load(path);
@@ -127,7 +135,7 @@ std::shared_ptr<OpenGLModel> OpenGLResourceManager::loadMeshFromFile(const std::
 std::string OpenGLResourceManager::loadSourceFromFile(const std::string &path) {
     assert(!path.empty());
 
-    LOG(INFO) << "Loading shader: " << path.c_str();
+    LOG(INFO) << "Loading shader: " << path;
 
     std::string code;
     if (std::ifstream stream(path, std::ios::in); stream.is_open()) {
@@ -136,7 +144,7 @@ std::string OpenGLResourceManager::loadSourceFromFile(const std::string &path) {
         code = sstr.str();
         stream.close();
     } else {
-        LOG(ERROR) << "Unable to open " << path.c_str() << ". Are you in the right directory?";
+        LOG(ERROR) << "Unable to open " << path << ". Are you in the right directory?";
     }
 
     return code;

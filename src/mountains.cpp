@@ -20,7 +20,7 @@ bool Mountains::onUserCreate() {
     OpenGLResourceManager::loadShader("assets/shaders/sprite.vert", "assets/shaders/sprite.frag", "sprite");
     OpenGLResourceManager::loadShader("assets/shaders/text.vert", "assets/shaders/text.frag", "text");
 
-    OpenGLResourceManager::loadMesh("assets/models/spider.obj", "spider");
+    OpenGLResourceManager::loadMesh("assets/models/mountains.obj", "mountains");
 
     OpenGLResourceManager::loadTexture("assets/images/coffee.png", "coffee");
 
@@ -42,8 +42,8 @@ bool Mountains::onUserCreate() {
     glm::mat4 projection = camera->getProjection();
     shader->setMat4("projection", projection);
 
-    shader->setFloat3("lightPos", glm::vec3(0.f, 100.f, -80.f));
-    shader->setFloat("ambientStrength", 0.49f);
+    shader->setFloat3("lightPos", glm::vec3(40.f, 40.f, 40.f));
+    shader->setFloat("ambientStrength", 0.2f);
 
     sprite = std::make_unique<OpenGLSprite>();
 
@@ -81,12 +81,12 @@ bool Mountains::onUserUpdate(Uint32 elapsedTime) {
     auto model = glm::mat4(1.f);
     shader->setMat4("model", model);
 
-    OpenGLResourceManager::getMesh("spider")->render();
+    OpenGLResourceManager::getMesh("mountains")->render();
 
     sprite->render("coffee", glm::vec2(10.f, 10.f), glm::vec2(64.f, 64.f));
 
     OpenGLResourceManager::getFont("gothic")->
-        renderText("Spider", 25.0, 25.0, glm::vec3(0.5, 0.9f, 1.0f));
+        renderText(appName, 25.0, 25.0, glm::vec3(0.5, 0.9f, 1.0f));
 
     return true;
 }

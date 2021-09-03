@@ -5,9 +5,9 @@
 #include <glad/gles2.h>
 #else
 #include <glad/gl.h>
-
-#include <utility>
 #endif
+
+#include <string>
 
 #include "renderer/texture.h"
 

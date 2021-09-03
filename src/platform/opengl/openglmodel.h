@@ -1,9 +1,9 @@
 #ifndef INCLUDE_OPENGLMODEL_H
 #define INCLUDE_OPENGLMODEL_H
 
-#include <map>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include <assimp/scene.h>
 

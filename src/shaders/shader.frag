@@ -11,9 +11,16 @@ varying vec2 vTexCoord;
 uniform sampler2D texture_diffuse1;
 uniform vec3 lightPos;
 uniform float ambientStrength;
+uniform bool hasNoTexture;
 
 void main() {
-  vec3 color = texture2D(texture_diffuse1, vTexCoord).rgb;
+  vec3 color;
+
+  if (hasNoTexture) {
+    color = vec3(1.0, 1.0, 1.0);
+  } else {
+    color = texture2D(texture_diffuse1, vTexCoord).rgb;
+  }
 
   vec3 ambient = ambientStrength * color;
 

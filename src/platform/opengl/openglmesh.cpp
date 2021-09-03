@@ -65,10 +65,8 @@ void OpenGLMesh::render() const {
     unsigned int normalNumber = 1;
     unsigned int heightNumber = 1;
     for (int i = 0; i < textures.size(); i++) {
-        // activate proper texture unit before binding
         glActiveTexture(GL_TEXTURE0 + i);
 
-        // retrieve texture number (the N in diffuse_textureN)
         std::string number;
         std::string name = textures[i]->getType();
         if (name == "texture_diffuse") {
@@ -81,10 +79,12 @@ void OpenGLMesh::render() const {
             number = std::to_string(heightNumber++);
         }
 
-        // now set the sampler to the correct texture unit
         shader->setInteger(name + number, static_cast<int>(i));
-
         textures[i]->bind();
+    }
+
+    if (textures.size() == 0) {
+        shader->setBoolean("hasNoTexture", true);
     }
 
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, nullptr);

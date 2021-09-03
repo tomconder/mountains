@@ -21,6 +21,7 @@ public:
 
     OpenGLShader *bind() override;
 
+    void setBoolean(const std::string &name, bool value) override;
     void setFloat(const std::string &name, float value) override;
     void setFloat3(const std::string &name, glm::vec3 value) override;
     void setInteger(const std::string &name, int value) override;
