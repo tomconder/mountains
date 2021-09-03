@@ -23,8 +23,6 @@ public:
     bool onUserResize(int width, int height) override;
 
 private:
-    uint32_t startTime = 0;
-
     std::unique_ptr<GameCamera> camera;
     std::unique_ptr<OpenGLSprite> sprite;
 };

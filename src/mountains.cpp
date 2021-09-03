@@ -47,8 +47,6 @@ bool Mountains::onUserCreate() {
 
     sprite = std::make_unique<OpenGLSprite>();
 
-    startTime = SDL_GetTicks();
-
     return true;
 }
 
