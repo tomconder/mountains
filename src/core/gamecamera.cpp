@@ -11,6 +11,13 @@
 GameCamera::GameCamera(float fov, float aspect, float zNear, float zFar)
     : fov(fov), aspect(aspect), zNear(zNear), zFar(zFar) {
     updateProjection();
+
+    glm::vec3 front = {
+        std::cos(glm::radians(yaw)) * std::cos(glm::radians(pitch)),
+        std::sin(glm::radians(pitch)),
+        std::sin(glm::radians(yaw)) * std::cos(glm::radians(pitch))
+    };
+    cameraFront = glm::normalize(front);
     updateView();
 }
 

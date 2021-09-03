@@ -75,6 +75,7 @@ bool Mountains::onUserUpdate(Uint32 elapsedTime) {
     shader->bind();
     shader->setMat4("view", camera->getViewMatrix());
     shader->setMat4("projection", camera->getProjection());
+    shader->setFloat3("viewPos", camera->getPosition());
 
     auto model = glm::mat4(1.f);
     shader->setMat4("model", model);

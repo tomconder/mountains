@@ -21,6 +21,7 @@ public:
     float getYaw() const { return yaw; }
 
     void setPosition(const glm::vec3 &position);
+    glm::vec3 getPosition() { return cameraPos; }
 
     void moveForward(unsigned int delta);
     void moveBackward(unsigned int delta);
