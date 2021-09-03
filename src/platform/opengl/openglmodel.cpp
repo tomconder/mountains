@@ -50,35 +50,22 @@ OpenGLMesh OpenGLModel::processMesh(const aiMesh *mesh, const aiScene *scene) {
     for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
         Vertex vertex{};
 
-        glm::vec3 glmVec3;
-        glmVec3.x = mesh->mVertices[i].x;
-        glmVec3.y = mesh->mVertices[i].y;
-        glmVec3.z = mesh->mVertices[i].z;
+        glm::vec3 glmVec3 = {mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z};
         vertex.position = glmVec3;
 
         if (mesh->HasNormals()) {
-            glmVec3.x = mesh->mNormals[i].x;
-            glmVec3.y = mesh->mNormals[i].y;
-            glmVec3.z = mesh->mNormals[i].z;
+            glmVec3 = {mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z};
             vertex.normal = glmVec3;
         }
 
         if (mesh->mTextureCoords[0]) {
-            glm::vec2 glmVec2;
-
-            // assume models have one set of texture coordinates
-            glmVec2.x = mesh->mTextureCoords[0][i].x;
-            glmVec2.y = mesh->mTextureCoords[0][i].y;
+            glm::vec2 glmVec2 = {mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y};
             vertex.texCoords = glmVec2;
 
-            glmVec3.x = mesh->mTangents[i].x;
-            glmVec3.y = mesh->mTangents[i].y;
-            glmVec3.z = mesh->mTangents[i].z;
+            glmVec3 = {mesh->mTangents[i].x, mesh->mTangents[i].y, mesh->mTangents[i].z};
             vertex.tangent = glmVec3;
 
-            glmVec3.x = mesh->mBitangents[i].x;
-            glmVec3.y = mesh->mBitangents[i].y;
-            glmVec3.z = mesh->mBitangents[i].z;
+            glmVec3 = {mesh->mBitangents[i].x, mesh->mBitangents[i].y, mesh->mBitangents[i].z};
             vertex.biTangent = glmVec3;
         } else {
             vertex.texCoords = glm::vec2(0.0f, 0.0f);

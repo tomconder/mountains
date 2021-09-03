@@ -19,8 +19,8 @@ public:
     std::vector<OpenGLMesh> meshes;
 
 private:
-    OpenGLMesh processMesh(const aiMesh *mesh, const aiScene *scene);
-    std::vector<std::shared_ptr<OpenGLTexture>> loadMaterialTextures(const aiMaterial *mat, aiTextureType textureType, const std::string &typeName);
+    static OpenGLMesh processMesh(const aiMesh *mesh, const aiScene *scene);
+    static std::vector<std::shared_ptr<OpenGLTexture>> loadMaterialTextures(const aiMaterial *mat, aiTextureType textureType, const std::string &typeName);
     void processNode(const aiNode *node, const aiScene *scene);
 };
 
