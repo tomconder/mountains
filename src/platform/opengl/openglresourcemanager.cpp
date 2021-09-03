@@ -25,6 +25,10 @@ std::shared_ptr<OpenGLFont> OpenGLResourceManager::loadFont(const std::string &p
     assert(!path.empty());
     assert(!name.empty());
 
+    if (fonts.find(name) != fonts.end()) {
+        return fonts.at(name);
+    }
+
     std::shared_ptr<OpenGLFont> font = loadFontFromFile(path);
     fonts.try_emplace(name, font);
 
@@ -39,6 +43,10 @@ std::shared_ptr<OpenGLModel> OpenGLResourceManager::getMesh(const std::string &n
 std::shared_ptr<OpenGLModel> OpenGLResourceManager::loadMesh(const std::string &path, const std::string &name) {
     assert(!path.empty());
     assert(!name.empty());
+
+    if (meshes.find(name) != meshes.end()) {
+        return meshes.at(name);
+    }
 
     std::shared_ptr<OpenGLModel> mesh = loadMeshFromFile(path);
     meshes.try_emplace(name, mesh);
@@ -77,8 +85,27 @@ std::shared_ptr<OpenGLTexture> OpenGLResourceManager::loadTexture(const std::str
     assert(!path.empty());
     assert(!name.empty());
 
+    if (textures.find(name) != textures.end()) {
+        return textures.at(name);
+    }
+
     std::shared_ptr<OpenGLTexture> texture = loadTextureFromFile(path);
     textures.try_emplace(name, texture);
+
+    return texture;
+}
+
+std::shared_ptr<OpenGLTexture> OpenGLResourceManager::loadTextureWithType(const std::string &path, const std::string &typeName) {
+    assert(!path.empty());
+    assert(!typeName.empty());
+
+    if (textures.find(path) != textures.end()) {
+        return textures.at(path);
+    }
+
+    std::shared_ptr<OpenGLTexture> texture = loadTextureFromFile(path);
+    texture->setType(typeName);
+    textures.try_emplace(path, texture);
 
     return texture;
 }
@@ -86,7 +113,7 @@ std::shared_ptr<OpenGLTexture> OpenGLResourceManager::loadTexture(const std::str
 std::shared_ptr<OpenGLFont> OpenGLResourceManager::loadFontFromFile(const std::string &path) {
     assert(!path.empty());
 
-    LOG(INFO) << "Loading font: " << path.c_str();
+    LOG(INFO) << "Loading font: " << path;
 
     auto font = std::make_shared<OpenGLFont>();
     font->load(path, 24);
@@ -97,7 +124,7 @@ std::shared_ptr<OpenGLFont> OpenGLResourceManager::loadFontFromFile(const std::s
 std::shared_ptr<OpenGLModel> OpenGLResourceManager::loadMeshFromFile(const std::string &path) {
     assert(!path.empty());
 
-    LOG(INFO) << "Loading mesh: " << path.c_str();
+    LOG(INFO) << "Loading mesh: " << path;
 
     auto mesh = std::make_shared<OpenGLModel>();
     mesh->load(path);
@@ -108,7 +135,7 @@ std::shared_ptr<OpenGLModel> OpenGLResourceManager::loadMeshFromFile(const std::
 std::string OpenGLResourceManager::loadSourceFromFile(const std::string &path) {
     assert(!path.empty());
 
-    LOG(INFO) << "Loading shader: " << path.c_str();
+    LOG(INFO) << "Loading shader: " << path;
 
     std::string code;
     if (std::ifstream stream(path, std::ios::in); stream.is_open()) {
@@ -117,7 +144,7 @@ std::string OpenGLResourceManager::loadSourceFromFile(const std::string &path) {
         code = sstr.str();
         stream.close();
     } else {
-        LOG(ERROR) << "Unable to open " << path.c_str() << ". Are you in the right directory?";
+        LOG(ERROR) << "Unable to open " << path << ". Are you in the right directory?";
     }
 
     return code;
@@ -126,11 +153,14 @@ std::string OpenGLResourceManager::loadSourceFromFile(const std::string &path) {
 std::shared_ptr<OpenGLTexture> OpenGLResourceManager::loadTextureFromFile(const std::string &path) {
     assert(!path.empty());
 
-    LOG(INFO) << "Loading texture: " << path.c_str();
+    auto name = path;
+    std::replace(name.begin(), name.end(), '\\', '/');
 
-    SDL_Surface *surface = IMG_Load(path.c_str());
+    LOG(INFO) << "Loading texture: " << name;
+
+    SDL_Surface *surface = IMG_Load(name.c_str());
     if (surface == nullptr) {
-        LOG(ERROR) << "Unable to load texture: " << path.c_str();
+        LOG(ERROR) << "Unable to load texture: " << path;
         return nullptr;
     }
 

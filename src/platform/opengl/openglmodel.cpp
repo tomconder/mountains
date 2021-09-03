@@ -3,9 +3,10 @@
 #include <vector>
 #include <cassert>
 
-#include "assimp/Importer.hpp"
+#include <assimp/Importer.hpp>
 #include <assimp/postprocess.h>
 
+#include "platform/opengl/openglresourcemanager.h"
 #include "easylogging++.h"
 
 void OpenGLModel::load(const std::string &path) {
@@ -15,8 +16,14 @@ void OpenGLModel::load(const std::string &path) {
 
     Assimp::Importer importer;
     const aiScene *scene = importer.ReadFile(path,
-                                             aiProcess_Triangulate | aiProcess_GenNormals | aiProcess_FlipUVs
-                                                 | aiProcess_CalcTangentSpace);
+                                             aiProcess_CalcTangentSpace |
+                                                 aiProcess_FlipUVs |
+                                                 aiProcess_GenNormals |
+                                                 aiProcess_ImproveCacheLocality |
+                                                 aiProcess_JoinIdenticalVertices |
+                                                 aiProcess_RemoveRedundantMaterials |
+                                                 aiProcess_SplitLargeMeshes |
+                                                 aiProcess_Triangulate);
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
         LOG(ERROR) << "Unable to load model: " << path;
         return;
@@ -36,42 +43,29 @@ void OpenGLModel::processNode(const aiNode *node, const aiScene *scene) {
     }
 }
 
-OpenGLMesh OpenGLModel::processMesh(const aiMesh *mesh, const aiScene *scene) const {
+OpenGLMesh OpenGLModel::processMesh(const aiMesh *mesh, const aiScene *scene) {
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
 
     for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
-        Vertex vertex;
+        Vertex vertex{};
 
-        glm::vec3 glmVec3;
-        glmVec3.x = mesh->mVertices[i].x;
-        glmVec3.y = mesh->mVertices[i].y;
-        glmVec3.z = mesh->mVertices[i].z;
+        glm::vec3 glmVec3 = {mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z};
         vertex.position = glmVec3;
 
         if (mesh->HasNormals()) {
-            glmVec3.x = mesh->mNormals[i].x;
-            glmVec3.y = mesh->mNormals[i].y;
-            glmVec3.z = mesh->mNormals[i].z;
+            glmVec3 = {mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z};
             vertex.normal = glmVec3;
         }
 
         if (mesh->mTextureCoords[0]) {
-            glm::vec2 glmVec2;
-
-            // assume models have one set of texture coordinates
-            glmVec2.x = mesh->mTextureCoords[0][i].x;
-            glmVec2.y = mesh->mTextureCoords[0][i].y;
+            glm::vec2 glmVec2 = {mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y};
             vertex.texCoords = glmVec2;
 
-            glmVec3.x = mesh->mTangents[i].x;
-            glmVec3.y = mesh->mTangents[i].y;
-            glmVec3.z = mesh->mTangents[i].z;
+            glmVec3 = {mesh->mTangents[i].x, mesh->mTangents[i].y, mesh->mTangents[i].z};
             vertex.tangent = glmVec3;
 
-            glmVec3.x = mesh->mBitangents[i].x;
-            glmVec3.y = mesh->mBitangents[i].y;
-            glmVec3.z = mesh->mBitangents[i].z;
+            glmVec3 = {mesh->mBitangents[i].x, mesh->mBitangents[i].y, mesh->mBitangents[i].z};
             vertex.biTangent = glmVec3;
         } else {
             vertex.texCoords = glm::vec2(0.0f, 0.0f);
@@ -88,7 +82,7 @@ OpenGLMesh OpenGLModel::processMesh(const aiMesh *mesh, const aiScene *scene) co
     }
 
     // process materials
-//    aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
+    const aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
     // we assume a convention for sampler names in the shaders. Each diffuse texture should be named
     // as 'texture_diffuseN' where N is a sequential number ranging from 1 to MAX_SAMPLER_NUMBER.
     // Same applies to other texture as the following list summarizes:
@@ -96,20 +90,38 @@ OpenGLMesh OpenGLModel::processMesh(const aiMesh *mesh, const aiScene *scene) co
     // specular: texture_specularN
     // normal: texture_normalN
 
-    // 1. diffuse maps
-//    vector<Texture> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
-//    textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-    // 2. specular maps
-//    vector<Texture> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
-//    textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
-    // 3. normal maps
-//    std::vector<Texture> normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
-//    textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
-    // 4. height maps
-//    std::vector<Texture> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
-//    textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
+    std::vector<std::shared_ptr<OpenGLTexture>> textures;
 
-    return OpenGLMesh(vertices, indices);
+    // 1. diffuse maps
+    auto diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
+    textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+    // 2. specular maps
+    auto specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
+    textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+    // 3. normal maps
+    auto normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
+    textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
+    // 4. height maps
+    auto heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
+    textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
+
+    return { vertices, indices, textures };
+}
+
+std::vector<std::shared_ptr<OpenGLTexture>> OpenGLModel::loadMaterialTextures(const aiMaterial *mat, aiTextureType textureType, const std::string &typeName) {
+    std::vector<std::shared_ptr<OpenGLTexture>> textures;
+
+    for (unsigned int i = 0; i < mat->GetTextureCount(textureType); i++) {
+        aiString str;
+        mat->GetTexture(textureType, i, &str);
+
+        std::string filename = std::string("assets/models/") + std::string(str.C_Str());
+        auto texture = OpenGLResourceManager::loadTextureWithType(filename, typeName);
+
+        textures.push_back(texture);
+    }
+
+    return textures;
 }
 
 void OpenGLModel::render() {

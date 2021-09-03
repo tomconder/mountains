@@ -84,13 +84,13 @@ void GameCamera::mouseScroll(const glm::vec2 &offset) {
         return;
     }
 
-    fov -= offset.y;
+    fov -= offset.y * 5;
 
     if (fov < 30.f) {
         fov = 30.f;
     }
-    if (fov > 60.f) {
-        fov = 60.f;
+    if (fov > 90.f) {
+        fov = 90.f;
     }
 
     updateProjection();

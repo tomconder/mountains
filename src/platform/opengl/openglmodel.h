@@ -3,10 +3,12 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include <assimp/scene.h>
 
 #include "platform/opengl/openglmesh.h"
+#include "platform/opengl/opengltexture.h"
 #include "renderer/mesh.h"
 
 class OpenGLModel {
@@ -17,8 +19,9 @@ public:
     std::vector<OpenGLMesh> meshes;
 
 private:
+    static OpenGLMesh processMesh(const aiMesh *mesh, const aiScene *scene);
+    static std::vector<std::shared_ptr<OpenGLTexture>> loadMaterialTextures(const aiMaterial *mat, aiTextureType textureType, const std::string &typeName);
     void processNode(const aiNode *node, const aiScene *scene);
-    OpenGLMesh processMesh(const aiMesh *mesh, const aiScene *scene) const;
 };
 
 #endif //INCLUDE_OPENGLMODEL_H

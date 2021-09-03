@@ -39,12 +39,13 @@ bool Mountains::onUserCreate() {
     glm::mat4 view = camera->getViewMatrix();
     shader->setMat4("view", view);
 
-    glm::mat4 proj = camera->getProjection();
-    shader->setMat4("proj", proj);
+    glm::mat4 projection = camera->getProjection();
+    shader->setMat4("projection", projection);
+
+    shader->setFloat3("lightPos", glm::vec3(40.f, 40.f, 40.f));
+    shader->setFloat("ambientStrength", 0.2f);
 
     sprite = std::make_unique<OpenGLSprite>();
-
-    startTime = SDL_GetTicks();
 
     return true;
 }
@@ -73,7 +74,7 @@ bool Mountains::onUserUpdate(Uint32 elapsedTime) {
     std::shared_ptr<OpenGLShader> shader = OpenGLResourceManager::getShader("shader");
     shader->bind();
     shader->setMat4("view", camera->getViewMatrix());
-    shader->setMat4("proj", camera->getProjection());
+    shader->setMat4("projection", camera->getProjection());
 
     auto model = glm::mat4(1.f);
     shader->setMat4("model", model);
@@ -83,7 +84,7 @@ bool Mountains::onUserUpdate(Uint32 elapsedTime) {
     sprite->render("coffee", glm::vec2(10.f, 10.f), glm::vec2(64.f, 64.f));
 
     OpenGLResourceManager::getFont("gothic")->
-        renderText("Mountains", 25.0, 25.0, glm::vec3(0.5, 0.9f, 1.0f));
+        renderText(appName, 25.0, 25.0, glm::vec3(0.5, 0.9f, 1.0f));
 
     return true;
 }
@@ -91,14 +92,14 @@ bool Mountains::onUserUpdate(Uint32 elapsedTime) {
 bool Mountains::onUserResize(int width, int height) {
     camera->setViewportSize(width, height);
 
-    glm::mat proj = camera->getProjection();
-    OpenGLResourceManager::getShader("shader")->bind()->setMat4("proj", proj);
+    glm::mat projection = camera->getProjection();
+    OpenGLResourceManager::getShader("shader")->bind()->setMat4("projection", projection);
 
-    proj = glm::ortho(0.f, static_cast<float>(width), static_cast<float>(height), 0.f, -1.f, 1.f);
-    OpenGLResourceManager::getShader("sprite")->bind()->setMat4("proj", proj);
+    projection = glm::ortho(0.f, static_cast<float>(width), static_cast<float>(height), 0.f, -1.f, 1.f);
+    OpenGLResourceManager::getShader("sprite")->bind()->setMat4("projection", projection);
 
-    proj = glm::ortho(0.f, static_cast<float>(width), 0.f, static_cast<float>(height));
-    OpenGLResourceManager::getShader("text")->bind()->setMat4("proj", proj);
+    projection = glm::ortho(0.f, static_cast<float>(width), 0.f, static_cast<float>(height));
+    OpenGLResourceManager::getShader("text")->bind()->setMat4("projection", projection);
 
     return true;
 }
