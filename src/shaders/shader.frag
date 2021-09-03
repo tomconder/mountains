@@ -10,11 +10,11 @@ varying vec2 vTexCoord;
 
 uniform sampler2D texture_diffuse1;
 uniform vec3 lightPos;
+uniform float ambientStrength;
 
 void main() {
   vec3 color = texture2D(texture_diffuse1, vTexCoord).rgb;
 
-  float ambientStrength = 0.63;
   vec3 ambient = ambientStrength * color;
 
   vec3 lightDir = normalize(lightPos - vFragPos);
@@ -22,6 +22,5 @@ void main() {
   float diff = max(dot(lightDir, normal), 0.0);
   vec3 diffuse = diff * color;
 
-  // gl_FragColor = vec4(vec3(texture(texture_diffuse1, vTexCoord)), 1.0);
   gl_FragColor = vec4(ambient + diffuse, 1.0);
 }

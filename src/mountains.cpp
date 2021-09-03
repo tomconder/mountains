@@ -42,7 +42,8 @@ bool Mountains::onUserCreate() {
     glm::mat4 projection = camera->getProjection();
     shader->setMat4("projection", projection);
 
-    shader->setFloat3("lightPos", glm::vec3(80.0, 100.0, -80.0));
+    shader->setFloat3("lightPos", glm::vec3(0.f, 100.f, -80.f));
+    shader->setFloat("ambientStrength", 0.49f);
 
     sprite = std::make_unique<OpenGLSprite>();
 

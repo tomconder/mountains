@@ -39,7 +39,7 @@ OpenGLMesh::OpenGLMesh(const std::vector<Vertex> &vertices, const std::vector<un
     glEnableVertexAttribArray(position);
     glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, normal));
 
-    position = static_cast<GLuint>(glGetAttribLocation(program, "texCoords"));
+    position = static_cast<GLuint>(glGetAttribLocation(program, "texCoord"));
     glEnableVertexAttribArray(position);
     glVertexAttribPointer(position, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, texCoords));
 
@@ -89,8 +89,6 @@ void OpenGLMesh::render() const {
 
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, nullptr);
     glBindVertexArray(0);
-    glBindVertexArray(1);
-    glBindVertexArray(2);
 
     glActiveTexture(GL_TEXTURE0);
 }

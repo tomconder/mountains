@@ -18,7 +18,7 @@ void OpenGLModel::load(const std::string &path) {
     const aiScene *scene = importer.ReadFile(path,
                                              aiProcess_CalcTangentSpace |
                                                  aiProcess_FlipUVs |
-                                                 aiProcess_GenSmoothNormals |
+                                                 aiProcess_GenNormals |
                                                  aiProcess_ImproveCacheLocality |
                                                  aiProcess_JoinIdenticalVertices |
                                                  aiProcess_RemoveRedundantMaterials |
