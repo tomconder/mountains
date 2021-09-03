@@ -4,7 +4,6 @@
 #include <new>
 #endif
 
-#include <sstream>
 #include <glm/ext/matrix_clip_space.hpp>
 
 #include "easylogging++.h"
