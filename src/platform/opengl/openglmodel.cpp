@@ -17,13 +17,10 @@ void OpenGLModel::load(const std::string &path) {
     Assimp::Importer importer;
     const aiScene *scene = importer.ReadFile(path,
                                              aiProcess_CalcTangentSpace |
-                                                 aiProcess_FindDegenerates |
-                                                 aiProcess_FindInvalidData |
                                                  aiProcess_FlipUVs |
                                                  aiProcess_GenSmoothNormals |
                                                  aiProcess_ImproveCacheLocality |
                                                  aiProcess_JoinIdenticalVertices |
-                                                 aiProcess_LimitBoneWeights |
                                                  aiProcess_RemoveRedundantMaterials |
                                                  aiProcess_SplitLargeMeshes |
                                                  aiProcess_Triangulate);

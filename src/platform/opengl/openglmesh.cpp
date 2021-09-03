@@ -60,8 +60,10 @@ void OpenGLMesh::render() const {
     std::shared_ptr<OpenGLShader> shader = OpenGLResourceManager::getShader("shader");
     shader->bind();
 
-    unsigned int diffuse = 1;
-    unsigned int specular = 1;
+    unsigned int diffuseNumber = 1;
+    unsigned int specularNumber = 1;
+    unsigned int normalNumber = 1;
+    unsigned int heightNumber = 1;
     for (unsigned int i = 0; i < textures.size(); i++) {
         // activate proper texture unit before binding
         glActiveTexture(GL_TEXTURE0 + i);
@@ -70,16 +72,24 @@ void OpenGLMesh::render() const {
         std::string number;
         std::string name = textures[i]->getType();
         if (name == "texture_diffuse") {
-            number = std::to_string(diffuse++);
+            number = std::to_string(diffuseNumber++);
         } else if (name == "texture_specular") {
-            number = std::to_string(specular++);
+            number = std::to_string(specularNumber++);
+        } else if(name == "texture_normal") {
+            number = std::to_string(normalNumber++);
+        } else if(name == "texture_height") {
+            number = std::to_string(heightNumber++);
         }
 
-         shader->setFloat(name + number, static_cast<float>(i));
-         glBindTexture(GL_TEXTURE_2D, textures[i]->getId());
+        // now set the sampler to the correct texture unit
+        shader->setInteger(name + number, static_cast<int>(i));
+
+        textures[i]->bind();
     }
 
     glActiveTexture(GL_TEXTURE0);
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, nullptr);
     glBindVertexArray(0);
+
+    glActiveTexture(GL_TEXTURE0);
 }
