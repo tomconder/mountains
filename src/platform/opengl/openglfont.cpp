@@ -14,11 +14,12 @@
 OpenGLFont::OpenGLFont() {
     auto shader = OpenGLResourceManager::getShader("text");
     shader->bind();
-    shader->setMat4("proj",
-                    glm::ortho(0.f,
-                               static_cast<float>(globals::SCREEN_WIDTH),
-                               0.f,
-                               static_cast<float>(globals::SCREEN_HEIGHT)));
+
+    auto projection = glm::ortho(0.f,
+                                 static_cast<float>(globals::SCREEN_WIDTH),
+                                 0.f,
+                                 static_cast<float>(globals::SCREEN_HEIGHT));
+    shader->setMat4("projection", projection);
 
     vao = std::make_unique<OpenGLVertexArray>();
     vao->bind();

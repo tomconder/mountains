@@ -14,13 +14,11 @@ varying vec2 vTexCoord;
 
 uniform mat4 model;
 uniform mat4 view;
-uniform mat4 proj;
+uniform mat4 projection;
 
 void main() {
-  vTexCoord = texCoord;
-
-  gl_Position = proj * view * model * vec4(position, 1.0);
-
-  vNormal = normal;
   vFragPos = vec3(model * vec4(position, 1.0));
+  vNormal = normal;
+  vTexCoord = texCoord;
+  gl_Position = projection * view * model * vec4(position, 1.0);
 }

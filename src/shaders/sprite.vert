@@ -9,9 +9,9 @@ attribute vec4 vertex;
 varying vec2 vTexCoord;
 
 uniform mat4 model;
-uniform mat4 proj;
+uniform mat4 projection;
 
 void main() {
   vTexCoord = vertex.zw;
-  gl_Position = proj * model * vec4(vertex.xy, 0.0, 1.0);
+  gl_Position = projection * model * vec4(vertex.xy, 0.0, 1.0);
 }

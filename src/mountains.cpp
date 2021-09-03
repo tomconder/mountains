@@ -39,8 +39,10 @@ bool Mountains::onUserCreate() {
     glm::mat4 view = camera->getViewMatrix();
     shader->setMat4("view", view);
 
-    glm::mat4 proj = camera->getProjection();
-    shader->setMat4("proj", proj);
+    glm::mat4 projection = camera->getProjection();
+    shader->setMat4("projection", projection);
+
+    shader->setFloat3("lightPos", glm::vec3(80.0, 100.0, -80.0));
 
     sprite = std::make_unique<OpenGLSprite>();
 
@@ -73,7 +75,7 @@ bool Mountains::onUserUpdate(Uint32 elapsedTime) {
     std::shared_ptr<OpenGLShader> shader = OpenGLResourceManager::getShader("shader");
     shader->bind();
     shader->setMat4("view", camera->getViewMatrix());
-    shader->setMat4("proj", camera->getProjection());
+    shader->setMat4("projection", camera->getProjection());
 
     auto model = glm::mat4(1.f);
     shader->setMat4("model", model);
@@ -91,14 +93,14 @@ bool Mountains::onUserUpdate(Uint32 elapsedTime) {
 bool Mountains::onUserResize(int width, int height) {
     camera->setViewportSize(width, height);
 
-    glm::mat proj = camera->getProjection();
-    OpenGLResourceManager::getShader("shader")->bind()->setMat4("proj", proj);
+    glm::mat projection = camera->getProjection();
+    OpenGLResourceManager::getShader("shader")->bind()->setMat4("projection", projection);
 
-    proj = glm::ortho(0.f, static_cast<float>(width), static_cast<float>(height), 0.f, -1.f, 1.f);
-    OpenGLResourceManager::getShader("sprite")->bind()->setMat4("proj", proj);
+    projection = glm::ortho(0.f, static_cast<float>(width), static_cast<float>(height), 0.f, -1.f, 1.f);
+    OpenGLResourceManager::getShader("sprite")->bind()->setMat4("projection", projection);
 
-    proj = glm::ortho(0.f, static_cast<float>(width), 0.f, static_cast<float>(height));
-    OpenGLResourceManager::getShader("text")->bind()->setMat4("proj", proj);
+    projection = glm::ortho(0.f, static_cast<float>(width), 0.f, static_cast<float>(height));
+    OpenGLResourceManager::getShader("text")->bind()->setMat4("projection", projection);
 
     return true;
 }
