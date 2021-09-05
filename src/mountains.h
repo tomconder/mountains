@@ -4,11 +4,7 @@
 #include "core/engine.h"
 
 #include "core/gamecamera.h"
-#include "platform/opengl/openglbuffer.h"
-#include "platform/opengl/openglshader.h"
 #include "platform/opengl/openglsprite.h"
-#include "platform/opengl/opengltexture.h"
-#include "platform/opengl/openglvertexarray.h"
 
 #include <memory>
 #include <string>

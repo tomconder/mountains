@@ -10,14 +10,6 @@
 
 #include "easylogging++.h"
 
-const std::array<glm::vec3, 5> ratios = {
-    glm::vec3{32.f, 9.f, 32.f / 9.f},
-    glm::vec3{21.f, 9.f, 21.f / 9.f},
-    glm::vec3{16.f, 9.f, 16.f / 9.f},
-    glm::vec3{16.f, 10.f, 16.f / 10.f},
-    glm::vec3{4.f, 3.f, 4.f / 3.f},
-};
-
 Engine::Engine() : appName("undefined") {
     screenWidth = globals::SCREEN_WIDTH;
     screenHeight = globals::SCREEN_HEIGHT;
@@ -155,6 +147,14 @@ bool Engine::onUserDestroy() {
 }
 
 void Engine::adjustAspectRatio(int eventW, int eventH) {
+    const std::array<glm::vec3, 5> ratios = {
+        glm::vec3{32.f, 9.f, 32.f / 9.f},
+        glm::vec3{21.f, 9.f, 21.f / 9.f},
+        glm::vec3{16.f, 9.f, 16.f / 9.f},
+        glm::vec3{16.f, 10.f, 16.f / 10.f},
+        glm::vec3{4.f, 3.f, 4.f / 3.f},
+    };
+
     // attempt to find the closest matching aspect ratio
     float proposedRatio = static_cast<float>(eventW) / static_cast<float>(eventH);
     auto exceedsRatio = [&proposedRatio](glm::vec3 i) { return proposedRatio > i.z; };
