@@ -30,7 +30,8 @@ bool Mountains::onUserCreate() {
     shader->bind();
 
     camera = std::make_unique<GameCamera>(80.0f,
-                                          globals::SCREEN_WIDTH * 1.f / globals::SCREEN_HEIGHT,
+                                          static_cast<float>(globals::SCREEN_WIDTH),
+                                          static_cast<float>(globals::SCREEN_HEIGHT),
                                           1.f,
                                           18000.0f);
 
