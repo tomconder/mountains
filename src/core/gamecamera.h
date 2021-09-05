@@ -1,6 +1,9 @@
 #ifndef INCLUDE_GAMECAMERA_H
 #define INCLUDE_GAMECAMERA_H
 
+#include <glm/mat4x4.hpp>
+#include <glm/ext/quaternion_float.hpp>
+
 #include "globals.h"
 #include "renderer/camera.h"
 

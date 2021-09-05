@@ -3,12 +3,11 @@
 
 #include <memory>
 
-#include "glm/vec2.hpp"
-
 #include "platform/opengl/openglbuffer.h"
 #include "platform/opengl/openglvertexarray.h"
+#include "renderer/sprite.h"
 
-class OpenGLSprite {
+class OpenGLSprite : public Sprite {
 public:
     OpenGLSprite();
 

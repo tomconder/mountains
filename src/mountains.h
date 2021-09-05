@@ -2,7 +2,6 @@
 #define INCLUDE_MOUNTAINS_H
 
 #include "core/engine.h"
-
 #include "core/gamecamera.h"
 #include "platform/opengl/openglsprite.h"
 
