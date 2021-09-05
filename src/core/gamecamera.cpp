@@ -33,8 +33,8 @@ glm::quat GameCamera::getOrientation() const {
 }
 
 void GameCamera::setViewportSize(int viewportWidth, int viewportHeight) {
-    this->width = static_cast<float>(viewportWidth);
-    this->height = static_cast<float>(viewportHeight);
+    width = static_cast<float>(viewportWidth);
+    height = static_cast<float>(viewportHeight);
     updateProjection();
 }
 
@@ -67,13 +67,7 @@ void GameCamera::mouseMove(const glm::vec2 &offset) {
     yaw += offset.x * cameraSpeed;
     pitch += offset.y * cameraSpeed;
 
-    if (pitch > 89.f) {
-        pitch = 89.f;
-    }
-
-    if (pitch < -89.f) {
-        pitch = -89.f;
-    }
+    pitch = std::clamp(pitch, -89.f, 89.f);
 
     glm::vec3 front;
     front.x = std::cos(glm::radians(yaw)) * std::cos(glm::radians(pitch));
@@ -90,13 +84,6 @@ void GameCamera::mouseScroll(const glm::vec2 &offset) {
     }
 
     fov -= offset.y * 5;
-
-    if (fov < 30.f) {
-        fov = 30.f;
-    }
-    if (fov > 90.f) {
-        fov = 90.f;
-    }
-
+    fov = std::clamp(fov, 30.f, 120.0f);
     updateProjection();
 }
