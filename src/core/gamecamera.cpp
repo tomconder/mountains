@@ -8,8 +8,7 @@
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/gtx/quaternion.hpp>
 
-GameCamera::GameCamera(float fov, float aspect, float zNear, float zFar)
-    : fov(fov), aspect(aspect), zNear(zNear), zFar(zFar) {
+GameCamera::GameCamera(float fov, float width, float height, float zNear, float zFar) : fov(fov), width(width), height(height), zNear(zNear), zFar(zFar) {
     updateProjection();
 
     glm::vec3 front = {
@@ -22,8 +21,7 @@ GameCamera::GameCamera(float fov, float aspect, float zNear, float zFar)
 }
 
 void GameCamera::updateProjection() {
-    aspect = width / height;
-    projection = glm::perspective(glm::radians(fov), aspect, zNear, zFar);
+    projection = glm::perspectiveFov(glm::radians(fov), width, height, zNear, zFar);
 }
 
 void GameCamera::updateView() {

@@ -1,13 +1,16 @@
 #ifndef INCLUDE_GAMECAMERA_H
 #define INCLUDE_GAMECAMERA_H
 
+#include <glm/mat4x4.hpp>
+#include <glm/ext/quaternion_float.hpp>
+
 #include "globals.h"
 #include "renderer/camera.h"
 
 class GameCamera : public Camera {
 public:
     GameCamera() = default;
-    GameCamera(float fov, float aspect, float zNear, float zFar);
+    GameCamera(float fov, float width, float height, float zNear, float zFar);
 
     ~GameCamera() override = default;
 
@@ -36,7 +39,6 @@ private:
     void updateView();
 
     float fov = 45.0f;
-    float aspect = 1.3333333333f;
     float zNear = 1.0f;
     float zFar = 1000.0f;
 
