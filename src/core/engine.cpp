@@ -8,6 +8,8 @@
 #include <SDL_image.h>
 #include <glm/vec3.hpp>
 
+#include <array>
+
 #include "easylogging++.h"
 
 Engine::Engine() : appName("undefined") {
