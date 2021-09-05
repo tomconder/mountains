@@ -6,8 +6,17 @@
 
 #include <SDL.h>
 #include <SDL_image.h>
+#include <glm/vec3.hpp>
 
 #include "easylogging++.h"
+
+const std::array<glm::vec3, 5> ratios = {
+    glm::vec3{32.f, 9.f, 32.f / 9.f},
+    glm::vec3{21.f, 9.f, 21.f / 9.f},
+    glm::vec3{16.f, 9.f, 16.f / 9.f},
+    glm::vec3{16.f, 10.f, 16.f / 10.f},
+    glm::vec3{4.f, 3.f, 4.f / 3.f},
+};
 
 Engine::Engine() : appName("undefined") {
     screenWidth = globals::SCREEN_WIDTH;
@@ -80,7 +89,7 @@ bool Engine::iterateLoop() {
         if (event.type == SDL_QUIT) {
             quit = true;
         } else if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_RESIZED) {
-            maintainAspectRatio(event.window.data1, event.window.data2);
+            adjustAspectRatio(event.window.data1, event.window.data2);
             renderer->setViewport(offsetx, offsety, w, h);
             onUserResize(w, h);
         } else if (event.type == SDL_KEYDOWN) {
@@ -145,18 +154,31 @@ bool Engine::onUserDestroy() {
     return true;
 }
 
-void Engine::maintainAspectRatio(int eventW, int eventH) {
-    float aspectRatio = 4.f / 3.f;
+void Engine::adjustAspectRatio(int eventW, int eventH) {
+    // attempt to find the closest matching aspect ratio
+    float proposedRatio = static_cast<float>(eventW) / static_cast<float>(eventH);
+    auto exceedsRatio = [&proposedRatio](glm::vec3 i) { return proposedRatio > i.z; };
+    auto ratio = std::find_if(begin(ratios), end(ratios), exceedsRatio);
+    if (ratio == std::end(ratios)) {
+        --ratio;
+    }
+
+    // use ratio
+    float aspectRatioWidth = ratio->x;
+    float aspectRatioHeight = ratio->y;
+
+    float aspectRatio = aspectRatioWidth / aspectRatioHeight;
 
     auto width = static_cast<float>(eventW);
     auto height = static_cast<float>(eventH);
 
-    if (float newAspectRatio = width / height; newAspectRatio > aspectRatio) {
-        w = static_cast<int>(4.f * height / 3.f);
+    float newAspectRatio = width / height;
+    if (newAspectRatio > aspectRatio) {
+        w = static_cast<int>(aspectRatioWidth * height / aspectRatioHeight);
         h = eventH;
     } else {
         w = eventW;
-        h = static_cast<int>(3.f * width / 4.f);
+        h = static_cast<int>(aspectRatioHeight * width / aspectRatioWidth);
     }
 
     offsetx = (eventW - w) / 2;

@@ -38,7 +38,7 @@ public:
     int h = 0;
 
 private:
-    void maintainAspectRatio(int eventW, int eventH);
+    void adjustAspectRatio(int eventW, int eventH);
 };
 
 #endif //INCLUDE_ENGINE_H
