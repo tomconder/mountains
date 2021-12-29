@@ -2,8 +2,15 @@ cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
 
 project(mountains CXX C)
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_EXTENSIONS TRUE)
+if(NOT CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 17 CACHE STRING "")
+endif()
+
+if(CMAKE_CXX_STANDARD LESS 17)
+  message(WARNING "Incompatible C++ standard ${CMAKE_CXX_STANDARD}. This project requires C++17")
+endif()
+
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Set a default build type if none was specified
 # See https://blog.kitware.com/cmake-and-the-default-build-type/ for details.
@@ -142,9 +149,22 @@ else ()
   add_library(glad EXCLUDE_FROM_ALL 3rdparty/glad/src/gl.c)
   target_include_directories(glad PUBLIC 3rdparty/glad/include)
 
+  # SDL2
+  FetchContent_Declare(
+          SDL2
+          GIT_REPOSITORY  https://github.com/libsdl-org/SDL.git
+          GIT_TAG         2e9821423a237a1206e3c09020778faacfe430be
+  )
+  FetchContent_MakeAvailable(SDL2)
+  if(NOT sdl2_POPULATED)
+    FetchContent_Populate(SDL2)
+  endif()
+
+  # TODO: Freetype
+
   set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
-  find_package(SDL2 REQUIRED)
-  find_package(SDL2_IMAGE REQUIRED)
+#  find_package(SDL2 REQUIRED)
+#  find_package(SDL2_IMAGE REQUIRED)
   find_package(Freetype REQUIRED)
   find_package(OpenGL REQUIRED)
 
