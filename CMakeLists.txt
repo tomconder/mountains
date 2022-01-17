@@ -2,15 +2,15 @@ cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
 
 project(mountains CXX C)
 
-if(NOT CMAKE_CXX_STANDARD)
+if (NOT CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 17 CACHE STRING "")
-endif()
+endif ()
 
 if(CMAKE_CXX_STANDARD LESS 17)
   message(WARNING "Incompatible C++ standard ${CMAKE_CXX_STANDARD}. This project requires C++17")
 endif()
 
-set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_CXX_FLAGS "-std=c++11")
 
 # Set a default build type if none was specified
 # See https://blog.kitware.com/cmake-and-the-default-build-type/ for details.
@@ -26,62 +26,6 @@ if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   # Set the possible values of build type for cmake-gui
   set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
 endif ()
-
-include(FetchContent)
-
-# easyloggingpp
-FetchContent_Declare(
-        easyloggingpp
-        GIT_REPOSITORY  https://github.com/amrayn/easyloggingpp.git
-        GIT_TAG         49da71da884d1e756a51df617437b87071c2b1a7
-)
-FetchContent_GetProperties(easyloggingpp)
-string(TOLOWER "easyloggingpp" lcName)
-if(NOT ${lcName}_POPULATED)
-  FetchContent_Populate(easyloggingpp)
-
-  set(CMAKE_CXX_FLAGS "-std=c++11")
-
-  add_subdirectory(${${lcName}_SOURCE_DIR} ${${lcName}_BINARY_DIR})
-endif()
-
-# glm
-FetchContent_Declare(
-  glm
-  GIT_REPOSITORY  https://github.com/g-truc/glm.git
-  GIT_TAG         06ed280db4e274fa5e1f36d5ea4f7dfd654ff9b0
-)
-FetchContent_MakeAvailable(glm)
-if(NOT glm_POPULATED)
-  FetchContent_Populate(glm)
-endif()
-
-# assimp
-FetchContent_Declare(
-  assimp
-  GIT_REPOSITORY  https://github.com/assimp/assimp.git
-  GIT_TAG         6841397798051919a23a3fbe1405fd934fb5f39c
-)
-
-FetchContent_GetProperties(assimp)
-string(TOLOWER "assimp" lcName)
-if(NOT ${lcName}_POPULATED)
-  FetchContent_Populate(assimp)
-
-  set(BUILD_SHARED_LIBS FALSE CACHE INTERNAL "override Assimp flags" FORCE)
-
-  # turn off assimp options to improve build time and reduce size
-  set(ASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT FALSE CACHE INTERNAL "override Assimp flags" FORCE)
-  set(ASSIMP_BUILD_ASSIMP_TOOLS OFF CACHE INTERNAL "override Assimp flags" FORCE)
-  set(ASSIMP_BUILD_OBJ_IMPORTER TRUE CACHE INTERNAL "override Assimp flags" FORCE)
-  set(ASSIMP_BUILD_TESTS OFF CACHE INTERNAL "override Assimp flags" FORCE)
-  set(ASSIMP_DOUBLE_PRECISION ON CACHE INTERNAL "override Assimp flags" FORCE)
-  set(ASSIMP_IGNORE_GIT_HASH ON CACHE INTERNAL "override Assimp flags" FORCE)
-  set(ASSIMP_INSTALL_PDB FALSE CACHE INTERNAL "override Assimp flags" FORCE )
-  set(ASSIMP_NO_EXPORT ON CACHE INTERNAL "override Assimp flags" FORCE)
-
-  add_subdirectory(${${lcName}_SOURCE_DIR} ${${lcName}_BINARY_DIR})
-endif()
 
 file(GLOB SOURCE_FILES LIST_DIRECTORIES false
         src/*.cpp
@@ -106,6 +50,63 @@ if (EMSCRIPTEN)
 
   add_library(glad STATIC EXCLUDE_FROM_ALL 3rdparty/glad/src/gles2.c)
   target_include_directories(glad PUBLIC 3rdparty/glad/include)
+
+  # 01/2022 - use fetchcontent since conan's support for emscripten on windows is poor
+  include(FetchContent)
+
+  # easyloggingpp
+  fetchcontent_declare(
+          easyloggingpp
+          GIT_REPOSITORY https://github.com/amrayn/easyloggingpp.git
+          GIT_TAG 49da71da884d1e756a51df617437b87071c2b1a7
+  )
+  fetchcontent_getproperties(easyloggingpp)
+  string(TOLOWER "easyloggingpp" lcName)
+  if (NOT ${lcName}_POPULATED)
+    fetchcontent_populate(easyloggingpp)
+
+    set(CMAKE_CXX_FLAGS "-std=c++11")
+
+    add_subdirectory(${${lcName}_SOURCE_DIR} ${${lcName}_BINARY_DIR})
+  endif ()
+
+  # glm
+  fetchcontent_declare(
+          glm
+          GIT_REPOSITORY https://github.com/g-truc/glm.git
+          GIT_TAG 06ed280db4e274fa5e1f36d5ea4f7dfd654ff9b0
+  )
+  fetchcontent_makeavailable(glm)
+  if (NOT glm_POPULATED)
+    fetchcontent_populate(glm)
+  endif ()
+
+  # assimp
+  fetchcontent_declare(
+          assimp
+          GIT_REPOSITORY https://github.com/assimp/assimp.git
+          GIT_TAG 6841397798051919a23a3fbe1405fd934fb5f39c
+  )
+
+  fetchcontent_getproperties(assimp)
+  string(TOLOWER "assimp" lcName)
+  if (NOT ${lcName}_POPULATED)
+    fetchcontent_populate(assimp)
+
+    set(BUILD_SHARED_LIBS FALSE CACHE INTERNAL "override Assimp flags" FORCE)
+
+    # turn off assimp options to improve build time and reduce size
+    set(ASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT FALSE CACHE INTERNAL "override Assimp flags" FORCE)
+    set(ASSIMP_BUILD_ASSIMP_TOOLS OFF CACHE INTERNAL "override Assimp flags" FORCE)
+    set(ASSIMP_BUILD_OBJ_IMPORTER TRUE CACHE INTERNAL "override Assimp flags" FORCE)
+    set(ASSIMP_BUILD_TESTS OFF CACHE INTERNAL "override Assimp flags" FORCE)
+    set(ASSIMP_DOUBLE_PRECISION ON CACHE INTERNAL "override Assimp flags" FORCE)
+    set(ASSIMP_IGNORE_GIT_HASH ON CACHE INTERNAL "override Assimp flags" FORCE)
+    set(ASSIMP_INSTALL_PDB FALSE CACHE INTERNAL "override Assimp flags" FORCE)
+    set(ASSIMP_NO_EXPORT ON CACHE INTERNAL "override Assimp flags" FORCE)
+
+    add_subdirectory(${${lcName}_SOURCE_DIR} ${${lcName}_BINARY_DIR})
+  endif ()
 
   set(CMAKE_EXECUTABLE_SUFFIX ".html")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -O2")
@@ -149,24 +150,43 @@ else ()
   add_library(glad EXCLUDE_FROM_ALL 3rdparty/glad/src/gl.c)
   target_include_directories(glad PUBLIC 3rdparty/glad/include)
 
-  # SDL2
-  FetchContent_Declare(
-          SDL2
-          GIT_REPOSITORY  https://github.com/libsdl-org/SDL.git
-          GIT_TAG         2e9821423a237a1206e3c09020778faacfe430be
-  )
-  FetchContent_MakeAvailable(SDL2)
-  if(NOT sdl2_POPULATED)
-    FetchContent_Populate(SDL2)
-  endif()
+  # 01/2022 - conan does pre-build cygwin gcc so you must target the visual studio toolchain
 
-  # TODO: Freetype
+  if (NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
+    message(STATUS "Downloading conan.cmake from https://github.com/conan-io/cmake-conan")
+    file(DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/release/0.17/conan.cmake"
+            "${CMAKE_BINARY_DIR}/conan.cmake"
+            TLS_VERIFY ON)
+  endif ()
 
-  set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
-#  find_package(SDL2 REQUIRED)
-#  find_package(SDL2_IMAGE REQUIRED)
+  include(${CMAKE_BINARY_DIR}/conan.cmake)
+
+  conan_cmake_configure(REQUIRES
+          assimp/5.1.0
+          easyloggingpp/9.97.0
+          freetype/2.11.1
+          glm/0.9.9.8
+          sdl/2.0.16
+          sdl_image/2.0.5
+          GENERATORS cmake_find_package)
+
+  conan_cmake_autodetect(settings)
+
+  conan_cmake_install(PATH_OR_REFERENCE .
+          CMAKE_TARGETS
+          BUILD missing
+          REMOTE conancenter
+          SETTINGS ${settings})
+
+  set(CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
+
   find_package(Freetype REQUIRED)
   find_package(OpenGL REQUIRED)
+  find_package(SDL2 REQUIRED)
+  find_package(SDL2_image REQUIRED)
+  find_package(assimp REQUIRED)
+  find_package(easyloggingpp REQUIRED)
+  find_package(glm REQUIRED)
 
   # for debugging
   # include(CMakePrintHelpers)
@@ -175,19 +195,21 @@ else ()
 
   add_executable(mountains ${SOURCE_FILES} ${HEADER_FILES})
 
-  target_include_directories(mountains PRIVATE ${SDL2_IMAGE_INCLUDE_DIR})
-  target_include_directories(mountains PRIVATE ${SDL2_INCLUDE_DIR})
-  target_include_directories(mountains PRIVATE ${easyloggingpp_SOURCE_DIR}/src/)
+  if (MSVC)
+    target_compile_options(mountains PUBLIC "/Zi")
+    target_link_options(mountains PUBLIC "/INCREMENTAL")
+  endif ()
+
   target_include_directories(mountains PUBLIC src)
 
-  target_link_libraries(mountains PRIVATE ${SDL2_IMAGE_LIBRARY})
-  target_link_libraries(mountains PRIVATE ${SDL2_LIBRARY})
-  target_link_libraries(mountains PRIVATE Freetype::Freetype)
-  target_link_libraries(mountains PRIVATE OpenGL::GL)
-  target_link_libraries(mountains PRIVATE assimp)
-  target_link_libraries(mountains PRIVATE ${easyloggingpp_SOURCE_DIR}/src/easylogging++.cc)
-  target_link_libraries(mountains PRIVATE glad)
-  target_link_libraries(mountains PRIVATE glm::glm)
+  target_link_libraries(mountains Freetype::Freetype)
+  target_link_libraries(mountains OpenGL::GL)
+  target_link_libraries(mountains SDL2::SDL2)
+  target_link_libraries(mountains SDL2_image::SDL2_image)
+  target_link_libraries(mountains assimp::assimp)
+  target_link_libraries(mountains easyloggingpp::easyloggingpp)
+  target_link_libraries(mountains glad)
+  target_link_libraries(mountains glm::glm)
 
   set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/build)
   set(MAKE_DIRECTORY ${EXECUTABLE_OUTPUT_PATH})
