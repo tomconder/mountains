@@ -162,12 +162,13 @@ else ()
   include(${CMAKE_BINARY_DIR}/conan.cmake)
 
   conan_cmake_configure(REQUIRES
-          assimp/5.1.0
+          assimp/5.2.2
           easyloggingpp/9.97.0
           freetype/2.11.1
           glm/0.9.9.8
-          sdl/2.0.16
+          sdl/2.0.20
           sdl_image/2.0.5
+          zlib/1.2.12
           GENERATORS cmake_find_package)
 
   conan_cmake_autodetect(settings)
