@@ -9,6 +9,12 @@ Clone this repository.
 git clone https://github.com/tomconder/mountains.git
 ```
 
+Install Conan, a dependency and package manager for C++. If you have Python installed, use pip to [install conan](https://docs.conan.io/en/latest/installation.html). 
+```
+pip install conan
+```
+
+
 ## Building on Windows using VSCode
 When using MSYS MINGW ensure that you do not have conflicts with multiple compilers, cmake, ninja, etc.
 Focus on the MINGW packages instead as they have the latest and appear to work when finding SDL2 Modules and OpenGL.
