@@ -150,7 +150,7 @@ else ()
   add_library(glad EXCLUDE_FROM_ALL 3rdparty/glad/src/gl.c)
   target_include_directories(glad PUBLIC 3rdparty/glad/include)
 
-  # 01/2022 - conan does pre-build cygwin gcc so you must target the visual studio toolchain
+  # 01/2022 - conan does not pre-build cygwin gcc so you must target the visual studio toolchain
 
   if (NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
     message(STATUS "Downloading conan.cmake from https://github.com/conan-io/cmake-conan")
