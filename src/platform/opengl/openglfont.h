@@ -17,24 +17,26 @@
 #include "platform/opengl/opengltexture.h"
 #include "platform/opengl/openglvertexarray.h"
 
-struct Character {
-    unsigned int id;
-    glm::ivec2 size;
-    glm::ivec2 bearing;
-    unsigned int advance;
+struct Character
+{
+        unsigned int id;
+        glm::ivec2 size;
+        glm::ivec2 bearing;
+        unsigned int advance;
 };
 
-class OpenGLFont {
-public:
-    OpenGLFont();
-    void load(const std::string &path, unsigned int fontSize);
+class OpenGLFont
+{
+    public:
+        OpenGLFont();
+        void load(const std::string &path, unsigned int fontSize);
 
-    void renderText(const std::string &text, float x, float y, glm::vec3 color);
+        void renderText(const std::string &text, float x, float y, glm::vec3 color);
 
-    std::unique_ptr<OpenGLBuffer> vbo;
-    std::unique_ptr<OpenGLVertexArray> vao;
+        std::unique_ptr<OpenGLBuffer> vbo;
+        std::unique_ptr<OpenGLVertexArray> vao;
 
-    std::map<unsigned char, Character> Characters;
+        std::map<unsigned char, Character> Characters;
 };
 
-#endif //INCLUDE_OPENGLFONT_H
+#endif // INCLUDE_OPENGLFONT_H

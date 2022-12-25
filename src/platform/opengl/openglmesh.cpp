@@ -11,7 +11,9 @@
 #include "easylogging++.h"
 #include "platform/opengl/openglresourcemanager.h"
 
-OpenGLMesh::OpenGLMesh(const std::vector<Vertex> &vertices, const std::vector<unsigned int> &indices, const std::vector<std::shared_ptr<OpenGLTexture>> &textures) : textures(textures) {
+OpenGLMesh::OpenGLMesh(const std::vector<Vertex> &vertices, const std::vector<unsigned int> &indices,
+                       const std::vector<std::shared_ptr<OpenGLTexture>> &textures)
+    : textures(textures) {
     this->indices = indices;
     this->vertices = vertices;
 
@@ -72,9 +74,9 @@ void OpenGLMesh::render() const {
             number = std::to_string(diffuseNumber++);
         } else if (name == "texture_specular") {
             number = std::to_string(specularNumber++);
-        } else if(name == "texture_normal") {
+        } else if (name == "texture_normal") {
             number = std::to_string(normalNumber++);
-        } else if(name == "texture_height") {
+        } else if (name == "texture_height") {
             number = std::to_string(heightNumber++);
         }
 

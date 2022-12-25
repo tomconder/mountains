@@ -8,14 +8,12 @@
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/gtx/quaternion.hpp>
 
-GameCamera::GameCamera(float fov, float width, float height, float zNear, float zFar) : fov(fov), width(width), height(height), zNear(zNear), zFar(zFar) {
+GameCamera::GameCamera(float fov, float width, float height, float zNear, float zFar)
+    : fov(fov), width(width), height(height), zNear(zNear), zFar(zFar) {
     updateProjection();
 
-    glm::vec3 front = {
-        std::cos(glm::radians(yaw)) * std::cos(glm::radians(pitch)),
-        std::sin(glm::radians(pitch)),
-        std::sin(glm::radians(yaw)) * std::cos(glm::radians(pitch))
-    };
+    glm::vec3 front = { std::cos(glm::radians(yaw)) * std::cos(glm::radians(pitch)), std::sin(glm::radians(pitch)),
+                        std::sin(glm::radians(yaw)) * std::cos(glm::radians(pitch)) };
     cameraFront = glm::normalize(front);
     updateView();
 }
@@ -29,7 +27,7 @@ void GameCamera::updateView() {
 }
 
 glm::quat GameCamera::getOrientation() const {
-    return {glm::vec3(-pitch, -yaw, 0.0f)};
+    return { glm::vec3(-pitch, -yaw, 0.0f) };
 }
 
 void GameCamera::setViewportSize(int viewportWidth, int viewportHeight) {

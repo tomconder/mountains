@@ -15,10 +15,8 @@ OpenGLFont::OpenGLFont() {
     auto shader = OpenGLResourceManager::getShader("text");
     shader->bind();
 
-    auto projection = glm::ortho(0.f,
-                                 static_cast<float>(globals::SCREEN_WIDTH),
-                                 0.f,
-                                 static_cast<float>(globals::SCREEN_HEIGHT));
+    auto projection =
+        glm::ortho(0.f, static_cast<float>(globals::SCREEN_WIDTH), 0.f, static_cast<float>(globals::SCREEN_HEIGHT));
     shader->setMat4("projection", projection);
 
     vao = std::make_unique<OpenGLVertexArray>();
@@ -69,14 +67,8 @@ void OpenGLFont::load(const std::string &path, unsigned int fontSize) {
         unsigned int id;
         glGenTextures(1, &id);
         glBindTexture(GL_TEXTURE_2D, id);
-        glTexImage2D(GL_TEXTURE_2D,
-                     0,
-                     GL_R8,
-                     static_cast<int>(face->glyph->bitmap.width),
-                     static_cast<int>(face->glyph->bitmap.rows),
-                     0,
-                     GL_RED,
-                     GL_UNSIGNED_BYTE,
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_R8, static_cast<int>(face->glyph->bitmap.width),
+                     static_cast<int>(face->glyph->bitmap.rows), 0, GL_RED, GL_UNSIGNED_BYTE,
                      face->glyph->bitmap.buffer);
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -85,12 +77,9 @@ void OpenGLFont::load(const std::string &path, unsigned int fontSize) {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-        Character character = {
-            id,
-            glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
-            glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
-            static_cast<unsigned int>(face->glyph->advance.x)
-        };
+        Character character = { id, glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
+                                glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
+                                static_cast<unsigned int>(face->glyph->advance.x) };
 
         Characters.try_emplace(c, character);
     }
@@ -111,7 +100,7 @@ void OpenGLFont::renderText(const std::string &text, float x, float y, glm::vec3
 
     float scale = 1.f;
 
-    for (const char &c: text) {
+    for (const char &c : text) {
         Character ch = Characters[c];
 
         float xpos = x + static_cast<float>(ch.bearing.x) * scale;
@@ -120,15 +109,11 @@ void OpenGLFont::renderText(const std::string &text, float x, float y, glm::vec3
         float w = static_cast<float>(ch.size.x) * scale;
         float h = static_cast<float>(ch.size.y) * scale;
 
-        float vertices[6][4] = {
-            {xpos, ypos + h, 0.0f, 0.0f},
-            {xpos, ypos, 0.0f, 1.0f},
-            {xpos + w, ypos, 1.0f, 1.0f},
+        float vertices[6][4] = { { xpos, ypos + h, 0.0f, 0.0f },    { xpos, ypos, 0.0f, 1.0f },
+                                 { xpos + w, ypos, 1.0f, 1.0f },
 
-            {xpos, ypos + h, 0.0f, 0.0f},
-            {xpos + w, ypos, 1.0f, 1.0f},
-            {xpos + w, ypos + h, 1.0f, 0.0f}
-        };
+                                 { xpos, ypos + h, 0.0f, 0.0f },    { xpos + w, ypos, 1.0f, 1.0f },
+                                 { xpos + w, ypos + h, 1.0f, 0.0f } };
 
         glBindTexture(GL_TEXTURE_2D, ch.id);
 

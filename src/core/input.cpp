@@ -46,11 +46,11 @@ bool Input::isButtonPressed() const {
 }
 
 void Input::mouseMove(const SDL_MouseMotionEvent &event) {
-    moveDelta = {event.xrel, event.yrel};
+    moveDelta = { event.xrel, event.yrel };
 }
 
 void Input::mouseScroll(const SDL_MouseWheelEvent &event) {
-    scrollDelta = {static_cast<float>(event.timestamp), static_cast<float>(event.y)};
+    scrollDelta = { static_cast<float>(event.timestamp), static_cast<float>(event.y) };
 }
 
 glm::vec2 Input::getScrollDelta() {
@@ -60,4 +60,3 @@ glm::vec2 Input::getScrollDelta() {
     }
     return glm::vec2(0.f);
 }
-

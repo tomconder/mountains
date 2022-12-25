@@ -35,7 +35,7 @@ OpenGLContext::OpenGLContext(SDL_Window *window) {
     }
 
 #ifdef EMSCRIPTEN
-    gladLoadGLES2((GLADloadfunc) SDL_GL_GetProcAddress);
+    gladLoadGLES2((GLADloadfunc)SDL_GL_GetProcAddress);
 #else
     gladLoadGL((GLADloadfunc)SDL_GL_GetProcAddress);
 #endif

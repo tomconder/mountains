@@ -15,8 +15,7 @@ bool iterateLoop() {
     return mountains->iterateLoop();
 }
 
-extern "C"
-int main(int argc, char *args[]) {
+extern "C" int main(int argc, char *args[]) {
     START_EASYLOGGINGPP(argc, args);
 
     mountains = std::make_unique<Mountains>();
@@ -30,7 +29,7 @@ int main(int argc, char *args[]) {
     }
 
 #ifdef EMSCRIPTEN
-    emscripten_set_main_loop((em_callback_func) iterateLoop, 60, true);
+    emscripten_set_main_loop((em_callback_func)iterateLoop, 60, true);
 #else
     bool quit = false;
     while (!quit) {

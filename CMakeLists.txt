@@ -166,9 +166,9 @@ else ()
           easyloggingpp/9.97.0
           freetype/2.11.1
           glm/0.9.9.8
-          sdl/2.0.20
+          sdl/2.26.0
           sdl_image/2.0.5
-          zlib/1.2.12
+          zlib/1.2.13
           GENERATORS cmake_find_package)
 
   conan_cmake_autodetect(settings)

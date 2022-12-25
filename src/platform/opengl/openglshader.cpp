@@ -3,8 +3,8 @@
 #include <cassert>
 #include <sstream>
 
-#include <glm/gtc/type_ptr.hpp>
 #include "easylogging++.h"
+#include <glm/gtc/type_ptr.hpp>
 
 void OpenGLShader::compileAndLink(const std::string &vertexSource, const std::string &fragmentSource) {
     assert(!vertexSource.empty());

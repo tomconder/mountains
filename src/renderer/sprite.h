@@ -4,11 +4,12 @@
 #include <glm/vec2.hpp>
 #include <string>
 
-class Sprite {
-public:
-    virtual ~Sprite() = default;
+class Sprite
+{
+    public:
+        virtual ~Sprite() = default;
 
-    virtual void render(const std::string &name, glm::vec2 position, glm::vec2 size) const = 0;
+        virtual void render(const std::string &name, glm::vec2 position, glm::vec2 size) const = 0;
 };
 
-#endif //INCLUDE_SPRITE_H
+#endif // INCLUDE_SPRITE_H

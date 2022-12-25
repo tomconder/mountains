@@ -1,13 +1,13 @@
 #include "platform/opengl/openglmodel.h"
 
-#include <vector>
 #include <cassert>
+#include <vector>
 
 #include <assimp/Importer.hpp>
 #include <assimp/postprocess.h>
 
-#include "platform/opengl/openglresourcemanager.h"
 #include "easylogging++.h"
+#include "platform/opengl/openglresourcemanager.h"
 
 void OpenGLModel::load(const std::string &path) {
     assert(!path.empty());
@@ -15,15 +15,10 @@ void OpenGLModel::load(const std::string &path) {
     meshes.clear();
 
     Assimp::Importer importer;
-    const aiScene *scene = importer.ReadFile(path,
-                                             aiProcess_CalcTangentSpace |
-                                                 aiProcess_FlipUVs |
-                                                 aiProcess_GenNormals |
-                                                 aiProcess_ImproveCacheLocality |
-                                                 aiProcess_JoinIdenticalVertices |
-                                                 aiProcess_RemoveRedundantMaterials |
-                                                 aiProcess_SplitLargeMeshes |
-                                                 aiProcess_Triangulate);
+    const aiScene *scene = importer.ReadFile(
+        path, aiProcess_CalcTangentSpace | aiProcess_FlipUVs | aiProcess_GenNormals | aiProcess_ImproveCacheLocality |
+                  aiProcess_JoinIdenticalVertices | aiProcess_RemoveRedundantMaterials | aiProcess_SplitLargeMeshes |
+                  aiProcess_Triangulate);
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
         LOG(ERROR) << "Unable to load model: " << path;
         return;
@@ -50,22 +45,22 @@ OpenGLMesh OpenGLModel::processMesh(const aiMesh *mesh, const aiScene *scene) {
     for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
         Vertex vertex{};
 
-        glm::vec3 glmVec3 = {mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z};
+        glm::vec3 glmVec3 = { mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z };
         vertex.position = glmVec3;
 
         if (mesh->HasNormals()) {
-            glmVec3 = {mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z};
+            glmVec3 = { mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z };
             vertex.normal = glmVec3;
         }
 
         if (mesh->mTextureCoords[0]) {
-            glm::vec2 glmVec2 = {mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y};
+            glm::vec2 glmVec2 = { mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y };
             vertex.texCoords = glmVec2;
 
-            glmVec3 = {mesh->mTangents[i].x, mesh->mTangents[i].y, mesh->mTangents[i].z};
+            glmVec3 = { mesh->mTangents[i].x, mesh->mTangents[i].y, mesh->mTangents[i].z };
             vertex.tangent = glmVec3;
 
-            glmVec3 = {mesh->mBitangents[i].x, mesh->mBitangents[i].y, mesh->mBitangents[i].z};
+            glmVec3 = { mesh->mBitangents[i].x, mesh->mBitangents[i].y, mesh->mBitangents[i].z };
             vertex.biTangent = glmVec3;
         } else {
             vertex.texCoords = glm::vec2(0.0f, 0.0f);
@@ -108,7 +103,8 @@ OpenGLMesh OpenGLModel::processMesh(const aiMesh *mesh, const aiScene *scene) {
     return { vertices, indices, textures };
 }
 
-std::vector<std::shared_ptr<OpenGLTexture>> OpenGLModel::loadMaterialTextures(const aiMaterial *mat, aiTextureType textureType, const std::string &typeName) {
+std::vector<std::shared_ptr<OpenGLTexture>>
+OpenGLModel::loadMaterialTextures(const aiMaterial *mat, aiTextureType textureType, const std::string &typeName) {
     std::vector<std::shared_ptr<OpenGLTexture>> textures;
 
     for (unsigned int i = 0; i < mat->GetTextureCount(textureType); i++) {

@@ -95,7 +95,8 @@ std::shared_ptr<OpenGLTexture> OpenGLResourceManager::loadTexture(const std::str
     return texture;
 }
 
-std::shared_ptr<OpenGLTexture> OpenGLResourceManager::loadTextureWithType(const std::string &path, const std::string &typeName) {
+std::shared_ptr<OpenGLTexture> OpenGLResourceManager::loadTextureWithType(const std::string &path,
+                                                                          const std::string &typeName) {
     assert(!path.empty());
     assert(!typeName.empty());
 
@@ -165,9 +166,7 @@ std::shared_ptr<OpenGLTexture> OpenGLResourceManager::loadTextureFromFile(const 
     }
 
     auto texture = std::make_shared<OpenGLTexture>();
-    texture->generate(surface->w,
-                      surface->h,
-                      surface->format->BytesPerPixel,
+    texture->generate(surface->w, surface->h, surface->format->BytesPerPixel,
                       static_cast<unsigned char *>(surface->pixels));
 
     SDL_FreeSurface(surface);

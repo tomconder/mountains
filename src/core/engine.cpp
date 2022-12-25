@@ -43,12 +43,8 @@ globals::Retcode Engine::start() {
         return globals::Retcode::FAIL;
     }
 
-    SDL_Window *window = SDL_CreateWindow(appName.c_str(),
-                                          SDL_WINDOWPOS_UNDEFINED,
-                                          SDL_WINDOWPOS_UNDEFINED,
-                                          screenWidth,
-                                          screenHeight,
-                                          SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+    SDL_Window *window = SDL_CreateWindow(appName.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+                                          screenWidth, screenHeight, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
     if (window == nullptr) {
         SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Mountains", "Could not create window", nullptr);
         LOG(ERROR) << "Could not create window: " << SDL_GetError();
@@ -59,7 +55,7 @@ globals::Retcode Engine::start() {
 
     renderer = std::make_unique<OpenGLRendererAPI>();
     renderer->init();
-    renderer->setClearColor(glm::vec4{0.36f, 0.36f, 0.36f, 1.0f});
+    renderer->setClearColor(glm::vec4{ 0.36f, 0.36f, 0.36f, 1.0f });
 
     if (!onUserCreate()) {
         SDL_DestroyWindow(window);
@@ -150,11 +146,8 @@ bool Engine::onUserDestroy() {
 
 void Engine::adjustAspectRatio(int eventW, int eventH) {
     const std::array<glm::vec3, 5> ratios = {
-        glm::vec3{32.f, 9.f, 32.f / 9.f},
-        glm::vec3{21.f, 9.f, 21.f / 9.f},
-        glm::vec3{16.f, 9.f, 16.f / 9.f},
-        glm::vec3{16.f, 10.f, 16.f / 10.f},
-        glm::vec3{4.f, 3.f, 4.f / 3.f},
+        glm::vec3{ 32.f, 9.f, 32.f / 9.f },   glm::vec3{ 21.f, 9.f, 21.f / 9.f }, glm::vec3{ 16.f, 9.f, 16.f / 9.f },
+        glm::vec3{ 16.f, 10.f, 16.f / 10.f }, glm::vec3{ 4.f, 3.f, 4.f / 3.f },
     };
 
     // attempt to find the closest matching aspect ratio
