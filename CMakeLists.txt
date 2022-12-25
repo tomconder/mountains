@@ -168,7 +168,7 @@ else ()
           glm/0.9.9.8
           sdl/2.26.0
           sdl_image/2.0.5
-          zlib/1.2.13
+          zlib/1.2.12
           GENERATORS cmake_find_package)
 
   conan_cmake_autodetect(settings)
