@@ -11,8 +11,7 @@
 
 #include "renderer/texture.h"
 
-class OpenGLTexture : public Texture
-{
+class OpenGLTexture : public Texture {
   public:
     OpenGLTexture();
     ~OpenGLTexture() override;

@@ -5,8 +5,7 @@
 
 #include "renderer/buffer.h"
 
-class OpenGLElementBuffer : public Buffer
-{
+class OpenGLElementBuffer : public Buffer {
   public:
     explicit OpenGLElementBuffer(uint32_t size);
     OpenGLElementBuffer(const unsigned int *indices, uint32_t size);

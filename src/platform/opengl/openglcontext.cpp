@@ -57,7 +57,8 @@ OpenGLContext::OpenGLContext(SDL_Window *window)
     if (window != nullptr) {
         SDL_GetWindowSize(window, &width, &height);
         glViewport(0, 0, width, height);
-    } else {
+    }
+    else {
         width = globals::SCREEN_WIDTH;
         height = globals::SCREEN_HEIGHT;
     }

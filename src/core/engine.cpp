@@ -82,25 +82,31 @@ bool Engine::iterateLoop()
     if (SDL_PollEvent(&event) != 0) {
         if (event.type == SDL_QUIT) {
             quit = true;
-        } else if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_RESIZED) {
+        }
+        else if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_RESIZED) {
             adjustAspectRatio(event.window.data1, event.window.data2);
             renderer->setViewport(offsetx, offsety, w, h);
             onUserResize(w, h);
-        } else if (event.type == SDL_KEYDOWN) {
+        }
+        else if (event.type == SDL_KEYDOWN) {
             if (event.key.repeat == 0) {
                 input.keyDown(event.key);
             }
-        } else if (event.type == SDL_KEYUP) {
+        }
+        else if (event.type == SDL_KEYUP) {
             input.keyUp(event.key);
         }
 
         if (event.type == SDL_MOUSEBUTTONDOWN) {
             input.mouseButtonDown(event.button);
-        } else if (event.type == SDL_MOUSEBUTTONUP) {
+        }
+        else if (event.type == SDL_MOUSEBUTTONUP) {
             input.mouseButtonUp(event.button);
-        } else if (event.type == SDL_MOUSEMOTION) {
+        }
+        else if (event.type == SDL_MOUSEMOTION) {
             input.mouseMove(event.motion);
-        } else if (event.type == SDL_MOUSEWHEEL) {
+        }
+        else if (event.type == SDL_MOUSEWHEEL) {
             input.mouseScroll(event.wheel);
         }
     }
@@ -180,7 +186,8 @@ void Engine::adjustAspectRatio(int eventW, int eventH)
     if (newAspectRatio > aspectRatio) {
         w = static_cast<int>(aspectRatioWidth * height / aspectRatioHeight);
         h = eventH;
-    } else {
+    }
+    else {
         w = eventW;
         h = static_cast<int>(aspectRatioHeight * width / aspectRatioWidth);
     }

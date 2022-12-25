@@ -22,7 +22,7 @@ AlwaysBreakBeforeMultilineStrings: false
 AlwaysBreakTemplateDeclarations: MultiLine
 
 # Custom brace breaking
-BreakBeforeBraces: Custom
+BreakBeforeBraces: Stroustrup
 BraceWrapping:
   AfterCaseLabel: true
   AfterClass: true

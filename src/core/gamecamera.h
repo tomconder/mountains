@@ -7,8 +7,7 @@
 #include "globals.h"
 #include "renderer/camera.h"
 
-class GameCamera : public Camera
-{
+class GameCamera : public Camera {
   public:
     GameCamera() = default;
     GameCamera(float fov, float width, float height, float zNear, float zFar);

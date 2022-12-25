@@ -65,7 +65,8 @@ OpenGLMesh OpenGLModel::processMesh(const aiMesh *mesh, const aiScene *scene)
 
             glmVec3 = { mesh->mBitangents[i].x, mesh->mBitangents[i].y, mesh->mBitangents[i].z };
             vertex.biTangent = glmVec3;
-        } else {
+        }
+        else {
             vertex.texCoords = glm::vec2(0.0f, 0.0f);
         }
 

@@ -5,8 +5,7 @@
 
 #include "renderer/buffer.h"
 
-class OpenGLBuffer : public Buffer
-{
+class OpenGLBuffer : public Buffer {
   public:
     explicit OpenGLBuffer(uint32_t size);
     OpenGLBuffer(const float *vertices, uint32_t size);

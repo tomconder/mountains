@@ -11,8 +11,7 @@
 #include "platform/opengl/opengltexture.h"
 #include "renderer/mesh.h"
 
-class OpenGLModel
-{
+class OpenGLModel {
   public:
     void load(const std::string &path);
     void render();

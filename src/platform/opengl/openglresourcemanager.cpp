@@ -156,7 +156,8 @@ std::string OpenGLResourceManager::loadSourceFromFile(const std::string &path)
         sstr << stream.rdbuf();
         code = sstr.str();
         stream.close();
-    } else {
+    }
+    else {
         LOG(ERROR) << "Unable to open " << path << ". Are you in the right directory?";
     }
 

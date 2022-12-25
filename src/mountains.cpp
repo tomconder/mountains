@@ -58,11 +58,14 @@ bool Mountains::onUserUpdate(Uint32 elapsedTime)
 
     if (KEY_PRESSED_OR_HOLD(SDL_SCANCODE_W) || KEY_PRESSED_OR_HOLD(SDL_SCANCODE_UP)) {
         camera->moveForward(elapsedTime);
-    } else if (KEY_PRESSED_OR_HOLD(SDL_SCANCODE_S) || KEY_PRESSED_OR_HOLD(SDL_SCANCODE_DOWN)) {
+    }
+    else if (KEY_PRESSED_OR_HOLD(SDL_SCANCODE_S) || KEY_PRESSED_OR_HOLD(SDL_SCANCODE_DOWN)) {
         camera->moveBackward(elapsedTime);
-    } else if (KEY_PRESSED_OR_HOLD(SDL_SCANCODE_A) || KEY_PRESSED_OR_HOLD(SDL_SCANCODE_LEFT)) {
+    }
+    else if (KEY_PRESSED_OR_HOLD(SDL_SCANCODE_A) || KEY_PRESSED_OR_HOLD(SDL_SCANCODE_LEFT)) {
         camera->strafeLeft(elapsedTime);
-    } else if (KEY_PRESSED_OR_HOLD(SDL_SCANCODE_D) || KEY_PRESSED_OR_HOLD(SDL_SCANCODE_RIGHT)) {
+    }
+    else if (KEY_PRESSED_OR_HOLD(SDL_SCANCODE_D) || KEY_PRESSED_OR_HOLD(SDL_SCANCODE_RIGHT)) {
         camera->strafeRight(elapsedTime);
     }
 

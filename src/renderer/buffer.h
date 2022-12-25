@@ -1,8 +1,7 @@
 #ifndef INCLUDE_BUFFER_H
 #define INCLUDE_BUFFER_H
 
-class Buffer
-{
+class Buffer {
   public:
     virtual ~Buffer() = default;
 

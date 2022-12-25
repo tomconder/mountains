@@ -11,8 +11,7 @@
 
 #include "renderer/shader.h"
 
-class OpenGLShader : public Shader
-{
+class OpenGLShader : public Shader {
   public:
     OpenGLShader() = default;
     ~OpenGLShader() override;

@@ -1,8 +1,7 @@
 #ifndef INCLUDE_VERTEXARRAY_H
 #define INCLUDE_VERTEXARRAY_H
 
-class VertexArray
-{
+class VertexArray {
   public:
     virtual ~VertexArray() = default;
 

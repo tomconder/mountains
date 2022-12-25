@@ -74,11 +74,14 @@ void OpenGLMesh::render() const
         std::string name = textures[i]->getType();
         if (name == "texture_diffuse") {
             number = std::to_string(diffuseNumber++);
-        } else if (name == "texture_specular") {
+        }
+        else if (name == "texture_specular") {
             number = std::to_string(specularNumber++);
-        } else if (name == "texture_normal") {
+        }
+        else if (name == "texture_normal") {
             number = std::to_string(normalNumber++);
-        } else if (name == "texture_height") {
+        }
+        else if (name == "texture_height") {
             number = std::to_string(heightNumber++);
         }
 

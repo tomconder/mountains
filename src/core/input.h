@@ -5,8 +5,7 @@
 #include <glm/vec2.hpp>
 #include <map>
 
-class Input
-{
+class Input {
   public:
     void beginFrame();
     void keyDown(const SDL_KeyboardEvent &event);

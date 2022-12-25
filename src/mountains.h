@@ -8,8 +8,7 @@
 #include <memory>
 #include <string>
 
-class Mountains : public Engine
-{
+class Mountains : public Engine {
   public:
     Mountains();
 
