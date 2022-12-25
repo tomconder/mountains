@@ -2,9 +2,9 @@
 #define INCLUDE_CAMERA_H
 
 class Camera {
-  public:
-    Camera() = default;
-    virtual ~Camera() = default;
+    public:
+        Camera() = default;
+        virtual ~Camera() = default;
 };
 
 #endif // INCLUDE_CAMERA_H

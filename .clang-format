@@ -28,7 +28,7 @@ BraceWrapping:
   AfterClass: true
   AfterControlStatement: Never
   AfterEnum: true
-  AfterFunction: true
+  AfterFunction: false
   AfterNamespace: true
   AfterObjCDeclaration: true
   AfterStruct: true
@@ -63,6 +63,7 @@ IndentCaseBlocks: false
 IndentGotoLabels: true
 IndentPPDirectives: None
 IndentExternBlock: NoIndent
+IndentAccessModifiers: true
 
 PointerAlignment: Right
 SpaceAfterCStyleCast: false
