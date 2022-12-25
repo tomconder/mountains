@@ -1,16 +1,17 @@
 #ifndef INCLUDE_ENGINE_H
 #define INCLUDE_ENGINE_H
 
-#include <string>
 #include <memory>
+#include <string>
 
-#include "globals.h"
 #include "core/input.h"
+#include "globals.h"
 #include "platform/opengl/openglcontext.h"
 #include "platform/opengl/openglrendererapi.h"
 
-class Engine {
-public:
+class Engine
+{
+  public:
     Engine();
     virtual ~Engine() = default;
 
@@ -37,8 +38,8 @@ public:
     int w = 0;
     int h = 0;
 
-private:
+  private:
     void adjustAspectRatio(int eventW, int eventH);
 };
 
-#endif //INCLUDE_ENGINE_H
+#endif // INCLUDE_ENGINE_H

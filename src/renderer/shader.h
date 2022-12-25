@@ -1,12 +1,13 @@
 #ifndef INCLUDE_SHADER_H
 #define INCLUDE_SHADER_H
 
-#include <glm/vec3.hpp>
 #include <glm/mat4x4.hpp>
+#include <glm/vec3.hpp>
 #include <string>
 
-class Shader {
-public:
+class Shader
+{
+  public:
     virtual ~Shader() = default;
 
     virtual Shader *bind() = 0;
@@ -18,4 +19,4 @@ public:
     virtual void setMat4(const std::string &name, glm::mat4 value) = 0;
 };
 
-#endif //INCLUDE_SHADER_H
+#endif // INCLUDE_SHADER_H

@@ -3,18 +3,22 @@
 
 #define UNUSED(x) (void)(x)
 
-namespace globals {
+namespace globals
+{
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
-enum class Retcode {
+enum class Retcode
+{
     FAIL = 0,
     OK = 1
 };
-}
+} // namespace globals
 
-namespace direction {
-enum class Direction {
+namespace direction
+{
+enum class Direction
+{
     LEFT,
     RIGHT,
     UP,
@@ -22,8 +26,10 @@ enum class Direction {
 };
 }
 
-namespace move {
-enum class Move {
+namespace move
+{
+enum class Move
+{
     LEFT,
     RIGHT,
     FORWARD,
@@ -34,4 +40,4 @@ enum class Move {
 };
 }
 
-#endif //INCLUDE_GLOBALS_H
+#endif // INCLUDE_GLOBALS_H

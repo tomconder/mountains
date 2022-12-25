@@ -12,12 +12,14 @@
 
 #include "easylogging++.h"
 
-Engine::Engine() : appName("undefined") {
+Engine::Engine() : appName("undefined")
+{
     screenWidth = globals::SCREEN_WIDTH;
     screenHeight = globals::SCREEN_HEIGHT;
 }
 
-globals::Retcode Engine::construct(int width, int height) {
+globals::Retcode Engine::construct(int width, int height)
+{
     screenWidth = width;
     screenHeight = height;
 
@@ -30,7 +32,8 @@ globals::Retcode Engine::construct(int width, int height) {
     return globals::Retcode::OK;
 }
 
-globals::Retcode Engine::start() {
+globals::Retcode Engine::start()
+{
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_EVENTS) < 0) {
         LOG(ERROR) << "Unable to initialize SDL: " << SDL_GetError();
         SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Mountains", "Unable to initialize SDL", nullptr);
@@ -43,12 +46,8 @@ globals::Retcode Engine::start() {
         return globals::Retcode::FAIL;
     }
 
-    SDL_Window *window = SDL_CreateWindow(appName.c_str(),
-                                          SDL_WINDOWPOS_UNDEFINED,
-                                          SDL_WINDOWPOS_UNDEFINED,
-                                          screenWidth,
-                                          screenHeight,
-                                          SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+    SDL_Window *window = SDL_CreateWindow(appName.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+                                          screenWidth, screenHeight, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
     if (window == nullptr) {
         SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Mountains", "Could not create window", nullptr);
         LOG(ERROR) << "Could not create window: " << SDL_GetError();
@@ -59,7 +58,7 @@ globals::Retcode Engine::start() {
 
     renderer = std::make_unique<OpenGLRendererAPI>();
     renderer->init();
-    renderer->setClearColor(glm::vec4{0.36f, 0.36f, 0.36f, 1.0f});
+    renderer->setClearColor(glm::vec4{ 0.36f, 0.36f, 0.36f, 1.0f });
 
     if (!onUserCreate()) {
         SDL_DestroyWindow(window);
@@ -71,7 +70,8 @@ globals::Retcode Engine::start() {
     return globals::Retcode::OK;
 }
 
-bool Engine::iterateLoop() {
+bool Engine::iterateLoop()
+{
     SDL_Event event;
     Uint32 currentTime;
     Uint32 elapsedTime;
@@ -129,32 +129,34 @@ bool Engine::iterateLoop() {
     return false;
 }
 
-bool Engine::onUserCreate() {
+bool Engine::onUserCreate()
+{
     return true;
 }
 
-bool Engine::onUserUpdate(Uint32 elapsedTime) {
+bool Engine::onUserUpdate(Uint32 elapsedTime)
+{
     UNUSED(elapsedTime);
     return true;
 }
 
-bool Engine::onUserResize(int width, int height) {
+bool Engine::onUserResize(int width, int height)
+{
     UNUSED(width);
     UNUSED(height);
     return true;
 }
 
-bool Engine::onUserDestroy() {
+bool Engine::onUserDestroy()
+{
     return true;
 }
 
-void Engine::adjustAspectRatio(int eventW, int eventH) {
+void Engine::adjustAspectRatio(int eventW, int eventH)
+{
     const std::array<glm::vec3, 5> ratios = {
-        glm::vec3{32.f, 9.f, 32.f / 9.f},
-        glm::vec3{21.f, 9.f, 21.f / 9.f},
-        glm::vec3{16.f, 9.f, 16.f / 9.f},
-        glm::vec3{16.f, 10.f, 16.f / 10.f},
-        glm::vec3{4.f, 3.f, 4.f / 3.f},
+        glm::vec3{ 32.f, 9.f, 32.f / 9.f },   glm::vec3{ 21.f, 9.f, 21.f / 9.f }, glm::vec3{ 16.f, 9.f, 16.f / 9.f },
+        glm::vec3{ 16.f, 10.f, 16.f / 10.f }, glm::vec3{ 4.f, 3.f, 4.f / 3.f },
     };
 
     // attempt to find the closest matching aspect ratio

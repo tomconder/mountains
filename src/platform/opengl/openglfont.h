@@ -17,15 +17,17 @@
 #include "platform/opengl/opengltexture.h"
 #include "platform/opengl/openglvertexarray.h"
 
-struct Character {
+struct Character
+{
     unsigned int id;
     glm::ivec2 size;
     glm::ivec2 bearing;
     unsigned int advance;
 };
 
-class OpenGLFont {
-public:
+class OpenGLFont
+{
+  public:
     OpenGLFont();
     void load(const std::string &path, unsigned int fontSize);
 
@@ -37,4 +39,4 @@ public:
     std::map<unsigned char, Character> Characters;
 };
 
-#endif //INCLUDE_OPENGLFONT_H
+#endif // INCLUDE_OPENGLFONT_H

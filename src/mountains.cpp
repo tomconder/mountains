@@ -11,11 +11,13 @@
 
 #define KEY_PRESSED_OR_HOLD(key) input.wasKeyPressed(key) || input.isKeyHeld(key)
 
-Mountains::Mountains() {
+Mountains::Mountains()
+{
     appName = "Mountains";
 }
 
-bool Mountains::onUserCreate() {
+bool Mountains::onUserCreate()
+{
     OpenGLResourceManager::loadShader("assets/shaders/shader.vert", "assets/shaders/shader.frag", "shader");
     OpenGLResourceManager::loadShader("assets/shaders/sprite.vert", "assets/shaders/sprite.frag", "sprite");
     OpenGLResourceManager::loadShader("assets/shaders/text.vert", "assets/shaders/text.frag", "text");
@@ -29,10 +31,7 @@ bool Mountains::onUserCreate() {
     std::shared_ptr<OpenGLShader> shader = OpenGLResourceManager::getShader("shader");
     shader->bind();
 
-    camera = std::make_unique<GameCamera>(80.0f,
-                                          static_cast<float>(screenWidth),
-                                          static_cast<float>(screenHeight),
-                                          1.f,
+    camera = std::make_unique<GameCamera>(80.0f, static_cast<float>(screenWidth), static_cast<float>(screenHeight), 1.f,
                                           18000.0f);
 
     camera->setPosition(glm::vec3(0.f, 40.f, 70.f));
@@ -51,7 +50,8 @@ bool Mountains::onUserCreate() {
     return true;
 }
 
-bool Mountains::onUserUpdate(Uint32 elapsedTime) {
+bool Mountains::onUserUpdate(Uint32 elapsedTime)
+{
     if (input.wasKeyPressed(SDL_SCANCODE_ESCAPE)) {
         return false;
     }
@@ -85,13 +85,13 @@ bool Mountains::onUserUpdate(Uint32 elapsedTime) {
 
     sprite->render("coffee", glm::vec2(10.f, 10.f), glm::vec2(64.f, 64.f));
 
-    OpenGLResourceManager::getFont("gothic")->
-        renderText(appName, 25.0, 25.0, glm::vec3(0.5, 0.9f, 1.0f));
+    OpenGLResourceManager::getFont("gothic")->renderText(appName, 25.0, 25.0, glm::vec3(0.5, 0.9f, 1.0f));
 
     return true;
 }
 
-bool Mountains::onUserResize(int width, int height) {
+bool Mountains::onUserResize(int width, int height)
+{
     camera->setViewportSize(width, height);
 
     glm::mat projection = camera->getProjection();
@@ -106,6 +106,7 @@ bool Mountains::onUserResize(int width, int height) {
     return true;
 }
 
-bool Mountains::onUserDestroy() {
+bool Mountains::onUserDestroy()
+{
     return true;
 }
