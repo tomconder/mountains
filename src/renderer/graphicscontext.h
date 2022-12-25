@@ -3,7 +3,8 @@
 
 #include "glm/vec4.hpp"
 
-class GraphicsContext {
+class GraphicsContext
+{
     public:
         virtual ~GraphicsContext() = default;
 

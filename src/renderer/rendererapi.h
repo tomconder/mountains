@@ -3,7 +3,8 @@
 
 #include "glm/vec4.hpp"
 
-class RendererAPI {
+class RendererAPI
+{
     public:
         RendererAPI() = default;
         virtual ~RendererAPI() = default;

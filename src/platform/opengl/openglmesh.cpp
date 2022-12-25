@@ -13,8 +13,7 @@
 
 OpenGLMesh::OpenGLMesh(const std::vector<Vertex> &vertices, const std::vector<unsigned int> &indices,
                        const std::vector<std::shared_ptr<OpenGLTexture>> &textures)
-    : textures(textures)
-{
+    : textures(textures) {
     this->indices = indices;
     this->vertices = vertices;
 
@@ -56,8 +55,7 @@ OpenGLMesh::OpenGLMesh(const std::vector<Vertex> &vertices, const std::vector<un
     glBindVertexArray(0);
 }
 
-void OpenGLMesh::render() const
-{
+void OpenGLMesh::render() const {
     vao->bind();
 
     std::shared_ptr<OpenGLShader> shader = OpenGLResourceManager::getShader("shader");
@@ -74,14 +72,11 @@ void OpenGLMesh::render() const
         std::string name = textures[i]->getType();
         if (name == "texture_diffuse") {
             number = std::to_string(diffuseNumber++);
-        }
-        else if (name == "texture_specular") {
+        } else if (name == "texture_specular") {
             number = std::to_string(specularNumber++);
-        }
-        else if (name == "texture_normal") {
+        } else if (name == "texture_normal") {
             number = std::to_string(normalNumber++);
-        }
-        else if (name == "texture_height") {
+        } else if (name == "texture_height") {
             number = std::to_string(heightNumber++);
         }
 

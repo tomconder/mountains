@@ -11,14 +11,14 @@
 
 #include "renderer/shader.h"
 
-class OpenGLShader : public Shader {
+class OpenGLShader : public Shader
+{
     public:
         OpenGLShader() = default;
         ~OpenGLShader() override;
 
         void compileAndLink(const std::string &vertexSource, const std::string &fragmentSource);
-        GLuint getId() const
-        {
+        GLuint getId() const {
             return program;
         };
 

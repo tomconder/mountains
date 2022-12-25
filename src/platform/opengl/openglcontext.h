@@ -6,7 +6,8 @@
 
 struct SDL_Window;
 
-class OpenGLContext : public GraphicsContext {
+class OpenGLContext : public GraphicsContext
+{
     public:
         explicit OpenGLContext(SDL_Window *window);
         ~OpenGLContext() override;

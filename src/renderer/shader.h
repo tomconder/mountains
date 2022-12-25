@@ -5,7 +5,8 @@
 #include <glm/vec3.hpp>
 #include <string>
 
-class Shader {
+class Shader
+{
     public:
         virtual ~Shader() = default;
 

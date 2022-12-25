@@ -5,7 +5,8 @@
 #include <glm/vec2.hpp>
 #include <map>
 
-class Input {
+class Input
+{
     public:
         void beginFrame();
         void keyDown(const SDL_KeyboardEvent &event);
@@ -22,8 +23,7 @@ class Input {
         void mouseMove(const SDL_MouseMotionEvent &event);
         void mouseScroll(const SDL_MouseWheelEvent &event);
 
-        glm::vec2 getMoveDelta() const
-        {
+        glm::vec2 getMoveDelta() const {
             return moveDelta;
         }
         glm::vec2 getScrollDelta();

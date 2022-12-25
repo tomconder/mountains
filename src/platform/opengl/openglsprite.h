@@ -7,7 +7,8 @@
 #include "platform/opengl/openglvertexarray.h"
 #include "renderer/sprite.h"
 
-class OpenGLSprite : public Sprite {
+class OpenGLSprite : public Sprite
+{
     public:
         OpenGLSprite();
 

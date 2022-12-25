@@ -11,8 +11,7 @@
 #include "globals.h"
 #include "platform/opengl/openglresourcemanager.h"
 
-OpenGLFont::OpenGLFont()
-{
+OpenGLFont::OpenGLFont() {
     auto shader = OpenGLResourceManager::getShader("text");
     shader->bind();
 
@@ -35,8 +34,7 @@ OpenGLFont::OpenGLFont()
     glBindVertexArray(0);
 }
 
-void OpenGLFont::load(const std::string &path, unsigned int fontSize)
-{
+void OpenGLFont::load(const std::string &path, unsigned int fontSize) {
     assert(!path.empty());
 
     Characters.clear();
@@ -92,8 +90,7 @@ void OpenGLFont::load(const std::string &path, unsigned int fontSize)
     FT_Done_FreeType(ft);
 }
 
-void OpenGLFont::renderText(const std::string &text, float x, float y, glm::vec3 color)
-{
+void OpenGLFont::renderText(const std::string &text, float x, float y, glm::vec3 color) {
     auto shader = OpenGLResourceManager::getShader("text");
     shader->bind();
     shader->setFloat3("textColor", color);

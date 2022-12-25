@@ -6,17 +6,14 @@
 #include <glad/gl.h>
 #endif
 
-OpenGLVertexArray::OpenGLVertexArray()
-{
+OpenGLVertexArray::OpenGLVertexArray() {
     glGenVertexArrays(1, &id);
 }
 
-OpenGLVertexArray::~OpenGLVertexArray()
-{
+OpenGLVertexArray::~OpenGLVertexArray() {
     glDeleteVertexArrays(1, &id);
 }
 
-void OpenGLVertexArray::bind() const
-{
+void OpenGLVertexArray::bind() const {
     glBindVertexArray(id);
 }

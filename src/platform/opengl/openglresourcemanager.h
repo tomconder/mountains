@@ -10,7 +10,8 @@
 #include "platform/opengl/openglshader.h"
 #include "platform/opengl/opengltexture.h"
 
-class OpenGLResourceManager {
+class OpenGLResourceManager
+{
     public:
         static std::shared_ptr<OpenGLFont> getFont(const std::string &name);
         static std::shared_ptr<OpenGLFont> loadFont(const std::string &path, const std::string &name);

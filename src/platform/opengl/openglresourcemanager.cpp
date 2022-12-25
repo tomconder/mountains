@@ -16,14 +16,12 @@ std::map<std::string, std::shared_ptr<OpenGLModel>, std::less<>> OpenGLResourceM
 std::map<std::string, std::shared_ptr<OpenGLShader>, std::less<>> OpenGLResourceManager::shaders;
 std::map<std::string, std::shared_ptr<OpenGLTexture>, std::less<>> OpenGLResourceManager::textures;
 
-std::shared_ptr<OpenGLFont> OpenGLResourceManager::getFont(const std::string &name)
-{
+std::shared_ptr<OpenGLFont> OpenGLResourceManager::getFont(const std::string &name) {
     assert(!name.empty());
     return fonts.at(name);
 }
 
-std::shared_ptr<OpenGLFont> OpenGLResourceManager::loadFont(const std::string &path, const std::string &name)
-{
+std::shared_ptr<OpenGLFont> OpenGLResourceManager::loadFont(const std::string &path, const std::string &name) {
     assert(!path.empty());
     assert(!name.empty());
 
@@ -37,14 +35,12 @@ std::shared_ptr<OpenGLFont> OpenGLResourceManager::loadFont(const std::string &p
     return font;
 }
 
-std::shared_ptr<OpenGLModel> OpenGLResourceManager::getMesh(const std::string &name)
-{
+std::shared_ptr<OpenGLModel> OpenGLResourceManager::getMesh(const std::string &name) {
     assert(!name.empty());
     return meshes.at(name);
 }
 
-std::shared_ptr<OpenGLModel> OpenGLResourceManager::loadMesh(const std::string &path, const std::string &name)
-{
+std::shared_ptr<OpenGLModel> OpenGLResourceManager::loadMesh(const std::string &path, const std::string &name) {
     assert(!path.empty());
     assert(!name.empty());
 
@@ -58,16 +54,14 @@ std::shared_ptr<OpenGLModel> OpenGLResourceManager::loadMesh(const std::string &
     return mesh;
 }
 
-std::shared_ptr<OpenGLShader> OpenGLResourceManager::getShader(const std::string &name)
-{
+std::shared_ptr<OpenGLShader> OpenGLResourceManager::getShader(const std::string &name) {
     assert(!name.empty());
     return shaders.at(name);
 }
 
 std::shared_ptr<OpenGLShader> OpenGLResourceManager::loadShader(const std::string &vertexShader,
                                                                 const std::string &fragmentShader,
-                                                                const std::string &name)
-{
+                                                                const std::string &name) {
     assert(!vertexShader.empty());
     assert(!fragmentShader.empty());
     assert(!name.empty());
@@ -82,14 +76,12 @@ std::shared_ptr<OpenGLShader> OpenGLResourceManager::loadShader(const std::strin
     return shader;
 }
 
-std::shared_ptr<OpenGLTexture> OpenGLResourceManager::getTexture(const std::string &name)
-{
+std::shared_ptr<OpenGLTexture> OpenGLResourceManager::getTexture(const std::string &name) {
     assert(!name.empty());
     return textures.at(name);
 }
 
-std::shared_ptr<OpenGLTexture> OpenGLResourceManager::loadTexture(const std::string &path, const std::string &name)
-{
+std::shared_ptr<OpenGLTexture> OpenGLResourceManager::loadTexture(const std::string &path, const std::string &name) {
     assert(!path.empty());
     assert(!name.empty());
 
@@ -104,8 +96,7 @@ std::shared_ptr<OpenGLTexture> OpenGLResourceManager::loadTexture(const std::str
 }
 
 std::shared_ptr<OpenGLTexture> OpenGLResourceManager::loadTextureWithType(const std::string &path,
-                                                                          const std::string &typeName)
-{
+                                                                          const std::string &typeName) {
     assert(!path.empty());
     assert(!typeName.empty());
 
@@ -120,8 +111,7 @@ std::shared_ptr<OpenGLTexture> OpenGLResourceManager::loadTextureWithType(const 
     return texture;
 }
 
-std::shared_ptr<OpenGLFont> OpenGLResourceManager::loadFontFromFile(const std::string &path)
-{
+std::shared_ptr<OpenGLFont> OpenGLResourceManager::loadFontFromFile(const std::string &path) {
     assert(!path.empty());
 
     LOG(INFO) << "Loading font: " << path;
@@ -132,8 +122,7 @@ std::shared_ptr<OpenGLFont> OpenGLResourceManager::loadFontFromFile(const std::s
     return font;
 }
 
-std::shared_ptr<OpenGLModel> OpenGLResourceManager::loadMeshFromFile(const std::string &path)
-{
+std::shared_ptr<OpenGLModel> OpenGLResourceManager::loadMeshFromFile(const std::string &path) {
     assert(!path.empty());
 
     LOG(INFO) << "Loading mesh: " << path;
@@ -144,8 +133,7 @@ std::shared_ptr<OpenGLModel> OpenGLResourceManager::loadMeshFromFile(const std::
     return mesh;
 }
 
-std::string OpenGLResourceManager::loadSourceFromFile(const std::string &path)
-{
+std::string OpenGLResourceManager::loadSourceFromFile(const std::string &path) {
     assert(!path.empty());
 
     LOG(INFO) << "Loading shader: " << path;
@@ -156,16 +144,14 @@ std::string OpenGLResourceManager::loadSourceFromFile(const std::string &path)
         sstr << stream.rdbuf();
         code = sstr.str();
         stream.close();
-    }
-    else {
+    } else {
         LOG(ERROR) << "Unable to open " << path << ". Are you in the right directory?";
     }
 
     return code;
 }
 
-std::shared_ptr<OpenGLTexture> OpenGLResourceManager::loadTextureFromFile(const std::string &path)
-{
+std::shared_ptr<OpenGLTexture> OpenGLResourceManager::loadTextureFromFile(const std::string &path) {
     assert(!path.empty());
 
     auto name = path;

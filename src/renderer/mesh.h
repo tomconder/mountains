@@ -7,7 +7,8 @@
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 
-struct Vertex {
+struct Vertex
+{
         glm::vec3 position;
         glm::vec3 normal;
         glm::vec2 texCoords;
@@ -15,7 +16,8 @@ struct Vertex {
         glm::vec3 biTangent;
 };
 
-class Mesh {
+class Mesh
+{
     public:
         std::vector<Vertex> vertices;
         std::vector<unsigned int> indices;

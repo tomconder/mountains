@@ -11,13 +11,11 @@
 
 #define KEY_PRESSED_OR_HOLD(key) input.wasKeyPressed(key) || input.isKeyHeld(key)
 
-Mountains::Mountains()
-{
+Mountains::Mountains() {
     appName = "Mountains";
 }
 
-bool Mountains::onUserCreate()
-{
+bool Mountains::onUserCreate() {
     OpenGLResourceManager::loadShader("assets/shaders/shader.vert", "assets/shaders/shader.frag", "shader");
     OpenGLResourceManager::loadShader("assets/shaders/sprite.vert", "assets/shaders/sprite.frag", "sprite");
     OpenGLResourceManager::loadShader("assets/shaders/text.vert", "assets/shaders/text.frag", "text");
@@ -50,22 +48,18 @@ bool Mountains::onUserCreate()
     return true;
 }
 
-bool Mountains::onUserUpdate(Uint32 elapsedTime)
-{
+bool Mountains::onUserUpdate(Uint32 elapsedTime) {
     if (input.wasKeyPressed(SDL_SCANCODE_ESCAPE)) {
         return false;
     }
 
     if (KEY_PRESSED_OR_HOLD(SDL_SCANCODE_W) || KEY_PRESSED_OR_HOLD(SDL_SCANCODE_UP)) {
         camera->moveForward(elapsedTime);
-    }
-    else if (KEY_PRESSED_OR_HOLD(SDL_SCANCODE_S) || KEY_PRESSED_OR_HOLD(SDL_SCANCODE_DOWN)) {
+    } else if (KEY_PRESSED_OR_HOLD(SDL_SCANCODE_S) || KEY_PRESSED_OR_HOLD(SDL_SCANCODE_DOWN)) {
         camera->moveBackward(elapsedTime);
-    }
-    else if (KEY_PRESSED_OR_HOLD(SDL_SCANCODE_A) || KEY_PRESSED_OR_HOLD(SDL_SCANCODE_LEFT)) {
+    } else if (KEY_PRESSED_OR_HOLD(SDL_SCANCODE_A) || KEY_PRESSED_OR_HOLD(SDL_SCANCODE_LEFT)) {
         camera->strafeLeft(elapsedTime);
-    }
-    else if (KEY_PRESSED_OR_HOLD(SDL_SCANCODE_D) || KEY_PRESSED_OR_HOLD(SDL_SCANCODE_RIGHT)) {
+    } else if (KEY_PRESSED_OR_HOLD(SDL_SCANCODE_D) || KEY_PRESSED_OR_HOLD(SDL_SCANCODE_RIGHT)) {
         camera->strafeRight(elapsedTime);
     }
 
@@ -93,8 +87,7 @@ bool Mountains::onUserUpdate(Uint32 elapsedTime)
     return true;
 }
 
-bool Mountains::onUserResize(int width, int height)
-{
+bool Mountains::onUserResize(int width, int height) {
     camera->setViewportSize(width, height);
 
     glm::mat projection = camera->getProjection();
@@ -109,7 +102,6 @@ bool Mountains::onUserResize(int width, int height)
     return true;
 }
 
-bool Mountains::onUserDestroy()
-{
+bool Mountains::onUserDestroy() {
     return true;
 }

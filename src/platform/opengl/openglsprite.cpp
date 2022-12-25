@@ -8,8 +8,7 @@
 #include "globals.h"
 #include "platform/opengl/openglresourcemanager.h"
 
-OpenGLSprite::OpenGLSprite()
-{
+OpenGLSprite::OpenGLSprite() {
     std::array<float, 24> vertices = { // pos      // tex
                                        0.f, 1.f, 0.f, 1.f, 1.f, 0.f, 1.f, 0.f, 0.f, 0.f, 0.f, 0.f,
 
@@ -32,8 +31,7 @@ OpenGLSprite::OpenGLSprite()
     glEnableVertexAttribArray(position);
 }
 
-void OpenGLSprite::render(const std::string &name, glm::vec2 position, glm::vec2 size) const
-{
+void OpenGLSprite::render(const std::string &name, glm::vec2 position, glm::vec2 size) const {
     auto model = glm::mat4(1.f);
     model = glm::translate(model, glm::vec3(position, 0.f));
 

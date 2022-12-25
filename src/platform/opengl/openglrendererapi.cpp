@@ -6,8 +6,7 @@
 #include <glad/gl.h>
 #endif
 
-void OpenGLRendererAPI::init()
-{
+void OpenGLRendererAPI::init() {
     glEnable(GL_DEPTH_TEST);
 
     glEnable(GL_CULL_FACE);
@@ -18,17 +17,14 @@ void OpenGLRendererAPI::init()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
-void OpenGLRendererAPI::setViewport(int32_t x, int32_t y, int32_t width, int32_t height)
-{
+void OpenGLRendererAPI::setViewport(int32_t x, int32_t y, int32_t width, int32_t height) {
     glViewport(x, y, width, height);
 }
 
-void OpenGLRendererAPI::setClearColor(const glm::vec4 &color)
-{
+void OpenGLRendererAPI::setClearColor(const glm::vec4 &color) {
     glClearColor(color.r, color.g, color.b, color.a);
 }
 
-void OpenGLRendererAPI::clear()
-{
+void OpenGLRendererAPI::clear() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }

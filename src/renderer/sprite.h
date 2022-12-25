@@ -4,7 +4,8 @@
 #include <glm/vec2.hpp>
 #include <string>
 
-class Sprite {
+class Sprite
+{
     public:
         virtual ~Sprite() = default;
 

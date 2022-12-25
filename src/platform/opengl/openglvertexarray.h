@@ -5,7 +5,8 @@
 
 #include "renderer/vertexarray.h"
 
-class OpenGLVertexArray : public VertexArray {
+class OpenGLVertexArray : public VertexArray
+{
     public:
         OpenGLVertexArray();
         ~OpenGLVertexArray() override;

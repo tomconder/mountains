@@ -9,8 +9,7 @@
 #include "easylogging++.h"
 #include "platform/opengl/openglresourcemanager.h"
 
-void OpenGLModel::load(const std::string &path)
-{
+void OpenGLModel::load(const std::string &path) {
     assert(!path.empty());
 
     meshes.clear();
@@ -28,8 +27,7 @@ void OpenGLModel::load(const std::string &path)
     processNode(scene->mRootNode, scene);
 }
 
-void OpenGLModel::processNode(const aiNode *node, const aiScene *scene)
-{
+void OpenGLModel::processNode(const aiNode *node, const aiScene *scene) {
     for (unsigned int i = 0; i < node->mNumMeshes; i++) {
         const aiMesh *mesh = scene->mMeshes[node->mMeshes[i]];
         meshes.push_back(processMesh(mesh, scene));
@@ -40,8 +38,7 @@ void OpenGLModel::processNode(const aiNode *node, const aiScene *scene)
     }
 }
 
-OpenGLMesh OpenGLModel::processMesh(const aiMesh *mesh, const aiScene *scene)
-{
+OpenGLMesh OpenGLModel::processMesh(const aiMesh *mesh, const aiScene *scene) {
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
 
@@ -65,8 +62,7 @@ OpenGLMesh OpenGLModel::processMesh(const aiMesh *mesh, const aiScene *scene)
 
             glmVec3 = { mesh->mBitangents[i].x, mesh->mBitangents[i].y, mesh->mBitangents[i].z };
             vertex.biTangent = glmVec3;
-        }
-        else {
+        } else {
             vertex.texCoords = glm::vec2(0.0f, 0.0f);
         }
 
@@ -108,8 +104,7 @@ OpenGLMesh OpenGLModel::processMesh(const aiMesh *mesh, const aiScene *scene)
 }
 
 std::vector<std::shared_ptr<OpenGLTexture>>
-OpenGLModel::loadMaterialTextures(const aiMaterial *mat, aiTextureType textureType, const std::string &typeName)
-{
+OpenGLModel::loadMaterialTextures(const aiMaterial *mat, aiTextureType textureType, const std::string &typeName) {
     std::vector<std::shared_ptr<OpenGLTexture>> textures;
 
     for (unsigned int i = 0; i < mat->GetTextureCount(textureType); i++) {
@@ -125,8 +120,7 @@ OpenGLModel::loadMaterialTextures(const aiMaterial *mat, aiTextureType textureTy
     return textures;
 }
 
-void OpenGLModel::render()
-{
+void OpenGLModel::render() {
     for (auto it = std::begin(meshes); it != std::end(meshes); ++it) {
         it->render();
     }

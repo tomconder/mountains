@@ -9,7 +9,8 @@
 #include "platform/opengl/openglcontext.h"
 #include "platform/opengl/openglrendererapi.h"
 
-class Engine {
+class Engine
+{
     public:
         Engine();
         virtual ~Engine() = default;
