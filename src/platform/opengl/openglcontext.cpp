@@ -11,7 +11,8 @@
 
 #include "globals.h"
 
-OpenGLContext::OpenGLContext(SDL_Window *window) {
+OpenGLContext::OpenGLContext(SDL_Window *window)
+{
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
     SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
@@ -62,19 +63,22 @@ OpenGLContext::OpenGLContext(SDL_Window *window) {
     }
 }
 
-OpenGLContext::~OpenGLContext() {
+OpenGLContext::~OpenGLContext()
+{
     SDL_GLContext context = SDL_GL_GetCurrentContext();
     SDL_GL_DeleteContext(context);
 }
 
-void OpenGLContext::flip() {
+void OpenGLContext::flip()
+{
     if (window == nullptr) {
         return;
     }
     SDL_GL_SwapWindow(window);
 }
 
-void OpenGLContext::setVSync(int interval) {
+void OpenGLContext::setVSync(int interval)
+{
     // 0 for immediate updates
     // 1 for updates synchronized with the vertical retrace
     // -1 for adaptive vsync

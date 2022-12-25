@@ -9,18 +9,18 @@
 
 struct Vertex
 {
-        glm::vec3 position;
-        glm::vec3 normal;
-        glm::vec2 texCoords;
-        glm::vec3 tangent;
-        glm::vec3 biTangent;
+    glm::vec3 position;
+    glm::vec3 normal;
+    glm::vec2 texCoords;
+    glm::vec3 tangent;
+    glm::vec3 biTangent;
 };
 
 class Mesh
 {
-    public:
-        std::vector<Vertex> vertices;
-        std::vector<unsigned int> indices;
+  public:
+    std::vector<Vertex> vertices;
+    std::vector<unsigned int> indices;
 };
 
 #endif // INCLUDE_MESH_H

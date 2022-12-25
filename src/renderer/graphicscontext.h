@@ -5,10 +5,10 @@
 
 class GraphicsContext
 {
-    public:
-        virtual ~GraphicsContext() = default;
+  public:
+    virtual ~GraphicsContext() = default;
 
-        virtual void flip() = 0;
+    virtual void flip() = 0;
 };
 
 #endif // INCLUDE_GRAPHICS_CONTEXT_H

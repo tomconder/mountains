@@ -1,11 +1,13 @@
 #include "platform/opengl/opengltexture.h"
 
-OpenGLTexture::OpenGLTexture() {
+OpenGLTexture::OpenGLTexture()
+{
     glGenTextures(1, &id);
 }
 
 void OpenGLTexture::generate(uint32_t textureWidth, uint32_t textureHeight, uint32_t bytesPerPixel,
-                             const unsigned char *data) {
+                             const unsigned char *data)
+{
     glBindTexture(GL_TEXTURE_2D, id);
 
     width = textureWidth;
@@ -28,10 +30,12 @@ void OpenGLTexture::generate(uint32_t textureWidth, uint32_t textureHeight, uint
     glActiveTexture(GL_TEXTURE0);
 }
 
-OpenGLTexture::~OpenGLTexture() {
+OpenGLTexture::~OpenGLTexture()
+{
     glDeleteTextures(1, &id);
 }
 
-void OpenGLTexture::bind() const {
+void OpenGLTexture::bind() const
+{
     glBindTexture(GL_TEXTURE_2D, id);
 }

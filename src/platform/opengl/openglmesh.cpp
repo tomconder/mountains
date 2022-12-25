@@ -13,7 +13,8 @@
 
 OpenGLMesh::OpenGLMesh(const std::vector<Vertex> &vertices, const std::vector<unsigned int> &indices,
                        const std::vector<std::shared_ptr<OpenGLTexture>> &textures)
-    : textures(textures) {
+    : textures(textures)
+{
     this->indices = indices;
     this->vertices = vertices;
 
@@ -55,7 +56,8 @@ OpenGLMesh::OpenGLMesh(const std::vector<Vertex> &vertices, const std::vector<un
     glBindVertexArray(0);
 }
 
-void OpenGLMesh::render() const {
+void OpenGLMesh::render() const
+{
     vao->bind();
 
     std::shared_ptr<OpenGLShader> shader = OpenGLResourceManager::getShader("shader");

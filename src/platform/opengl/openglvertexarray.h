@@ -7,14 +7,14 @@
 
 class OpenGLVertexArray : public VertexArray
 {
-    public:
-        OpenGLVertexArray();
-        ~OpenGLVertexArray() override;
+  public:
+    OpenGLVertexArray();
+    ~OpenGLVertexArray() override;
 
-        void bind() const override;
+    void bind() const override;
 
-    private:
-        uint32_t id = 0;
+  private:
+    uint32_t id = 0;
 };
 
 #endif // INCLUDE_OPENGLVERTEXARRAY_H

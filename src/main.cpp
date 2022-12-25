@@ -11,11 +11,13 @@ INITIALIZE_EASYLOGGINGPP
 std::unique_ptr<Mountains> mountains;
 
 // loop iteration is broken out like this for emscripten
-bool iterateLoop() {
+bool iterateLoop()
+{
     return mountains->iterateLoop();
 }
 
-extern "C" int main(int argc, char *args[]) {
+extern "C" int main(int argc, char *args[])
+{
     START_EASYLOGGINGPP(argc, args);
 
     mountains = std::make_unique<Mountains>();
