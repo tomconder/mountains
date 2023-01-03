@@ -1,4 +1,4 @@
-#include "core/engine.h"
+#include "engine.h"
 
 #ifdef EMSCRIPTEN
 #include <emscripten/emscripten.h>

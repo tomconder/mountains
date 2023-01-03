@@ -1,4 +1,4 @@
-#include "platform/opengl/openglfont.h"
+#include "openglfont.h"
 
 #ifdef EMSCRIPTEN
 #include <new>
@@ -9,7 +9,7 @@
 #include "easylogging++.h"
 
 #include "globals.h"
-#include "platform/opengl/openglresourcemanager.h"
+#include "openglresourcemanager.h"
 
 OpenGLFont::OpenGLFont()
 {

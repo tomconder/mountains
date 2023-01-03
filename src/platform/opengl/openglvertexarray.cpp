@@ -1,4 +1,4 @@
-#include "platform/opengl/openglvertexarray.h"
+#include "openglvertexarray.h"
 
 #ifdef EMSCRIPTEN
 #include <glad/gles2.h>

@@ -1,4 +1,4 @@
-#include "platform/opengl/openglshader.h"
+#include "openglshader.h"
 
 #include <cassert>
 #include <sstream>

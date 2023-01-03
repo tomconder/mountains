@@ -1,4 +1,4 @@
-#include "platform/opengl/openglsprite.h"
+#include "openglsprite.h"
 
 #include <array>
 
@@ -6,7 +6,7 @@
 #include <glm/ext/matrix_transform.hpp>
 
 #include "globals.h"
-#include "platform/opengl/openglresourcemanager.h"
+#include "openglresourcemanager.h"
 
 OpenGLSprite::OpenGLSprite()
 {

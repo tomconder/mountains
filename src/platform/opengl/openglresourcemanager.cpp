@@ -1,4 +1,4 @@
-#include "platform/opengl/openglresourcemanager.h"
+#include "openglresourcemanager.h"
 
 #include <cassert>
 #include <sstream>

@@ -1,4 +1,4 @@
-#include "core/gamecamera.h"
+#include "gamecamera.h"
 
 #include <cmath>
 

@@ -1,4 +1,4 @@
-#include "platform/opengl/openglelementbuffer.h"
+#include "openglelementbuffer.h"
 
 #ifdef EMSCRIPTEN
 #include <glad/gles2.h>

@@ -1,4 +1,4 @@
-#include "platform/opengl/openglmodel.h"
+#include "openglmodel.h"
 
 #include <cassert>
 #include <vector>
@@ -7,7 +7,7 @@
 #include <assimp/postprocess.h>
 
 #include "easylogging++.h"
-#include "platform/opengl/openglresourcemanager.h"
+#include "openglresourcemanager.h"
 
 void OpenGLModel::load(const std::string &path)
 {

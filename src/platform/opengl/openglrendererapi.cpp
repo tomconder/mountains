@@ -1,4 +1,4 @@
-#include "platform/opengl/openglrendererapi.h"
+#include "openglrendererapi.h"
 
 #ifdef EMSCRIPTEN
 #include <glad/gles2.h>

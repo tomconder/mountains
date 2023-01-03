@@ -5,10 +5,10 @@
 #include <memory>
 #include <string>
 
-#include "platform/opengl/openglfont.h"
-#include "platform/opengl/openglmodel.h"
-#include "platform/opengl/openglshader.h"
-#include "platform/opengl/opengltexture.h"
+#include "openglfont.h"
+#include "openglmodel.h"
+#include "openglshader.h"
+#include "opengltexture.h"
 
 class OpenGLResourceManager
 {
