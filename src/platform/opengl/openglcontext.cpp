@@ -1,4 +1,4 @@
-#include "platform/opengl/openglcontext.h"
+#include "openglcontext.h"
 
 #include <SDL.h>
 #ifdef EMSCRIPTEN

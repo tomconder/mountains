@@ -1,4 +1,4 @@
-#include "core/input.h"
+#include "input.h"
 
 #include "easylogging++.h"
 

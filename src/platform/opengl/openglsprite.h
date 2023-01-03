@@ -3,8 +3,8 @@
 
 #include <memory>
 
-#include "platform/opengl/openglbuffer.h"
-#include "platform/opengl/openglvertexarray.h"
+#include "openglbuffer.h"
+#include "openglvertexarray.h"
 #include "renderer/sprite.h"
 
 class OpenGLSprite : public Sprite

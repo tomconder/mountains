@@ -1,4 +1,4 @@
-#include "platform/opengl/opengltexture.h"
+#include "opengltexture.h"
 
 OpenGLTexture::OpenGLTexture()
 {

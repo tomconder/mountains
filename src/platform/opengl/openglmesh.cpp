@@ -1,4 +1,4 @@
-#include "platform/opengl/openglmesh.h"
+#include "openglmesh.h"
 
 #ifdef EMSCRIPTEN
 #include <glad/gles2.h>
@@ -9,7 +9,7 @@
 #include <cstddef>
 
 #include "easylogging++.h"
-#include "platform/opengl/openglresourcemanager.h"
+#include "openglresourcemanager.h"
 
 OpenGLMesh::OpenGLMesh(const std::vector<Vertex> &vertices, const std::vector<unsigned int> &indices,
                        const std::vector<std::shared_ptr<OpenGLTexture>> &textures)

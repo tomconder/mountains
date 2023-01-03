@@ -3,10 +3,10 @@
 
 #include <memory>
 
-#include "platform/opengl/openglbuffer.h"
-#include "platform/opengl/openglelementbuffer.h"
-#include "platform/opengl/opengltexture.h"
-#include "platform/opengl/openglvertexarray.h"
+#include "openglbuffer.h"
+#include "openglelementbuffer.h"
+#include "opengltexture.h"
+#include "openglvertexarray.h"
 #include "renderer/mesh.h"
 
 class OpenGLMesh : public Mesh

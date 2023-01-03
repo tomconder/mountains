@@ -7,8 +7,8 @@
 
 #include <assimp/scene.h>
 
-#include "platform/opengl/openglmesh.h"
-#include "platform/opengl/opengltexture.h"
+#include "openglmesh.h"
+#include "opengltexture.h"
 #include "renderer/mesh.h"
 
 class OpenGLModel
